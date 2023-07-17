@@ -1,5 +1,5 @@
-// IF: You do not want to use Tailwind CSS
-// DELETE: This entire file
+const lc = require("@tailwindcss/line-clamp")
+const f = require("@tailwindcss/forms")
 
 module.exports = {
   content: [
@@ -84,7 +84,7 @@ module.exports = {
     },
     dropShadow: {},
     columns: {},
-    blur: {}
+    blur: {md: "0.75rem"}
   },
-  plugins: []
+  plugins: [lc, f]
 }
