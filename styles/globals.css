@@ -76,6 +76,9 @@
   .label {
     @apply text-sm font-medium leading-none text-gray-700;
   }
+  .label-gray {
+    @apply text-base font-medium leading-none text-[#909090];
+  }
 
   .label-uppercase {
     @apply label uppercase tracking-widest text-gray-500/75;

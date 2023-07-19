@@ -100,7 +100,8 @@ const CounterStyled = function CounterStyled({
       }  bg-gray-50 px-4 pt-1.5`}>
       <div className="flex justify-between items-center">
         <h3>
-          {label} <span className="ml-3">{value > 0 ? value : ""}</span>
+          {label}{" "}
+          <span className="ml-3">{value > 0 && !isOpen ? value : ""}</span>
         </h3>
         <Button
           icon={
@@ -116,7 +117,7 @@ const CounterStyled = function CounterStyled({
       </div>
       {isOpen && (
         <>
-          <h4 className="label mb-2 text-gray-300">Quantity</h4>
+          <h4 className="label-gray mb-2">Quantity</h4>
           <div className="input w-fit p-0.5 flex items-center rounded-xl bg-gray-100">
             <button
               type="button"
@@ -158,7 +159,7 @@ const FormPageOne = function FormPageOne({
   return (
     <div>
       <div>
-        <label htmlFor="destination" className="label">
+        <label htmlFor="destination" className="label-gray">
           Destination:
         </label>
         <Field
@@ -172,7 +173,7 @@ const FormPageOne = function FormPageOne({
       </div>
 
       <div>
-        <label htmlFor="date" className="label">
+        <label htmlFor="date" className="label-gray">
           Date:
         </label>
         <div className="flex justify-between !gap-0 items-center mb-2">
@@ -219,7 +220,7 @@ const FormPageOne = function FormPageOne({
         </div>
       </div>
       <div>
-        <label htmlFor="numPeople" className="label">
+        <label htmlFor="numPeople" className="label-gray">
           Number Of People:
         </label>
         <div className="flex justify-between items-center mb-2">
@@ -245,7 +246,7 @@ const FormPageOne = function FormPageOne({
       </div>
 
       <div>
-        <label htmlFor="note" className="label">
+        <label htmlFor="note" className="label-gray">
           Note:
         </label>
         <Field
@@ -377,7 +378,9 @@ const BookingModal = function BookingModal() {
   }
 
   return (
-    <Modal location={{top: "top-20", right: "sm:right-10 right-1"}}>
+    <Modal
+      location={{top: "top-20", right: "sm:right-10 right-1"}}
+      closeAble={false}>
       <Formik
         initialValues={{
           destination: "Where are you going?",

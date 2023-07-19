@@ -22,14 +22,17 @@ const Button = function Button({
   href,
   disabled
 }: IButtonProps) {
+  const IconText = text && icon
   if (isLink) {
     return (
       <Link
         href={href ?? "/"}
         className={`button inline-block ${buttonStyle.type} 
-        ${buttonStyle.other?.join(" ")}`}
+        ${buttonStyle.other?.join(" ")} ${
+          IconText ? "my-flex gap-1 items-center" : ""
+        }`}
         onClick={handleClick}>
-        {text} {icon}
+        {icon} {text}
       </Link>
     )
   }
@@ -37,10 +40,10 @@ const Button = function Button({
     <button
       type={isSubmit ? "submit" : "button"}
       className={`button inline-block ${buttonStyle.type} 
-      ${buttonStyle.other?.join(" ")}`}
+      ${buttonStyle.other?.join(" ")} ${IconText ? "my-flex gap-1" : ""}`}
       onClick={handleClick}
       disabled={disabled}>
-      {text} {icon}
+      {icon} {text}
     </button>
   )
 }
