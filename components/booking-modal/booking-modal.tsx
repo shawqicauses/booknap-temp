@@ -1,11 +1,10 @@
-import React, {useReducer, useState, Fragment} from "react"
-import {Field, Form, Formik} from "formik"
+import React, {useReducer, useState} from "react"
 import {FaPlus} from "react-icons/fa"
 import {FiMinus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
-import * as Yup from "yup"
+import {SubmitHandler, useForm} from "react-hook-form"
 import Modal from "../modal"
 import Button from "../button"
 
@@ -32,6 +31,7 @@ export interface IAction {
   filed: string
   value: number
 }
+
 interface BasicFormData {
   destination: string
   FromDate: string
@@ -40,6 +40,7 @@ interface BasicFormData {
   ToTime: string
   note: string
 }
+
 const reducer = (state: IInitObject, action: IAction) => {
   switch (action.type) {
     case "update":
@@ -48,6 +49,7 @@ const reducer = (state: IInitObject, action: IAction) => {
       return state
   }
 }
+
 const Counter = function Counter({
   value,
   handleClickPlus,
@@ -75,6 +77,7 @@ const Counter = function Counter({
     </div>
   )
 }
+
 const CounterStyled = function CounterStyled({
   label,
   value,
@@ -88,9 +91,9 @@ const CounterStyled = function CounterStyled({
   value: number
   handleClickPlus: React.MouseEventHandler<Element>
   handleClickMinus: React.MouseEventHandler<Element>
-  openTab: number
+  openTab: number | null
   tabNumber: number
-  setOpenTab: React.Dispatch<React.SetStateAction<number>>
+  setOpenTab: React.Dispatch<React.SetStateAction<number | null>>
 }) {
   const isOpen = openTab === tabNumber
   return (
@@ -112,182 +115,35 @@ const CounterStyled = function CounterStyled({
             )
           }
           buttonStyle={{type: "button", other: ["rounded-full", "p-3"]}}
-          handleClick={() => setOpenTab(tabNumber)}
+          handleClick={() =>
+            isOpen ? setOpenTab(null) : setOpenTab(tabNumber)
+          }
         />
       </div>
-      {isOpen && (
+      {isOpen ? (
         <>
           <h4 className="label-gray mb-2">Quantity</h4>
-          <div className="input w-fit p-0.5 flex items-center rounded-xl bg-gray-100">
-            <button
-              type="button"
-              className="button-gray inline-block p-1 rounded-xl"
-              onClick={handleClickPlus}>
-              <FaPlus className="h-5 w-5 text-gray-400" />
-            </button>
-            <span className="text-lg inline-block  w-10 text-center">
-              {value}
-            </span>
-            <button
-              type="button"
-              className="button-gray inline-block p-1 rounded-xl"
-              onClick={handleClickMinus}>
-              <FiMinus className="h-5 w-5 text-gray-400" />
-            </button>
-          </div>
+          <Counter
+            handleClickMinus={handleClickMinus}
+            handleClickPlus={handleClickPlus}
+            value={value}
+          />
         </>
-      )}
+      ) : null}
     </div>
   )
 }
 
-const FormPageOne = function FormPageOne({
-  handleChange,
-  handleClick,
-  data,
-  setPage,
-  values
-}: {
-  setPage: React.Dispatch<React.SetStateAction<number>>
-  handleChange: any
-  handleClick: any
-  data: IInitObject
-  values: BasicFormData
-}) {
-  const toDayDate = new Date().toISOString().split("T")[0]
-
-  return (
-    <div>
-      <div>
-        <label htmlFor="destination" className="label-gray">
-          Destination:
-        </label>
-        <Field
-          component="select"
-          id="destination"
-          name="destination"
-          onChange={handleChange}
-          className="input p-3 leading-5 bg-gray-100 rounded-xl">
-          <option value="">Where are you going?</option>
-        </Field>
-      </div>
-
-      <div>
-        <label htmlFor="date" className="label-gray">
-          Date:
-        </label>
-        <div className="flex justify-between !gap-0 items-center mb-2">
-          <label htmlFor="date" className="w-[60px]">
-            From:
-          </label>
-          <div className="my-flex gap-2">
-            <Field
-              type="date"
-              name="FromDate"
-              id="date"
-              onChange={handleChange}
-              className="input p-3 leading-5 bg-gray-100 rounded-xl fle-1"
-              min={toDayDate}
-            />
-            <Field
-              type="time"
-              name="FromTime"
-              onChange={handleChange}
-              className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-max"
-            />
-          </div>
-        </div>
-        <div className="flex justify-between !gap-0 items-center">
-          <label htmlFor="date" className="w-[60px]">
-            To:
-          </label>
-          <div className="my-flex gap-2">
-            <Field
-              type="date"
-              name="ToDate"
-              id="date"
-              onChange={handleChange}
-              className="input p-3 leading-5 bg-gray-100 rounded-xl flex-1"
-              min={toDayDate}
-            />
-            <Field
-              type="time"
-              name="ToTime"
-              onChange={handleChange}
-              className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-min"
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="numPeople" className="label-gray">
-          Number Of People:
-        </label>
-        <div className="flex justify-between items-center mb-2">
-          <label htmlFor="noAdults">Adults</label>
-          <Counter
-            value={data.noAdults}
-            handleClickPlus={() => handleClick(1, "noAdults", data.noAdults)}
-            handleClickMinus={() => handleClick(-1, "noAdults", data.noAdults)}
-          />
-        </div>
-        <div className="flex justify-between items-center">
-          <label htmlFor="noAdults">Children</label>
-          <Counter
-            value={data.noChildren}
-            handleClickPlus={() =>
-              handleClick(1, "noChildren", data.noChildren)
-            }
-            handleClickMinus={() =>
-              handleClick(-1, "noChildren", data.noChildren)
-            }
-          />
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="note" className="label-gray">
-          Note:
-        </label>
-        <Field
-          component="textarea"
-          id="note"
-          name="note"
-          onChange={handleChange}
-          className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
-        />
-      </div>
-      <Button
-        text="Order"
-        buttonStyle={{type: "button-primary", other: ["w-full"]}}
-        handleClick={() => {
-          if (
-            values.FromDate &&
-            values.FromTime &&
-            values.ToDate &&
-            values.ToTime &&
-            values.destination &&
-            (data.noAdults > 0 || data.noChildren > 0)
-          ) {
-            setPage(1)
-          }
-        }}
-      />
-    </div>
-  )
-}
 const FormPageTow = function FormPageTow({
-  isSubmitting,
   handleClick,
   data,
   setPage
 }: {
   setPage: React.Dispatch<React.SetStateAction<number>>
-  isSubmitting: boolean
   handleClick: Function
   data: IInitObject
 }) {
-  const [openTab, setOpenTab] = useState<number>(1)
+  const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
       <Button
@@ -353,7 +209,6 @@ const FormPageTow = function FormPageTow({
           isSubmit
           text="Order"
           buttonStyle={{type: "button-primary", other: ["w-full"]}}
-          disabled={isSubmitting}
         />
       </div>
     </div>
@@ -377,51 +232,148 @@ const BookingModal = function BookingModal() {
     }
   }
 
+  const {register, handleSubmit, getValues} = useForm<BasicFormData>()
+  const onSubmit: SubmitHandler<BasicFormData> = (formData: BasicFormData) => {
+    const finalData = {
+      ...formData,
+      ...data
+    }
+    if (
+      new Date(`${finalData.FromDate} ${finalData.FromTime}`) >=
+      new Date(`${finalData.ToDate} ${finalData.ToTime}`)
+    ) {
+      // return
+    }
+    // console.log(finalData)
+  }
+  const toDayDate = new Date().toISOString().split("T")[0]
+
   return (
-    <Modal
-      location={{top: "top-20", right: "sm:right-10 right-1"}}
-      closeAble={false}>
-      <Formik
-        initialValues={{
-          destination: "Where are you going?",
-          FromDate: "",
-          FromTime: "",
-          ToDate: "",
-          ToTime: "",
-          note: ""
-        }}
-        validationSchema={Yup.object({
-          destination: Yup.string().required("Required"),
-          FromDate: Yup.string().required("Required"),
-          FromTime: Yup.string().required("Required"),
-          ToDate: Yup.string().required("Required"),
-          ToTime: Yup.string().required("Required"),
-          note: Yup.string()
-        })}
-        onSubmit={async (values) => {
-          alert(JSON.stringify({...values, ...data}, null, 2))
-        }}>
-        {({isSubmitting, handleChange, values}) => (
-          <Form className="flex flex-col gap-2 relative">
-            {page === 0 ? (
-              <FormPageOne
-                data={data}
-                handleChange={handleChange}
-                handleClick={handleClick}
-                setPage={setPage}
-                values={values}
+    <Modal location={{top: "top-20", right: "sm:right-10 right-1"}}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-1 relative justify-start">
+        {page === 0 ? (
+          <>
+            <div>
+              <label htmlFor="destination" className="label-gray">
+                Destination:
+              </label>
+              <select
+                id="destination"
+                {...register("destination", {required: true})}
+                className="input p-3 leading-5 bg-gray-100 rounded-xl">
+                <option value="1">Where are you going?</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="date" className="label-gray">
+                Date:
+              </label>
+              <div className="flex justify-between !gap-0 items-center mb-2">
+                <label htmlFor="date" className="w-[60px]">
+                  From:
+                </label>
+                <div className="my-flex gap-2">
+                  <input
+                    type="date"
+                    id="date"
+                    {...register("FromDate", {required: true})}
+                    className="input p-3 leading-5 bg-gray-100 rounded-xl fle-1"
+                    min={toDayDate}
+                  />
+                  <input
+                    type="time"
+                    {...register("FromTime", {required: true})}
+                    className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-max"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between !gap-0 items-center">
+                <label htmlFor="date" className="w-[60px]">
+                  To:
+                </label>
+                <div className="my-flex gap-2">
+                  <input
+                    type="date"
+                    id="date"
+                    {...register("ToDate", {required: true})}
+                    className="input p-3 leading-5 bg-gray-100 rounded-xl flex-1"
+                    min={toDayDate}
+                  />
+                  <input
+                    type="time"
+                    {...register("ToTime", {required: true})}
+                    className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-min"
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="numPeople" className="label-gray">
+                Number Of People:
+              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="noAdults">Adults</label>
+                <Counter
+                  value={data.noAdults}
+                  handleClickPlus={() =>
+                    handleClick(1, "noAdults", data.noAdults)
+                  }
+                  handleClickMinus={() =>
+                    handleClick(-1, "noAdults", data.noAdults)
+                  }
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <label htmlFor="noAdults">Children</label>
+                <Counter
+                  value={data.noChildren}
+                  handleClickPlus={() =>
+                    handleClick(1, "noChildren", data.noChildren)
+                  }
+                  handleClickMinus={() =>
+                    handleClick(-1, "noChildren", data.noChildren)
+                  }
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="note" className="label-gray">
+                Note:
+              </label>
+              <textarea
+                id="note"
+                {...register("note")}
+                className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
               />
-            ) : (
-              <FormPageTow
-                data={data}
-                handleClick={handleClick}
-                isSubmitting={isSubmitting}
-                setPage={setPage}
-              />
-            )}
-          </Form>
+            </div>
+            <Button
+              text="Order"
+              buttonStyle={{type: "button-primary", other: ["w-full"]}}
+              handleClick={() => {
+                if (
+                  getValues().FromDate &&
+                  getValues().FromTime &&
+                  getValues().ToDate &&
+                  getValues().ToTime &&
+                  getValues().destination &&
+                  (data.noAdults > 0 || data.noChildren > 0)
+                ) {
+                  setPage(1)
+                }
+              }}
+            />
+          </>
+        ) : (
+          <FormPageTow
+            data={data}
+            handleClick={handleClick}
+            setPage={setPage}
+          />
         )}
-      </Formik>
+      </form>
     </Modal>
   )
 }

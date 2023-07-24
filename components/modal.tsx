@@ -20,18 +20,18 @@ const Modal = function Modal({
   const [isOpened, setIsOpened] = useState(true)
   return (
     <>
-      {hasOverLay && isOpened && (
+      {hasOverLay && isOpened ? (
         <div
           id="overlay"
-          className="fixed z-40 w-screen h-screen inset-0 bg-gray-900 !bg-opacity-60"
+          className="fixed z-20 w-screen h-screen inset-0 bg-gray-900 !bg-opacity-60"
         />
-      )}
+      ) : null}
       <div
         className={`${
           isOpened ? "" : "hidden"
-        } fixed z-40 ${modalStyle} ${Object.values(location).join(" ")}
-          w-96  rounded-md px-8 py-6 space-y-5 drop-shadow-lg`}>
-        {closeAble && (
+        } absolute z-30 ${modalStyle} ${Object.values(location).join(" ")}
+          w-96  rounded-md px-8 pb-1 drop-shadow-lg`}>
+        {closeAble ? (
           <div className=" justify-end flex flex-end">
             <Button
               icon={<IoMdClose className="w-5 h-5 text-gray-400" />}
@@ -42,7 +42,7 @@ const Modal = function Modal({
               handleClick={() => setIsOpened(false)}
             />
           </div>
-        )}
+        ) : null}
         {children}
       </div>
     </>

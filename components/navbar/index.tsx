@@ -59,7 +59,7 @@ const Navbar = function Navbar() {
   const [mode, setMode] = useState("light")
   const [isOpened, setIsOpened] = useState(false)
   return (
-    <nav className="bg-white">
+    <nav className="bg-white fixed w-full z-40">
       <div className="my-container my-flex md:my-flex-between pb-5 !items-end">
         <div className="flex gap-3 w-full items-center lg:items-end justify-between md:justify-start">
           <Link href="/" className="relative w-36 mt-3 lg:mt-0">
