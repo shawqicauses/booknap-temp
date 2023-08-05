@@ -1,10 +1,12 @@
 import React from "react"
-import SignInModal from "../components/sign-in-modal/sign-in-modal"
+import Footer from "../components/footer/footer"
+import AboutUsContent from "../components/about-us"
 
 const AboutUs = function AboutUs() {
   return (
     <div>
-      <SignInModal />
+      <AboutUsContent />
+      <Footer />
     </div>
   )
 }

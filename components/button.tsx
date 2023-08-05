@@ -1,60 +1,95 @@
-import {Url} from "next/dist/shared/lib/router/router"
-import Link from "next/link"
-import React from "react"
+// DONE REVIEWING: GITHUB COMMIT
+import Link, {LinkProps} from "next/link"
+import {
+  AnchorHTMLAttributes,
+  ForwardRefExoticComponent,
+  ReactElement,
+  ReactNode,
+  RefAttributes,
+  createElement
+} from "react"
+
+interface IAttributes extends LinkProps {
+  type?: string
+  className?: string
+}
+
+interface IButtonWrapperProps {
+  tag?:
+    | keyof JSX.IntrinsicElements
+    | ForwardRefExoticComponent<
+        Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
+          LinkProps &
+          RefAttributes<HTMLAnchorElement>
+      >
+  children: ReactNode
+  attributes: IAttributes
+}
+
+export const ButtonWrapper = function ButtonWrapper({
+  tag: Wrapper = "button",
+  children,
+  attributes
+}: IButtonWrapperProps) {
+  return createElement(Wrapper, attributes, children)
+}
+
+ButtonWrapper.defaultProps = {tag: "button"}
 
 interface IButtonProps {
-  text?: string
-  icon?: JSX.Element
-  buttonStyle?: {type: string; other?: Array<string>}
-  handleClick?: React.MouseEventHandler
   isSubmit?: boolean
   isLink?: boolean
-  href?: Url
-  disabled?: boolean
+  href?: string
+  style?: {
+    type?: string
+    iconColor?: string
+    textColor?: string
+    other?: string
+  }
+  icon?: ReactElement
+  text?: string
+  handleClick?: any
 }
+
 const Button = function Button({
-  text,
-  icon,
-  buttonStyle = {type: "button-primary"},
-  handleClick,
   isSubmit,
   isLink,
   href,
-  disabled
+  style,
+  icon,
+  text,
+  handleClick
 }: IButtonProps) {
-  const IconText = text && icon
-  if (isLink) {
-    return (
-      <Link
-        href={href ?? "/"}
-        className={`button inline-block ${buttonStyle.type} 
-        ${buttonStyle.other?.join(" ")} ${
-          IconText ? "my-flex gap-1 items-center" : ""
-        }`}
-        onClick={handleClick}>
-        {icon} {text}
-      </Link>
-    )
-  }
+  const attributes: IAttributes = {href: href || "#"}
+  const classes = ["my-flex button"]
+
+  if (!isLink) attributes.type = isSubmit ? "submit" : "button"
+  if (style?.type) classes.push(style.type)
+  else classes.push("button-primary")
+  if (style?.other) classes.push(style?.other)
+  if (icon) classes.push("gap-3")
+  attributes.className = classes.join(" ")
+  if (handleClick) attributes.onClick = handleClick
   return (
-    <button
-      type={isSubmit ? "submit" : "button"}
-      className={`button inline-block ${buttonStyle.type} 
-      ${buttonStyle.other?.join(" ")} ${IconText ? "my-flex gap-1" : ""}`}
-      onClick={handleClick}
-      disabled={disabled}>
-      {icon} {text}
-    </button>
+    <ButtonWrapper tag={isLink ? Link : "button"} attributes={attributes}>
+      {icon ? (
+        <span className={style?.iconColor || "text-current"}>{icon}</span>
+      ) : null}
+      {text ? (
+        <span className={style?.textColor || "text-current"}>{text}</span>
+      ) : null}
+    </ButtonWrapper>
   )
 }
+
 Button.defaultProps = {
-  text: "",
-  icon: null,
-  buttonStyle: {type: ""},
-  handleClick: () => {},
   isSubmit: false,
   isLink: false,
-  href: "",
-  disabled: false
+  href: null,
+  style: null,
+  icon: null,
+  text: null,
+  handleClick: () => {}
 }
+
 export default Button

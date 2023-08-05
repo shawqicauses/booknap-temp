@@ -5,8 +5,15 @@ import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
 import {SubmitHandler, useForm} from "react-hook-form"
-import Modal from "../modal"
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  useDisclosure
+} from "@nextui-org/react"
 import Button from "../button"
+import SignInModal from "../sign-in-modal/sign-in-modal"
 
 interface IInitObject {
   noAdults: number
@@ -114,7 +121,7 @@ const CounterStyled = function CounterStyled({
               <HiOutlinePlus className="h-5 w-5 text-gray-400" />
             )
           }
-          buttonStyle={{type: "button", other: ["rounded-full", "p-3"]}}
+          style={{type: "button", other: "rounded-full p-3  !w-fit"}}
           handleClick={() =>
             isOpen ? setOpenTab(null) : setOpenTab(tabNumber)
           }
@@ -137,19 +144,25 @@ const CounterStyled = function CounterStyled({
 const FormPageTow = function FormPageTow({
   handleClick,
   data,
-  setPage
+  setPage,
+  openSignIn
 }: {
   setPage: React.Dispatch<React.SetStateAction<number>>
   handleClick: Function
   data: IInitObject
+  openSignIn: () => void
 }) {
   const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
       <Button
         isSubmit
-        icon={<AiOutlineDoubleLeft className="h-5 w-5" color="#B9B9B9" />}
-        buttonStyle={{type: "button-white", other: ["rounded-full", "p-1"]}}
+        icon={<AiOutlineDoubleLeft className="h-5 w-5" />}
+        style={{
+          type: "button",
+          other: "rounded-full p-1 !w-fit",
+          iconColor: "text-gray-300"
+        }}
         handleClick={() => setPage(0)}
       />
       <div className="mt-4 flex flex-col gap-3">
@@ -208,14 +221,21 @@ const FormPageTow = function FormPageTow({
         <Button
           isSubmit
           text="Order"
-          buttonStyle={{type: "button-primary", other: ["w-full"]}}
+          style={{type: "button-primary", other: "w-full"}}
+          handleClick={openSignIn}
         />
       </div>
     </div>
   )
 }
 
-const BookingModal = function BookingModal() {
+const BookingModal = function BookingModal({
+  isOpen,
+  onClose
+}: {
+  isOpen: boolean
+  onClose: () => void
+}) {
   const [data, dispatch] = useReducer(reducer, initObject)
   const [page, setPage] = useState<number>(0)
   const handleClick = (
@@ -247,134 +267,152 @@ const BookingModal = function BookingModal() {
     // console.log(finalData)
   }
   const toDayDate = new Date().toISOString().split("T")[0]
+  const signIn = useDisclosure()
 
   return (
-    <Modal location={{top: "top-20", right: "sm:right-10 right-1"}}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-1 relative justify-start">
-        {page === 0 ? (
-          <>
-            <div>
-              <label htmlFor="destination" className="label-gray">
-                Destination:
-              </label>
-              <select
-                id="destination"
-                {...register("destination", {required: true})}
-                className="input p-3 leading-5 bg-gray-100 rounded-xl">
-                <option value="1">Where are you going?</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="date" className="label-gray">
-                Date:
-              </label>
-              <div className="flex justify-between !gap-0 items-center mb-2">
-                <label htmlFor="date" className="w-[60px]">
-                  From:
-                </label>
-                <div className="my-flex gap-2">
-                  <input
-                    type="date"
-                    id="date"
-                    {...register("FromDate", {required: true})}
-                    className="input p-3 leading-5 bg-gray-100 rounded-xl fle-1"
-                    min={toDayDate}
-                  />
-                  <input
-                    type="time"
-                    {...register("FromTime", {required: true})}
-                    className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-max"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between !gap-0 items-center">
-                <label htmlFor="date" className="w-[60px]">
-                  To:
-                </label>
-                <div className="my-flex gap-2">
-                  <input
-                    type="date"
-                    id="date"
-                    {...register("ToDate", {required: true})}
-                    className="input p-3 leading-5 bg-gray-100 rounded-xl flex-1"
-                    min={toDayDate}
-                  />
-                  <input
-                    type="time"
-                    {...register("ToTime", {required: true})}
-                    className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-min"
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <label htmlFor="numPeople" className="label-gray">
-                Number Of People:
-              </label>
-              <div className="flex justify-between items-center mb-2">
-                <label htmlFor="noAdults">Adults</label>
-                <Counter
-                  value={data.noAdults}
-                  handleClickPlus={() =>
-                    handleClick(1, "noAdults", data.noAdults)
-                  }
-                  handleClickMinus={() =>
-                    handleClick(-1, "noAdults", data.noAdults)
-                  }
-                />
-              </div>
-              <div className="flex justify-between items-center">
-                <label htmlFor="noAdults">Children</label>
-                <Counter
-                  value={data.noChildren}
-                  handleClickPlus={() =>
-                    handleClick(1, "noChildren", data.noChildren)
-                  }
-                  handleClickMinus={() =>
-                    handleClick(-1, "noChildren", data.noChildren)
-                  }
-                />
-              </div>
-            </div>
+    <>
+      <Modal
+        size="md"
+        isDismissable={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="center">
+        <ModalContent>
+          <ModalHeader />
+          <ModalBody>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-1 relative justify-start">
+              {page === 0 ? (
+                <>
+                  <div>
+                    <label htmlFor="destination" className="label-gray">
+                      Destination:
+                    </label>
+                    <select
+                      id="destination"
+                      {...register("destination", {required: true})}
+                      className="input p-3 leading-5 bg-gray-100 rounded-xl">
+                      <option value="1">Where are you going?</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="date" className="label-gray">
+                      Date:
+                    </label>
+                    <div className="flex justify-between !gap-0 items-center mb-2">
+                      <label htmlFor="date" className="w-[60px]">
+                        From:
+                      </label>
+                      <div className="my-flex gap-2">
+                        <input
+                          type="date"
+                          id="date"
+                          {...register("FromDate", {required: true})}
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl fle-1"
+                          min={toDayDate}
+                        />
+                        <input
+                          type="time"
+                          {...register("FromTime", {required: true})}
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-max"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-between !gap-0 items-center">
+                      <label htmlFor="date" className="w-[60px]">
+                        To:
+                      </label>
+                      <div className="my-flex gap-2">
+                        <input
+                          type="date"
+                          id="date"
+                          {...register("ToDate", {required: true})}
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl flex-1"
+                          min={toDayDate}
+                        />
+                        <input
+                          type="time"
+                          {...register("ToTime", {required: true})}
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-min"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="numPeople" className="label-gray">
+                      Number Of People:
+                    </label>
+                    <div className="flex justify-between items-center mb-2">
+                      <label htmlFor="noAdults">Adults</label>
+                      <Counter
+                        value={data.noAdults}
+                        handleClickPlus={() =>
+                          handleClick(1, "noAdults", data.noAdults)
+                        }
+                        handleClickMinus={() =>
+                          handleClick(-1, "noAdults", data.noAdults)
+                        }
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <label htmlFor="noAdults">Children</label>
+                      <Counter
+                        value={data.noChildren}
+                        handleClickPlus={() =>
+                          handleClick(1, "noChildren", data.noChildren)
+                        }
+                        handleClickMinus={() =>
+                          handleClick(-1, "noChildren", data.noChildren)
+                        }
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <label htmlFor="note" className="label-gray">
-                Note:
-              </label>
-              <textarea
-                id="note"
-                {...register("note")}
-                className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
-              />
-            </div>
-            <Button
-              text="Order"
-              buttonStyle={{type: "button-primary", other: ["w-full"]}}
-              handleClick={() => {
-                if (
-                  getValues().FromDate &&
-                  getValues().FromTime &&
-                  getValues().ToDate &&
-                  getValues().ToTime &&
-                  getValues().destination &&
-                  (data.noAdults > 0 || data.noChildren > 0)
-                ) {
-                  setPage(1)
-                }
-              }}
-            />
-          </>
-        ) : (
-          <FormPageTow
-            data={data}
-            handleClick={handleClick}
-            setPage={setPage}
-          />
-        )}
-      </form>
-    </Modal>
+                  <div>
+                    <label htmlFor="note" className="label-gray">
+                      Note:
+                    </label>
+                    <textarea
+                      id="note"
+                      {...register("note")}
+                      className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
+                    />
+                  </div>
+                  <Button
+                    text="Order"
+                    style={{
+                      type: "button-primary",
+                      other: "w-full button"
+                    }}
+                    handleClick={() => {
+                      if (
+                        getValues().FromDate &&
+                        getValues().FromTime &&
+                        getValues().ToDate &&
+                        getValues().ToTime &&
+                        getValues().destination &&
+                        (data.noAdults > 0 || data.noChildren > 0)
+                      ) {
+                        setPage(1)
+                      }
+                    }}
+                  />
+                </>
+              ) : (
+                <FormPageTow
+                  data={data}
+                  handleClick={handleClick}
+                  setPage={setPage}
+                  openSignIn={signIn.onOpen}
+                />
+              )}
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <SignInModal isOpen={signIn.isOpen} onClose={signIn.onClose} />
+    </>
   )
 }
 

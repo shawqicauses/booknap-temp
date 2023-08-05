@@ -1,11 +1,13 @@
 const lc = require("@tailwindcss/line-clamp")
 const f = require("@tailwindcss/forms")
+const {nextui} = require("@nextui-org/react")
 
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./containers/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}"
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     screens: {
@@ -86,5 +88,6 @@ module.exports = {
     columns: {},
     blur: {md: "0.75rem"}
   },
-  plugins: [lc, f]
+  darkMode: "class",
+  plugins: [lc, f, nextui()]
 }

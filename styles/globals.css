@@ -20,7 +20,10 @@
   }
 
   .button-primary {
-    @apply bg-blue-700 text-white hover:bg-blue-900;
+    @apply bg-blue-900 text-white;
+  }
+  .button-secondary {
+    @apply bg-gray-100 text-blue-700 hover:bg-gray-200;
   }
 
   .button-secondary {
@@ -35,7 +38,7 @@
     @apply border-gray-100 bg-white text-blue-700 hover:border-blue-900 hover:bg-blue-900 hover:text-white;
   }
   .button-gray {
-    @apply bg-gray-200  hover:bg-gray-800 h-full; /*dark:bg-slate-700 dark:hover:bg-slate-400 */
+    @apply bg-gray-200  hover:bg-gray-300;
   }
   .button-disabled {
     @apply bg-gray-100 text-gray-500;
@@ -147,6 +150,7 @@
   .my-flex-between {
     @apply flex w-full items-center justify-between;
   }
+
   .my-flex-col {
     @apply flex w-full flex-col items-start justify-start;
   }
@@ -177,4 +181,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+.main-hight {
+  height: calc(100vh - 78px);
+}
+.test-h {
+  height: calc(100vh - 310px);
 }

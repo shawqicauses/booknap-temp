@@ -1,12 +1,24 @@
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  extendVariants,
+  useDisclosure
+} from "@nextui-org/react"
 import Image from "next/image"
 import Link from "next/link"
-import React, {ReactElement, useState} from "react"
-import {BiMoon, BiUser} from "react-icons/bi"
+import React, {ReactElement, useContext, useEffect, useState} from "react"
+import {BiMoon, BiTrash, BiUser} from "react-icons/bi"
+import {GoChecklist} from "react-icons/go"
+import {HiOutlineLogout} from "react-icons/hi"
 import {BsFillSunFill} from "react-icons/bs"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {IoMdClose} from "react-icons/io"
-
-import Button from "../button"
+import {Auth} from "../../stores/auth"
+import SignInModal from "../sign-in-modal/sign-in-modal"
+import DeleteAccountModal from "../delete-account-modal"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -54,111 +66,185 @@ const NavbarCloseToggle = function NavbarCloseToggle({
     </button>
   )
 }
+export const MyButton = extendVariants(Button, {
+  variants: {
+    size: {
+      md: "px-unit-2 min-w-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex"
+    }
+  },
+  defaultVariants: {
+    color: "default",
+    size: "md"
+  }
+})
 
 const Navbar = function Navbar() {
-  const [mode, setMode] = useState("light")
+  const [theme, setTheme] = useState("light")
   const [isOpened, setIsOpened] = useState(false)
+  const {token, signOut} = useContext(Auth)
+  const signIn = useDisclosure()
+  const deleteAccount = useDisclosure()
+
+  useEffect(() => {
+    document.body.classList.remove(theme === "light" ? "dark" : "light")
+    document.body.classList.add(theme)
+  }, [theme])
+
   return (
-    <nav className="bg-white fixed w-full z-40">
-      <div className="my-container my-flex md:my-flex-between pb-5 !items-end">
-        <div className="flex gap-3 w-full items-center lg:items-end justify-between md:justify-start">
-          <Link href="/" className="relative w-36 mt-3 lg:mt-0">
-            <Image
-              src="/logo/blue-logo.png"
-              alt="Logo"
-              fill
-              className="!relative !inset-auto !w-max object-contain"
-            />
-          </Link>
-          <div className="relative w-full text-right">
-            <NavbarOpenToggle setIsOpened={setIsOpened} />
-            <ul
-              className={[
-                isOpened
-                  ? "translate-x-0 opacity-100"
-                  : "translate-x-full opacity-0",
-                "my-flex my-transition lg:!items-end lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
-              ].join(" ")}>
-              <NavbarCloseToggle setIsOpened={setIsOpened} />
-              <li>
-                <ul className="flex flex-col lg:flex-row items-center gap-3">
-                  {navLinks.map((navLink) => (
-                    <li key={navLink.id}>
-                      <Link
-                        href={navLink.href}
-                        className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg lg:hover:bg-gray-300"
+    <>
+      <nav className="bg-white dark:bg-[#000818] w-full shadow-base">
+        <div className="my-container my-flex md:my-flex-between pb-5 !items-end">
+          <div className="flex gap-3 w-full items-center lg:items-end justify-between md:justify-start">
+            <Link href="/" className="relative w-36 mt-3 lg:mt-0  dark:hidden">
+              <Image
+                src="/logo/blue-logo.png"
+                alt="Logo"
+                fill
+                className="!relative !inset-auto !w-max object-contain"
+              />
+            </Link>
+            <Link
+              href="/"
+              className="relative w-36 mt-3 lg:mt-0 hidden dark:block">
+              <Image
+                src="/logo/white-logo.png"
+                alt="Logo"
+                fill
+                className="!relative !inset-auto !w-max object-contain"
+              />
+            </Link>
+            <div className="relative w-full text-right">
+              <NavbarOpenToggle setIsOpened={setIsOpened} />
+              <ul
+                className={[
+                  isOpened
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-full opacity-0",
+                  "my-flex my-transition lg:!items-end lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
+                ].join(" ")}>
+                <NavbarCloseToggle setIsOpened={setIsOpened} />
+                <li>
+                  <ul className="flex flex-col lg:flex-row items-center gap-3">
+                    {navLinks.map((navLink) => (
+                      <li key={navLink.id}>
+                        <Link
+                          href={navLink.href}
+                          className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg lg:hover:bg-gray-300"
+                          onClick={() => {
+                            setIsOpened(false)
+                            document.body.style.overflowY = "scroll"
+                          }}>
+                          {navLink.text}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <ul className="flex flex-col lg:flex-row gap-3">
+                    <li>
+                      <MyButton
+                        isIconOnly
                         onClick={() => {
-                          setIsOpened(false)
-                          document.body.style.overflowY = "scroll"
+                          setTheme((pre) =>
+                            pre === "light" ? "dark" : "light"
+                          )
                         }}>
-                        {navLink.text}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li>
-                <ul className="flex flex-col lg:flex-row gap-3">
-                  <li>
-                    <Button
-                      icon={
-                        mode === "light" ? (
-                          <BiMoon className="w-6 h-6" color="#B9B9B9" />
+                        {theme === "light" ? (
+                          <BiMoon className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89]" />
                         ) : (
-                          <BsFillSunFill className="w-6 h-6" color="#B9B9B9" />
-                        )
-                      }
-                      buttonStyle={{
-                        type: "button-gray",
-                        other: [
-                          "rounded-b-lg",
-                          "h-full",
-                          "w-full",
-                          "flex",
-                          "justify-center"
-                        ]
-                      }}
-                      handleClick={() => {
-                        setMode((pre) => (pre === "light" ? "dark" : "light"))
-                      }}
-                    />
-                  </li>
-                  <li>
-                    <select
-                      name="language"
-                      id="lang"
-                      className="h-full bg-gray-200 rounded-lg border-none text-gray-600">
-                      {languages.map((language) => (
-                        <option key={language.id} value={language.shortname}>
-                          {language.name}
-                        </option>
-                      ))}
-                    </select>
-                  </li>
-                  <li>
-                    <Button
-                      isLink
-                      icon={<BiUser className="w-6 h-6" color="#B9B9B9" />}
-                      buttonStyle={{
-                        type: "button-gray",
-                        other: [
-                          "rounded-b-lg",
-                          "h-full",
-                          "w-full",
-                          "flex",
-                          "justify-center"
-                        ]
-                      }}
-                      href="/"
-                    />
-                  </li>
-                </ul>
-              </li>
-            </ul>
+                          <BsFillSunFill className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89]" />
+                        )}
+                      </MyButton>
+                    </li>
+                    <li>
+                      <select
+                        name="language"
+                        id="lang"
+                        className="h-full bg-gray-200 rounded-lg border-none text-gray-600">
+                        {languages.map((language) => (
+                          <option key={language.id} value={language.shortname}>
+                            {language.name}
+                          </option>
+                        ))}
+                      </select>
+                    </li>
+                    {!token ? (
+                      <li>
+                        <MyButton
+                          as={Link}
+                          href="/"
+                          isIconOnly
+                          onClick={signIn.onOpen}>
+                          <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                        </MyButton>
+                      </li>
+                    ) : null}
+                    {token ? (
+                      <li>
+                        <Dropdown
+                          showArrow
+                          classNames={{
+                            base: "py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black",
+                            arrow: "bg-default-200"
+                          }}>
+                          <DropdownTrigger>
+                            <div className="my-flex gap-2 cursor-pointer bg-gray-100 py-1 px-2 rounded-lg">
+                              <Image
+                                src="/user.png"
+                                alt="user profile"
+                                className="!relative !w-9"
+                                fill
+                              />
+                              <span className="inline-block">Adam Joe</span>
+                            </div>
+                          </DropdownTrigger>
+                          <DropdownMenu
+                            variant="faded"
+                            aria-label="Dropdown menu">
+                            <DropdownItem
+                              startContent={
+                                <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                              }>
+                              Profile
+                            </DropdownItem>
+                            <DropdownItem
+                              startContent={
+                                <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                              }>
+                              Bookings
+                            </DropdownItem>
+                            <DropdownItem
+                              startContent={
+                                <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                              }
+                              onClick={deleteAccount.onOpen}>
+                              Delete Account
+                            </DropdownItem>
+                            <DropdownItem
+                              startContent={
+                                <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                              }
+                              onClick={signOut}>
+                              Logout
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </li>
+                    ) : null}
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      <SignInModal isOpen={signIn.isOpen} onClose={signIn.onClose} />
+      <DeleteAccountModal
+        isOpen={deleteAccount.isOpen}
+        onClose={deleteAccount.onClose}
+      />
+    </>
   )
 }
 
