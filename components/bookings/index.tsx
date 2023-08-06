@@ -1,0 +1,121 @@
+import {Rating} from "@mui/material"
+import {Button, useDisclosure} from "@nextui-org/react"
+import Image from "next/image"
+import React from "react"
+import {useRouter} from "next/navigation"
+import BookingDetailsModal from "../modal/booking-details-modal"
+
+interface Ibooking {
+  hotelName: string
+  hotelRating: number
+  hotelLogo: string
+  bookingId: string
+  startDay: string
+  endDay: string
+  noAdults: number
+  noChildern: number
+  noRoom: number
+  state: "done" | "inProgress" | "coming"
+}
+
+const bookings: Ibooking[] = [
+  {
+    hotelName: "Luxury Resort",
+    hotelRating: 5,
+    hotelLogo: "/user-profile.jpg",
+    bookingId: "xyz789",
+    startDay: "2023-09-20",
+    endDay: "2023-09-25",
+    noAdults: 3,
+    noChildern: 2,
+    noRoom: 2,
+    state: "inProgress"
+  },
+  {
+    hotelName: "Cozy Inn",
+    hotelRating: 3,
+    hotelLogo: "/user-profile.jpg",
+    bookingId: "def456",
+    startDay: "2023-10-05",
+    endDay: "2023-10-07",
+    noAdults: 1,
+    noChildern: 0,
+    noRoom: 1,
+    state: "coming"
+  },
+  {
+    hotelName: "Grand Hotel",
+    hotelRating: 4,
+    hotelLogo: "/user-profile.jpg",
+    bookingId: "abc123",
+    startDay: "2023-08-10",
+    endDay: "2023-08-15",
+    noAdults: 2,
+    noChildern: 1,
+    noRoom: 1,
+    state: "done"
+  },
+  {
+    hotelName: "Grand Hotel",
+    hotelRating: 4,
+    hotelLogo: "/user-profile.jpg",
+    bookingId: "abc124",
+    startDay: "2023-08-10",
+    endDay: "2023-08-15",
+    noAdults: 2,
+    noChildern: 1,
+    noRoom: 1,
+    state: "done"
+  }
+]
+interface Istates {
+  done: "default"
+  inProgress: "success"
+  coming: "primary"
+}
+const states: Istates = {
+  done: "default",
+  inProgress: "success",
+  coming: "primary"
+}
+
+const BookingsContent = function BookingsContent() {
+  const {isOpen, onOpen, onClose} = useDisclosure()
+  const rout = useRouter()
+  return (
+    <>
+      <div className="mx-4 md:my-container grid grid-cols-1 lg:grid-cols-2 gap-2 my-10">
+        {bookings.map((booking) => (
+          <div
+            key={booking.bookingId}
+            className="flex bg-gray-100 p-3 gap-3 rounded-lg">
+            <div className="relative h-20 w-20 rounded-lg overflow-hidden">
+              <Image src={booking.hotelLogo} alt={booking.hotelName} fill />
+            </div>
+            <div>
+              <h3 className="heading-3">{booking.hotelName}</h3>
+              <Rating value={booking.hotelRating} />
+              <p className="body-sm">{`${booking.startDay} To ${booking.endDay} - ${booking.noAdults} Adults - ${booking.noChildern} Childern - ${booking.noRoom} Room`}</p>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <Button
+                color={states[booking.state]}
+                onClick={() => {
+                  if (booking.state !== "inProgress") {
+                    onOpen()
+                  } else {
+                    rout.push("/booking")
+                  }
+                }}>
+                {booking.bookingId}
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <BookingDetailsModal isOpen={isOpen} onClose={onClose} />
+    </>
+  )
+}
+
+export default BookingsContent

@@ -1,12 +1,12 @@
 import React, {useState} from "react"
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
-import Button from "../button"
 
 const reasons = [
   {id: 1, reason: "I Changed My Mind"},
@@ -35,22 +35,23 @@ const CancelModal = function CancelModal({
           {reasons.map((r) => (
             <Button
               key={r.id}
-              text={r.reason}
-              style={{
-                type: "button-white",
-                other: "rounded-full w-full text-center text-black"
-              }}
-              handleClick={() => setReason(r.reason)}
-            />
+              onClick={() => setReason(r.reason)}
+              className={`${
+                reason === r.reason ? "border-2 border-blue-500" : ""
+              }`}
+              disableAnimation>
+              {r.reason}
+            </Button>
           ))}
           <Button
-            text="Other"
-            style={{
-              type: "button-white",
-              other: "rounded-full w-full text-center text-black"
-            }}
-            handleClick={() => setReason("other")}
-          />
+            onClick={() => setReason("other")}
+            fullWidth
+            className={`${
+              reason === "other" ? "border-2 border-blue-500" : ""
+            }`}
+            disableAnimation>
+            Other
+          </Button>
           {reason === "other" ? (
             <div>
               <input
@@ -63,13 +64,13 @@ const CancelModal = function CancelModal({
         </ModalBody>
         <ModalFooter>
           <Button
-            text="Send"
-            style={{type: "button-primary", other: "w-full"}}
-            handleClick={() => {
+            fullWidth
+            onClick={() => {
               onClose()
               openBannedModal()
-            }}
-          />
+            }}>
+            Send
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

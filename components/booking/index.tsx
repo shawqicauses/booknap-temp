@@ -6,8 +6,8 @@ import Image from "next/image"
 import {Rating} from "@mui/material"
 import "swiper/css"
 import "swiper/css/pagination"
+import {Button} from "@nextui-org/react"
 import {AiFillStar} from "react-icons/ai"
-import Button from "../button"
 import Booking from "./booking"
 
 const swiperSlides = [
@@ -35,8 +35,8 @@ const tabsContent = [<Booking />, <div />, <div />]
 const HotelPageContent = function HotelPageContent() {
   const [tab, setTab] = useState(0)
   return (
-    <div className="my-container mt-3">
-      <div className="p-3 bg-gray-200 rounded-lg mb-6">
+    <div className="my-container mt-6">
+      <div className="p-3 bg-gray-100 rounded-lg mb-3">
         <div className="relative mb-2">
           <div className="flex gap-3 absolute bottom-3 left-4 z-30">
             <Image
@@ -91,29 +91,29 @@ const HotelPageContent = function HotelPageContent() {
         </div>
         <div className="bg-gray-300 w-fit rounded-full flex gap-1">
           <Button
-            text="Booking"
-            style={{
-              type: tab === 0 ? "button-primary" : "button",
-              other: `py-1 ${tab !== 0 ? "!text-gray-400" : ""} rounded-full`
-            }}
-            handleClick={() => setTab(0)}
-          />
+            color={tab === 0 ? "primary" : "default"}
+            radius="full"
+            onClick={() => setTab(0)}>
+            Booking
+          </Button>
           <Button
-            text="Booking"
-            style={{
-              type: tab === 1 ? "button-primary" : "button",
-              other: `py-1 ${tab !== 1 ? "!text-gray-400" : ""} rounded-full`
-            }}
-            handleClick={() => setTab(1)}
-          />
+            color={tab === 1 ? "primary" : "default"}
+            radius="full"
+            onClick={() => setTab(1)}>
+            Rooms
+          </Button>
           <Button
-            text="Booking"
-            style={{
-              type: tab === 2 ? "button-primary" : "button",
-              other: `py-1 ${tab !== 2 ? "!text-gray-400" : ""} rounded-full`
-            }}
-            handleClick={() => setTab(2)}
-          />
+            color={tab === 2 ? "primary" : "default"}
+            radius="full"
+            onClick={() => setTab(2)}>
+            Shop
+          </Button>
+          <Button
+            color={tab === 3 ? "primary" : "default"}
+            radius="full"
+            onClick={() => setTab(3)}>
+            About
+          </Button>
         </div>
       </div>
       {tabsContent[tab]}

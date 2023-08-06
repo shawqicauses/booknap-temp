@@ -1,14 +1,13 @@
-import React from "react"
+import React, {useState} from "react"
 import {MdLocalOffer} from "react-icons/md"
 import {AiOutlineCheck} from "react-icons/ai"
 import {BiTime} from "react-icons/bi"
 import Image from "next/image"
 import Rating from "@mui/material/Rating"
-import {useDisclosure} from "@nextui-org/react"
-import Button from "../button"
-import CancelModal from "../cancel-modal/cancel-modal"
-import BookedModal from "../booked-modal/booked-modal"
-import BannedModal from "../banned-modal/banned-modal"
+import {Button, useDisclosure} from "@nextui-org/react"
+import CancelModal from "../modal/cancel-modal"
+import BookedModal from "../modal/booked-modal"
+import BannedModal from "../modal/banned-modal"
 
 interface HotelOfferBoxProps {
   // eslint-disable-next-line react/no-unused-prop-types
@@ -58,15 +57,10 @@ const HotelOfferBox = function HotelOfferBox({
         <span className="text-red-500 text-xl font-bold">{price}$</span>
       </div>
       <div className="flex justify-end gap-2">
-        <Button
-          text="reject"
-          style={{type: "button-secondary", other: "!w-fit"}}
-        />
-        <Button
-          text="Accept"
-          style={{type: "button-primary", other: "!w-fit"}}
-          handleClick={handelBooked}
-        />
+        <Button>reject</Button>
+        <Button color="primary" onClick={handelBooked}>
+          Accept
+        </Button>
       </div>
     </div>
   )
@@ -76,28 +70,25 @@ const BookingSidebar = function BookingSidebar() {
   const booked = useDisclosure()
   const cancel = useDisclosure()
   const banned = useDisclosure()
+  const [filter, serFilter] = useState("Highest Rated")
 
   return (
     <div className="relative">
-      <div className="absolute z-10 top-0 left-0 w-full md:w-1/2 lg:w-1/3 h-full flex flex-col">
-        <div className=" bg-white flex gap-3 items-center p-2">
+      <div className="absolute z-10 top-0 left-0 bottom-0 w-full md:w-1/2 lg:w-1/3 main-hight flex flex-col overflow-y-scroll hide-scrollbar">
+        <div className=" bg-white flex justify-between  items-center p-2">
           <Button
-            icon={<MdLocalOffer className="h-5 w-5 text-gray-600" />}
-            text="Offers"
-            style={{
-              type: "button",
-              other: "text-xl font-semi-bold bg-gray-100"
-            }}
-          />
-          <span className="my-flex gap-2">
+            startContent={<MdLocalOffer className="h-5 w-5 text-gray-600" />}
+            size="lg"
+            radius="sm">
+            Offers
+          </Button>
+          <span className="flex items-center gap-2">
             <BiTime className="h-5 w-5 text-gray-300" />
             12:15
           </span>
-          <Button
-            text="Cancel"
-            style={{type: "navbar-link"}}
-            handleClick={cancel.onOpen}
-          />
+          <Button onClick={cancel.onOpen} className="!bg-white">
+            Cancel
+          </Button>
         </div>
         <div className="bg-gray-50 py-3 px-5 flex-1">
           <p className="py-3 px-6 border border-gray-200 body  rounded-lg mb-3">
@@ -105,29 +96,46 @@ const BookingSidebar = function BookingSidebar() {
           </p>
           <div className="flex mb-3 gap-2 flex-wrap">
             <Button
-              text="Highest Rated"
-              icon={<AiOutlineCheck className="h-5 w-5" />}
-              style={{
-                type: "button-white",
-                other: "p-2 !w-fit gap-1 whitespace-nowrap"
-              }}
-            />
+              color={filter === "Highest Rated" ? "primary" : "default"}
+              radius="sm"
+              size="sm"
+              startContent={
+                filter === "Highest Rated" ? (
+                  <AiOutlineCheck className="h-5 w-5" />
+                ) : null
+              }
+              onClick={() => serFilter("Highest Rated")}
+              disableAnimation>
+              Highest Rated
+            </Button>
             <Button
-              text="Lowest Price"
-              style={{
-                type: "button-white",
-                other: "p-2 !w-fit  whitespace-nowrap"
-              }}
-            />
+              color={filter === "Lowest Price" ? "primary" : "default"}
+              radius="sm"
+              size="sm"
+              startContent={
+                filter === "Lowest Price" ? (
+                  <AiOutlineCheck className="h-5 w-5" />
+                ) : null
+              }
+              onClick={() => serFilter("Lowest Price")}
+              disableAnimation>
+              Lowest Price
+            </Button>
             <Button
-              text="Highest Price"
-              style={{
-                type: "button-white",
-                other: "p-2 !w-fit  whitespace-nowrap"
-              }}
-            />
+              color={filter === "Highest Price" ? "primary" : "default"}
+              radius="sm"
+              size="sm"
+              startContent={
+                filter === "Highest Price" ? (
+                  <AiOutlineCheck className="h-5 w-5" />
+                ) : null
+              }
+              onClick={() => serFilter("Highest Price")}
+              disableAnimation>
+              Highest Price
+            </Button>
           </div>
-          <div className="flex flex-col relative gap-3 overflow-y-scroll hide-scrollbar test-h">
+          <div className="flex flex-col relative gap-3">
             {offers.map((offer) => (
               <HotelOfferBox
                 key={offer.id}

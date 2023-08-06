@@ -17,18 +17,16 @@ import {BsFillSunFill} from "react-icons/bs"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {IoMdClose} from "react-icons/io"
 import {Auth} from "../../stores/auth"
-import SignInModal from "../sign-in-modal/sign-in-modal"
-import DeleteAccountModal from "../delete-account-modal"
+import SignInModal from "../modal/sign-in-modal"
+import DeleteAccountModal from "../modal/delete-account-modal"
+import Lang from "./lang"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
   {id: 2, text: "About us", href: "/about-us"},
   {id: 3, text: "Contact", href: "/contact"}
 ]
-const languages = [
-  {id: 1, shortname: "EN", name: "English"},
-  {id: 2, shortname: "AR", name: "Arabic"}
-]
+
 interface INavbarProps {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -158,16 +156,7 @@ const Navbar = function Navbar() {
                       </MyButton>
                     </li>
                     <li>
-                      <select
-                        name="language"
-                        id="lang"
-                        className="h-full bg-gray-200 rounded-lg border-none text-gray-600">
-                        {languages.map((language) => (
-                          <option key={language.id} value={language.shortname}>
-                            {language.name}
-                          </option>
-                        ))}
-                      </select>
+                      <Lang />
                     </li>
                     {!token ? (
                       <li>
@@ -207,12 +196,21 @@ const Navbar = function Navbar() {
                                 <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                               }>
                               Profile
+                              <Link
+                                href="/profile"
+                                className="inline-block w-full h-full">
+                                Profile
+                              </Link>
                             </DropdownItem>
                             <DropdownItem
                               startContent={
                                 <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                               }>
-                              Bookings
+                              <Link
+                                href="/bookings"
+                                className="inline-block w-full h-full">
+                                Bookings
+                              </Link>
                             </DropdownItem>
                             <DropdownItem
                               startContent={

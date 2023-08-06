@@ -1,23 +1,32 @@
 import {GoogleMap} from "@react-google-maps/api"
-import {useMemo} from "react"
+import {Dispatch, SetStateAction} from "react"
 
-const MyGoogleMap = function MyGoogleMap({
-  lat,
-  lng,
-  handleClick
-}: {
+interface IPostion {
   lat: number
   lng: number
+}
+
+const MyGoogleMap = function MyGoogleMap({
+  pos,
+  setPos,
+  handleClick
+}: {
+  pos: IPostion
+  setPos: Dispatch<SetStateAction<IPostion | undefined>>
   handleClick: () => void
 }) {
-  const center = useMemo(() => ({lat: lat, lng: lng}), [lat, lng])
-
   return (
     <GoogleMap
       zoom={10}
-      center={center}
+      center={pos}
       mapContainerClassName="w-full h-full"
-      onClick={handleClick}
+      onClick={(e) => {
+        handleClick()
+        setPos({
+          lat: e.latLng?.lat() ?? pos.lat,
+          lng: e.latLng?.lng() ?? pos.lng
+        })
+      }}
     />
   )
 }

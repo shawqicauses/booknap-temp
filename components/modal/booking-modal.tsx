@@ -6,14 +6,15 @@ import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   useDisclosure
 } from "@nextui-org/react"
-import Button from "../button"
-import SignInModal from "../sign-in-modal/sign-in-modal"
+
+import SignInModal from "./sign-in-modal"
 
 interface IInitObject {
   noAdults: number
@@ -114,18 +115,14 @@ const CounterStyled = function CounterStyled({
           <span className="ml-3">{value > 0 && !isOpen ? value : ""}</span>
         </h3>
         <Button
-          icon={
-            isOpen ? (
-              <IoMdClose className="w-5 h-5 text-gray-400" />
-            ) : (
-              <HiOutlinePlus className="h-5 w-5 text-gray-400" />
-            )
-          }
-          style={{type: "button", other: "rounded-full p-3  !w-fit"}}
-          handleClick={() =>
-            isOpen ? setOpenTab(null) : setOpenTab(tabNumber)
-          }
-        />
+          isIconOnly
+          onClick={() => (isOpen ? setOpenTab(null) : setOpenTab(tabNumber))}>
+          {isOpen ? (
+            <IoMdClose className="w-5 h-5 text-gray-400" />
+          ) : (
+            <HiOutlinePlus className="h-5 w-5 text-gray-400" />
+          )}
+        </Button>
       </div>
       {isOpen ? (
         <>
@@ -155,16 +152,9 @@ const FormPageTow = function FormPageTow({
   const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
-      <Button
-        isSubmit
-        icon={<AiOutlineDoubleLeft className="h-5 w-5" />}
-        style={{
-          type: "button",
-          other: "rounded-full p-1 !w-fit",
-          iconColor: "text-gray-300"
-        }}
-        handleClick={() => setPage(0)}
-      />
+      <Button type="submit" isIconOnly onClick={() => setPage(0)}>
+        <AiOutlineDoubleLeft className="h-5 w-5" />
+      </Button>
       <div className="mt-4 flex flex-col gap-3">
         <CounterStyled
           label="Single Room"
@@ -218,12 +208,9 @@ const FormPageTow = function FormPageTow({
           tabNumber={4}
           setOpenTab={setOpenTab}
         />
-        <Button
-          isSubmit
-          text="Order"
-          style={{type: "button-primary", other: "w-full"}}
-          handleClick={openSignIn}
-        />
+        <Button type="submit" isIconOnly onClick={openSignIn} fullWidth>
+          Order
+        </Button>
       </div>
     </div>
   )
@@ -380,12 +367,9 @@ const BookingModal = function BookingModal({
                     />
                   </div>
                   <Button
-                    text="Order"
-                    style={{
-                      type: "button-primary",
-                      other: "w-full button"
-                    }}
-                    handleClick={() => {
+                    type="submit"
+                    isIconOnly
+                    onClick={() => {
                       if (
                         getValues().FromDate &&
                         getValues().FromTime &&
@@ -397,7 +381,9 @@ const BookingModal = function BookingModal({
                         setPage(1)
                       }
                     }}
-                  />
+                    fullWidth>
+                    Order
+                  </Button>
                 </>
               ) : (
                 <FormPageTow

@@ -1,15 +1,16 @@
 import Image from "next/image"
 import React from "react"
+import {IoLogoWhatsapp} from "react-icons/io"
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
-import Button from "../button"
 
-const BookedModal = function BookedModal({
+const BannedModal = function BannedModal({
   isOpen,
   onClose
 }: {
@@ -20,15 +21,15 @@ const BookedModal = function BookedModal({
     <Modal size="lg" isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalHeader>
-          <h2 className="heading-1">Booked</h2>
+          <h1 className="heading-2 mb-6">Banned</h1>
         </ModalHeader>
         <ModalBody>
           <div className="flex justify-between mb-5">
             <div className="w-[50%]">
-              <p>The Request Has Been Successfully Accepted</p>
+              <p>You Have Been Banned For Your Repeated Attempts To Book</p>
             </div>
             <Image
-              src="/booked.png"
+              src="/bad-idea.png"
               alt="img"
               fill
               className="!relative !inset-auto !w-max object-contain"
@@ -36,14 +37,18 @@ const BookedModal = function BookedModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button
-            text="Done"
-            style={{type: "button-primary", other: "!w-[80%] m-auto"}}
-            handleClick={onClose}
-          />
+          <div className="flex gap-2 justify-center w-[80%] m-auto">
+            <Button isIconOnly onClick={() => {}} color="success">
+              <IoLogoWhatsapp className="h-6 w-6" />
+            </Button>
+            <Button color="primary" onClick={onClose}>
+              Ok
+            </Button>
+          </div>
         </ModalFooter>
       </ModalContent>
     </Modal>
   )
 }
-export default BookedModal
+
+export default BannedModal

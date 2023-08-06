@@ -1,4 +1,4 @@
-import {Button} from "@nextui-org/react"
+import {Button, Input, Textarea} from "@nextui-org/react"
 import React from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {BsTelephone} from "react-icons/bs"
@@ -22,42 +22,38 @@ const CountactUsForm = function CountactUsForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="p-3 flex flex-col  gap-3">
       <div className="flex flex-col md:flex-row gap-3">
-        <div>
-          <label htmlFor="firtsName" className="inline-block mb-2">
-            First Name
-          </label>
-          <input
-            type="text"
-            {...register("firstName")}
-            id="firstName"
-            placeholder="First Name"
-            className="border-0 outline-0 rounded-lg block w-full"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="inline-block mb-2">
-            Eamil
-          </label>
-          <input
-            type="email"
-            {...register("email")}
-            id="email"
-            placeholder="Email"
-            className="border-0 outline-0 rounded-lg block w-full"
-          />
-        </div>
+        <Input
+          size="lg"
+          label="First Name"
+          labelPlacement="outside"
+          type="text"
+          {...register("firstName")}
+          id="firstName"
+          placeholder="First Name"
+          variant="bordered"
+        />
+        <Input
+          size="lg"
+          label="Eamil"
+          labelPlacement="outside"
+          type="email"
+          {...register("email")}
+          id="email"
+          placeholder="Email"
+          variant="bordered"
+        />
       </div>
       <div className="w-full">
-        <label htmlFor="massage" className="inline-block mb-2">
-          Your Massage
-        </label>
-        <textarea
+        <Textarea
+          size="lg"
           {...register("massage")}
           id="massage"
-          cols={30}
-          rows={10}
+          minRows={50}
+          variant="bordered"
+          label="Your Massage"
+          labelPlacement="outside"
           placeholder="Message"
-          className="resize-none block w-full border-0 outline-0 rounded-lg"
+          radius="lg"
         />
       </div>
       <div className="my-flex">
@@ -65,7 +61,7 @@ const CountactUsForm = function CountactUsForm() {
           <input
             type="submit"
             value="Submit"
-            className="inline-block w-full h-full"
+            className="inline-block w-full h-full cursor-pointer"
           />
         </Button>
       </div>

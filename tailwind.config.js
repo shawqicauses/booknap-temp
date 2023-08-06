@@ -1,5 +1,5 @@
 const lc = require("@tailwindcss/line-clamp")
-const f = require("@tailwindcss/forms")
+// const f = require("@tailwindcss/forms")
 const {nextui} = require("@nextui-org/react")
 
 module.exports = {
@@ -89,5 +89,5 @@ module.exports = {
     blur: {md: "0.75rem"}
   },
   darkMode: "class",
-  plugins: [lc, f, nextui()]
+  plugins: [lc, nextui()]
 }
