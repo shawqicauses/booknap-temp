@@ -90,7 +90,7 @@ const Navbar = function Navbar() {
 
   return (
     <>
-      <nav className="bg-white dark:bg-[#000818] w-full shadow-base">
+      <nav className="sticky z-20 top-0 bg-white dark:bg-[#000818] w-full shadow-base">
         <div className="my-container my-flex md:my-flex-between pb-5 !items-end">
           <div className="flex gap-3 w-full items-center lg:items-end justify-between md:justify-start">
             <Link href="/" className="relative w-36 mt-3 lg:mt-0  dark:hidden">

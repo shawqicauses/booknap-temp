@@ -6,9 +6,12 @@ import Image from "next/image"
 import {Rating} from "@mui/material"
 import "swiper/css"
 import "swiper/css/pagination"
-import {Button} from "@nextui-org/react"
+import {Button, Tab, Tabs} from "@nextui-org/react"
 import {AiFillStar} from "react-icons/ai"
 import Booking from "./booking"
+import RoomsDetails from "./rooms-details"
+import About from "./about"
+import Shop from "./shop"
 
 const swiperSlides = [
   {
@@ -30,15 +33,23 @@ const hotelData = {
   hotelName: "Hotel Name",
   rating: 3
 }
-const tabsContent = [<Booking />, <div />, <div />]
+const shopTabs = ["resturant", "clothes", "favorite"]
 
 const HotelPageContent = function HotelPageContent() {
   const [tab, setTab] = useState(0)
+  const [shopTab, setShopTab] = useState("resturant")
+  const tabsContent = [
+    <Booking />,
+    <RoomsDetails />,
+    <Shop tab={shopTab} />,
+    <About />
+  ]
+
   return (
     <div className="my-container mt-6">
-      <div className="p-3 bg-gray-100 rounded-lg mb-3">
+      <div className="p-3 bg-gray-100 rounded-lg mb-5">
         <div className="relative mb-2">
-          <div className="flex gap-3 absolute bottom-3 left-4 z-30">
+          <div className="flex gap-3 absolute bottom-3 left-4 z-10">
             <Image
               src={hotelData.img}
               alt={hotelData.hotelName}
@@ -115,6 +126,32 @@ const HotelPageContent = function HotelPageContent() {
             About
           </Button>
         </div>
+        {tab === 2 ? (
+          <div className="flex flex-col w-full border-b-2 border-divider">
+            <Tabs
+              aria-label="Options"
+              color="primary"
+              variant="underlined"
+              classNames={{
+                tabList: "gap-6 relative rounded-none p-0 ",
+                cursor: "w-full bg-[#2F5597]",
+                tab: "px-2 h-12 text-md",
+                tabContent: "group-data-[selected=true]:!text-black"
+              }}
+              onSelectionChange={(e) => setShopTab(e.toString())}>
+              {shopTabs.map((st) => (
+                <Tab
+                  key={st.toLowerCase()}
+                  title={
+                    <div className="flex items-center space-x-2 capitalize">
+                      <span>{st}</span>
+                    </div>
+                  }
+                />
+              ))}
+            </Tabs>
+          </div>
+        ) : null}
       </div>
       {tabsContent[tab]}
     </div>

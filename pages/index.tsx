@@ -3,8 +3,8 @@ import type {NextPage} from "next"
 import {useLoadScript} from "@react-google-maps/api"
 import {useEffect, useState} from "react"
 import BookingModal from "../components/modal/booking-modal"
-import BookingSidebar from "../components/booking-sidebar"
 import MyGoogleMap from "../components/map"
+import Sidebar from "../components/sidebar"
 
 interface IPostion {
   lat: number
@@ -30,17 +30,19 @@ const MyHome: NextPage = function MyHome() {
   }, [])
   return (
     <main className="main-hight">
+      <div className="flex main-hight">
+        <Sidebar />
+        {!isLoaded ? (
+          <div>Loading ...</div>
+        ) : (
+          <MyGoogleMap
+            pos={pos ?? {lat: 30, lng: 40}}
+            setPos={setPos}
+            handleClick={onOpen}
+          />
+        )}
+      </div>
       <BookingModal isOpen={isOpen} onClose={onClose} />
-      <BookingSidebar />
-      {!isLoaded ? (
-        <div>Loading ...</div>
-      ) : (
-        <MyGoogleMap
-          pos={pos ?? {lat: 30, lng: 40}}
-          setPos={setPos}
-          handleClick={onOpen}
-        />
-      )}
     </main>
   )
 }

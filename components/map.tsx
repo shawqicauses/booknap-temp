@@ -20,6 +20,7 @@ const MyGoogleMap = function MyGoogleMap({
       zoom={10}
       center={pos}
       mapContainerClassName="w-full h-full"
+      options={{disableDefaultUI: true, maxZoom: 20, minZoom: 15}}
       onClick={(e) => {
         handleClick()
         setPos({

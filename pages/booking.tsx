@@ -1,13 +1,17 @@
 import React from "react"
 import Footer from "../components/footer"
 import HotelPageContent from "../components/booking"
+import Sidebar from "../components/sidebar"
 
 const Booking = function Booking() {
   return (
-    <div>
-      <HotelPageContent />
+    <>
+      <div className="flex">
+        <Sidebar />
+        <HotelPageContent />
+      </div>
       <Footer />
-    </div>
+    </>
   )
 }
 
