@@ -1,9 +1,10 @@
 import {Rating} from "@mui/material"
-import {Button, useDisclosure} from "@nextui-org/react"
+import {useDisclosure} from "@nextui-org/react"
 import Image from "next/image"
 import React from "react"
 import {useRouter} from "next/navigation"
 import BookingDetailsModal from "../modal/booking-details-modal"
+import MyButton from "../button"
 
 interface Ibooking {
   hotelName: string
@@ -110,7 +111,7 @@ const BookingsContent = function BookingsContent() {
                 <p className="body-sm">{`${startDay} To ${endDay} - ${noAdults} Adults - ${noChildern} Childern - ${noRoom} Room`}</p>
               </div>
               <div className="flex-1 flex justify-end">
-                <Button
+                <MyButton
                   color={states[state]}
                   onClick={() => {
                     if (state !== "inProgress") {
@@ -120,7 +121,7 @@ const BookingsContent = function BookingsContent() {
                     }
                   }}>
                   {bookingId}
-                </Button>
+                </MyButton>
               </div>
             </div>
           )

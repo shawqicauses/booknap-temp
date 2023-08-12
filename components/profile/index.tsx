@@ -135,13 +135,13 @@ const ProfileContent = function ProfileContent() {
           />
         </div>
         <div className="my-flex">
-          <Button size="lg" color="primary">
+          <MyButton size="lg" color="primary">
             <input
               type="submit"
               value="Save"
               className="inline-block w-full h-full cursor-pointer"
             />
-          </Button>
+          </MyButton>
         </div>
       </form>
     </div>

@@ -1,4 +1,5 @@
-import {Button, Modal, ModalContent} from "@nextui-org/react"
+import {Modal, ModalContent} from "@nextui-org/react"
+import MyButton from "../button"
 
 const DeleteAccountModal = function DeleteAccountModal({
   isOpen,
@@ -15,12 +16,12 @@ const DeleteAccountModal = function DeleteAccountModal({
           <p className="mb-20">Are You Sure You Want To Delete Your Account</p>
 
           <div className="my-flex gap-3">
-            <Button fullWidth onClick={onClose}>
+            <MyButton fullWidth onClick={onClose}>
               Cancel
-            </Button>
-            <Button size="lg" color="danger" fullWidth>
+            </MyButton>
+            <MyButton size="lg" color="danger" fullWidth>
               Delete
-            </Button>
+            </MyButton>
           </div>
         </div>
       </ModalContent>

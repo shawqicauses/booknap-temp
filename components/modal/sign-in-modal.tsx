@@ -1,13 +1,8 @@
 import React, {useState} from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {BsApple, BsGoogle} from "react-icons/bs"
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader
-} from "@nextui-org/react"
+import {Modal, ModalBody, ModalContent, ModalHeader} from "@nextui-org/react"
+import MyButton from "../button"
 
 interface ISignIn {
   username: string
@@ -60,16 +55,16 @@ const SignIn = function SignIn({
               />
             </div>
           </div>
-          <Button fullWidth>
+          <MyButton fullWidth>
             <BsGoogle className="h-5 w-5 text-gray-400" />
             Google
-          </Button>
-          <Button fullWidth>
+          </MyButton>
+          <MyButton fullWidth>
             <BsApple className="h-5 w-5 text-gray-400" />
             Apple
-          </Button>
+          </MyButton>
 
-          <Button
+          <MyButton
             color="primary"
             fullWidth
             onClick={() => {
@@ -80,7 +75,7 @@ const SignIn = function SignIn({
               value="Sign in"
               className="w-full h-full cursor-pointer"
             />
-          </Button>
+          </MyButton>
         </form>
       </ModalBody>
     </>
@@ -107,7 +102,7 @@ const ConfigCode = function ConfigCode() {
       <ModalBody>
         <p>An Email With Verification Code Was Just Sent To +970 599933399</p>
         <div className="flex justify-center">
-          <Button>Resend</Button>
+          <MyButton>Resend</MyButton>
         </div>
 
         <form
@@ -143,13 +138,13 @@ const ConfigCode = function ConfigCode() {
               placeholder="0"
             />
           </div>
-          <Button color="primary" fullWidth>
+          <MyButton color="primary" fullWidth>
             <input
               type="submit"
               value="Sign in"
               className="w-full h-full cursor-pointer"
             />
-          </Button>
+          </MyButton>
         </form>
       </ModalBody>
     </>

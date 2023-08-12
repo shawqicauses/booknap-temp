@@ -1,10 +1,9 @@
-"use client"
-
-import {Button, Progress} from "@nextui-org/react"
+import {Progress} from "@nextui-org/react"
 import {HiMiniClipboardDocumentList} from "react-icons/hi2"
 import React, {useEffect, useMemo, useState} from "react"
 import {AiTwotoneCalendar} from "react-icons/ai"
 import Image from "next/image"
+import MyButton from "../button"
 
 interface IItem {
   id: string
@@ -149,7 +148,7 @@ const Booking = function Booking() {
             </p>
           </div>
           <div className="flex flex-1 justify-end">
-            <Button disableAnimation>Renewal</Button>
+            <MyButton disableAnimation>Renewal</MyButton>
           </div>
         </div>
       </div>

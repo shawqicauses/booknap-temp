@@ -1,12 +1,12 @@
 import React, {useState} from "react"
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
+import MyButton from "../button"
 
 const reasons = [
   {id: 1, reason: "I Changed My Mind"},
@@ -33,7 +33,7 @@ const CancelModal = function CancelModal({
         </ModalHeader>
         <ModalBody>
           {reasons.map(({id, reason}) => (
-            <Button
+            <MyButton
               key={id}
               onClick={() => setCancelReason(reason)}
               className={`${
@@ -41,9 +41,9 @@ const CancelModal = function CancelModal({
               }`}
               disableAnimation>
               {reason}
-            </Button>
+            </MyButton>
           ))}
-          <Button
+          <MyButton
             onClick={() => setCancelReason("other")}
             fullWidth
             className={`${
@@ -51,7 +51,7 @@ const CancelModal = function CancelModal({
             }`}
             disableAnimation>
             Other
-          </Button>
+          </MyButton>
           {cancelReason === "other" ? (
             <div>
               <input
@@ -64,7 +64,7 @@ const CancelModal = function CancelModal({
           ) : null}
         </ModalBody>
         <ModalFooter>
-          <Button
+          <MyButton
             fullWidth
             onClick={() => {
               if (cancelReason !== null && cancelReason !== "other") {
@@ -73,7 +73,7 @@ const CancelModal = function CancelModal({
               }
             }}>
             Send
-          </Button>
+          </MyButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

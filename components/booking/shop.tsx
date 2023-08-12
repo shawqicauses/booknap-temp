@@ -1,4 +1,3 @@
-import {Button} from "@nextui-org/react"
 import Image from "next/image"
 import React, {useState} from "react"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
@@ -63,19 +62,19 @@ const CardItem = function CardItem({
           ${price}
         </span>
         <div className="flex gap-2">
-          <Button isIconOnly>
+          <MyButton isIconOnly>
             {isFavorite ? (
               <MdFavorite className="w-5 h-5 text-red-500" />
             ) : (
               <MdFavoriteBorder className="w-5 h-5 text-red-500" />
             )}
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             color={inCart ? "primary" : "default"}
             isIconOnly
             onClick={handleClick}>
             <HiOutlineShoppingCart className="h-5 w-5" />
-          </Button>
+          </MyButton>
         </div>
       </div>
     </div>
@@ -196,7 +195,7 @@ const ItemPage = function ItemPage() {
           </div>
         </div>
         <div className="relative  w-[490px]  h-[490px] flex-1 rounded-lg overflow-hidden">
-          <Button
+          <MyButton
             isIconOnly
             className="absolute top-2 right-2 z-10 bg-opacity-50 "
             onClick={() => setISFavorite((pre) => !pre)}>
@@ -205,7 +204,7 @@ const ItemPage = function ItemPage() {
             ) : (
               <MdFavoriteBorder className="w-5 h-5 text-white" />
             )}
-          </Button>
+          </MyButton>
           <Image
             src="/user-profile.jpg"
             alt="w"

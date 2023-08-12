@@ -5,7 +5,6 @@ import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {
-  Button,
   Input,
   Modal,
   ModalBody,
@@ -115,7 +114,7 @@ const CounterStyled = function CounterStyled({
           {label}{" "}
           <span className="ml-3">{value > 0 && !isOpen ? value : ""}</span>
         </h3>
-        <Button
+        <MyButton
           isIconOnly
           onClick={() => (isOpen ? setOpenTab(null) : setOpenTab(tabNumber))}>
           {isOpen ? (
@@ -123,7 +122,7 @@ const CounterStyled = function CounterStyled({
           ) : (
             <HiOutlinePlus className="h-5 w-5 text-gray-400" />
           )}
-        </Button>
+        </MyButton>
       </div>
       {isOpen ? (
         <>
@@ -153,9 +152,9 @@ const FormPageTow = function FormPageTow({
   const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
-      <Button size="sm" radius="full" isIconOnly onClick={() => setPage(0)}>
+      <MyButton size="sm" radius="full" isIconOnly onClick={() => setPage(0)}>
         <AiOutlineDoubleLeft className="h-4 w-4" />
-      </Button>
+      </MyButton>
       <div className="mt-4 flex flex-col gap-3">
         <CounterStyled
           label="Single Room"

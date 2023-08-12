@@ -6,12 +6,13 @@ import Image from "next/image"
 import {Rating} from "@mui/material"
 import "swiper/css"
 import "swiper/css/pagination"
-import {Button, Tab, Tabs} from "@nextui-org/react"
+import {Tab, Tabs} from "@nextui-org/react"
 import {AiFillStar} from "react-icons/ai"
 import Booking from "./booking"
 import RoomsDetails from "./rooms-details"
 import About from "./about"
 import Shop from "./shop"
+import MyButton from "../button"
 
 const swiperSlides = [
   {
@@ -101,30 +102,30 @@ const HotelPageContent = function HotelPageContent() {
           </Swiper>
         </div>
         <div className="bg-gray-300 w-fit rounded-full flex gap-1">
-          <Button
+          <MyButton
             color={tab === 0 ? "primary" : "default"}
             radius="full"
             onClick={() => setTab(0)}>
             Booking
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             color={tab === 1 ? "primary" : "default"}
             radius="full"
             onClick={() => setTab(1)}>
             Rooms
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             color={tab === 2 ? "primary" : "default"}
             radius="full"
             onClick={() => setTab(2)}>
             Shop
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             color={tab === 3 ? "primary" : "default"}
             radius="full"
             onClick={() => setTab(3)}>
             About
-          </Button>
+          </MyButton>
         </div>
         {tab === 2 ? (
           <div className="flex flex-col w-full border-b-2 border-divider">
