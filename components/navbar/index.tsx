@@ -206,16 +206,16 @@ const Navbar = function Navbar() {
                 <NavbarCloseToggle setIsOpened={setIsOpened} />
                 <li>
                   <ul className="flex flex-col lg:flex-row items-center gap-3">
-                    {navLinks.map((navLink) => (
-                      <li key={navLink.id}>
+                    {navLinks.map(({id, href, text}) => (
+                      <li key={id}>
                         <Link
-                          href={navLink.href}
+                          href={href}
                           className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg  text-[#B9B9B9]  dark:text-[#5B6C89] hover:bg-gray-300 dark:hover:bg-[#12213B]"
                           onClick={() => {
                             setIsOpened(false)
                             document.body.style.overflowY = "scroll"
                           }}>
-                          {navLink.text}
+                          {text}
                         </Link>
                       </li>
                     ))}

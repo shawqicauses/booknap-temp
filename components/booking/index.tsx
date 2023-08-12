@@ -85,11 +85,11 @@ const HotelPageContent = function HotelPageContent() {
             }}
             modules={[Autoplay, Pagination]}
             className=" rounded-lg overflow-x-hidden">
-            {swiperSlides.map((swiperSlide) => (
-              <SwiperSlide key={swiperSlide.id}>
+            {swiperSlides.map(({id, imgUrl}) => (
+              <SwiperSlide key={id}>
                 <div className="relative w-full ">
                   <Image
-                    src={swiperSlide.imgUrl}
+                    src={imgUrl}
                     alt="Web Application"
                     fill
                     className="!relative !inset-auto !rounded-lg w-full object-contain"

@@ -127,11 +127,11 @@ const HotelPageModal = function HotelPageModal({
                   disableOnInteraction: false
                 }}
                 modules={[Autoplay]}>
-                {swiperSlides.map((swiperSlide) => (
-                  <SwiperSlide key={swiperSlide.id}>
+                {swiperSlides.map(({id, imgUrl}) => (
+                  <SwiperSlide key={id}>
                     <div className="relative w-full h-auto !rounded-lg overflow-hidden">
                       <Image
-                        src={swiperSlide.imgUrl}
+                        src={imgUrl}
                         alt="Web Application"
                         fill
                         className="!relative object-contain"

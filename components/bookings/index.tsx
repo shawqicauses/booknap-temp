@@ -85,33 +85,46 @@ const BookingsContent = function BookingsContent() {
   return (
     <>
       <div className="mx-4 md:my-container grid grid-cols-1 lg:grid-cols-2 gap-2 my-10">
-        {bookings.map((booking) => (
-          <div
-            key={booking.bookingId}
-            className="flex bg-gray-100 p-3 gap-3 rounded-lg">
-            <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-              <Image src={booking.hotelLogo} alt={booking.hotelName} fill />
+        {bookings.map(
+          ({
+            bookingId,
+            hotelLogo,
+            hotelName,
+            hotelRating,
+            startDay,
+            endDay,
+            noAdults,
+            noChildern,
+            noRoom,
+            state
+          }) => (
+            <div
+              key={bookingId}
+              className="flex bg-gray-100 p-3 gap-3 rounded-lg">
+              <div className="relative h-20 w-20 rounded-lg overflow-hidden">
+                <Image src={hotelLogo} alt={hotelName} fill />
+              </div>
+              <div>
+                <h3 className="heading-3">{hotelName}</h3>
+                <Rating value={hotelRating} />
+                <p className="body-sm">{`${startDay} To ${endDay} - ${noAdults} Adults - ${noChildern} Childern - ${noRoom} Room`}</p>
+              </div>
+              <div className="flex-1 flex justify-end">
+                <Button
+                  color={states[state]}
+                  onClick={() => {
+                    if (state !== "inProgress") {
+                      onOpen()
+                    } else {
+                      rout.push("/booking")
+                    }
+                  }}>
+                  {bookingId}
+                </Button>
+              </div>
             </div>
-            <div>
-              <h3 className="heading-3">{booking.hotelName}</h3>
-              <Rating value={booking.hotelRating} />
-              <p className="body-sm">{`${booking.startDay} To ${booking.endDay} - ${booking.noAdults} Adults - ${booking.noChildern} Childern - ${booking.noRoom} Room`}</p>
-            </div>
-            <div className="flex-1 flex justify-end">
-              <Button
-                color={states[booking.state]}
-                onClick={() => {
-                  if (booking.state !== "inProgress") {
-                    onOpen()
-                  } else {
-                    rout.push("/booking")
-                  }
-                }}>
-                {booking.bookingId}
-              </Button>
-            </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
       <BookingDetailsModal isOpen={isOpen} onClose={onClose} />
     </>

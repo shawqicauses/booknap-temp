@@ -23,7 +23,7 @@ const CancelModal = function CancelModal({
   onClose: () => void
   openBannedModal: () => void
 }) {
-  const [reason, setReason] = useState<string | null>(null)
+  const [cancelReason, setCancelReason] = useState<string | null>(null)
 
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose}>
@@ -32,32 +32,33 @@ const CancelModal = function CancelModal({
           <h1 className="heading-2 mb-2">Cancel Reason</h1>
         </ModalHeader>
         <ModalBody>
-          {reasons.map((r) => (
+          {reasons.map(({id, reason}) => (
             <Button
-              key={r.id}
-              onClick={() => setReason(r.reason)}
+              key={id}
+              onClick={() => setCancelReason(reason)}
               className={`${
-                reason === r.reason ? "border-2 border-blue-500" : ""
+                reason === cancelReason ? "border-2 border-blue-500" : ""
               }`}
               disableAnimation>
-              {r.reason}
+              {reason}
             </Button>
           ))}
           <Button
-            onClick={() => setReason("other")}
+            onClick={() => setCancelReason("other")}
             fullWidth
             className={`${
-              reason === "other" ? "border-2 border-blue-500" : ""
+              cancelReason === "other" ? "border-2 border-blue-500" : ""
             }`}
             disableAnimation>
             Other
           </Button>
-          {reason === "other" ? (
+          {cancelReason === "other" ? (
             <div>
               <input
                 type="text"
                 placeholder="Please Write The Reason To Help Us Improve"
                 className="input p-3 leading-5 bg-white rounded-lg"
+                onChange={(e) => setCancelReason(e.target.value)}
               />
             </div>
           ) : null}
@@ -66,8 +67,10 @@ const CancelModal = function CancelModal({
           <Button
             fullWidth
             onClick={() => {
-              onClose()
-              openBannedModal()
+              if (cancelReason !== null && cancelReason !== "other") {
+                onClose()
+                openBannedModal()
+              }
             }}>
             Send
           </Button>

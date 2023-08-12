@@ -39,11 +39,11 @@ const ItemTabel = function ItemTabel() {
     return (
       <table className="table-fixed border-collapse w-full">
         <thead>
-          {columns.map((column) => (
+          {columns.map(({key, label}) => (
             <th
-              key={column.key}
+              key={key}
               className="p-4 border-2  border-l-transparent  border-r-transparent">
-              {column.label}
+              {label}
             </th>
           ))}
         </thead>

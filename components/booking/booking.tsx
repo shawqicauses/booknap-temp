@@ -163,17 +163,17 @@ const Booking = function Booking() {
               <span className="inline-block px-2 py-1">{order.date}</span>
             </div>
             <div className="divide-y-2">
-              {order.items.map((item) => (
-                <div key={item.id} className="flex p-1 py-3 gap-3">
+              {order.items.map(({id, itemImage, description, price}) => (
+                <div key={id} className="flex p-1 py-3 gap-3">
                   <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                    <Image src={item.itemImage} alt={`item ${item.id}`} fill />
+                    <Image src={itemImage} alt={`item ${id}`} fill />
                   </div>
                   <div>
-                    <p className="body-sm">{item.description}</p>
+                    <p className="body-sm">{description}</p>
                   </div>
                   <div className="flex-1 flex justify-end">
                     <span className="text-red-500 font-semi-bold text-xl">
-                      {item.price}$
+                      {price}$
                     </span>
                   </div>
                 </div>

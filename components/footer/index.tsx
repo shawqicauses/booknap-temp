@@ -68,9 +68,9 @@ const Footer = function Footer() {
         <div>
           <h2 className="heading-2 text-blue-700">COMPANY LINKS</h2>
           <ul className="flex flex-col gap-2">
-            {companyLinks.map((companyLink) => (
-              <li key={companyLink.id} className="hover:text-blue-500">
-                <Link href={companyLink.link}>{companyLink.label}</Link>
+            {companyLinks.map(({id, label, link}) => (
+              <li key={id} className="hover:text-blue-500">
+                <Link href={link}>{label}</Link>
               </li>
             ))}
           </ul>
@@ -78,9 +78,9 @@ const Footer = function Footer() {
         <div>
           <h2 className="heading-2 text-blue-700">SERVICES</h2>
           <ul className="flex flex-col gap-2">
-            {services.map((service) => (
-              <li key={service.id}>
-                <h3>{service.label}</h3>
+            {services.map(({id, label}) => (
+              <li key={id}>
+                <h3>{label}</h3>
               </li>
             ))}
           </ul>
@@ -88,12 +88,12 @@ const Footer = function Footer() {
         <div>
           <h2 className="heading-2 text-blue-700">SOCIAL MEDIA</h2>
           <ul className="flex  gap-2">
-            {socialMedia.map((SMLink) => (
-              <li key={SMLink.id}>
+            {socialMedia.map(({id, link, icon}) => (
+              <li key={id}>
                 <a
-                  href={SMLink.link}
+                  href={link}
                   className="inline-block p-3 bg-white hover:bg-blue-900 hover:text-white rounded-lg">
-                  {SMLink.icon}
+                  {icon}
                 </a>
               </li>
             ))}
