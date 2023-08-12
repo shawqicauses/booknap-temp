@@ -24,7 +24,7 @@ const CancelModal = function CancelModal({
   openBannedModal: () => void
 }) {
   const [cancelReason, setCancelReason] = useState<string | null>(null)
-
+  const [otherReason, setOtherReason] = useState<string>("")
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose}>
       <ModalContent>
@@ -55,10 +55,11 @@ const CancelModal = function CancelModal({
           {cancelReason === "other" ? (
             <div>
               <input
+                value={otherReason}
                 type="text"
                 placeholder="Please Write The Reason To Help Us Improve"
                 className="input p-3 leading-5 bg-white rounded-lg"
-                onChange={(e) => setCancelReason(e.target.value)}
+                onChange={(e) => setOtherReason(e.target.value)}
               />
             </div>
           ) : null}
@@ -67,7 +68,10 @@ const CancelModal = function CancelModal({
           <MyButton
             fullWidth
             onClick={() => {
-              if (cancelReason !== null && cancelReason !== "other") {
+              if (
+                (cancelReason !== null && cancelReason !== "other") ||
+                (cancelReason === "other" && otherReason !== "")
+              ) {
                 onClose()
                 openBannedModal()
               }
