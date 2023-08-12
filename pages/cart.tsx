@@ -1,18 +1,18 @@
 import React from "react"
 import Footer from "../components/footer"
-import ProfileContent from "../components/profile"
 import Sidebar from "../components/sidebar"
+import CartContent from "../components/cart"
 
-const profile = function profile() {
+const Cart = function Cart() {
   return (
     <div>
-      <div className="flex">
+      <div className="flex bg-white">
         <Sidebar />
-        <ProfileContent />
+        <CartContent />
       </div>
       <Footer />
     </div>
   )
 }
 
-export default profile
+export default Cart

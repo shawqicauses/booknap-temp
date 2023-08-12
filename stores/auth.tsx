@@ -42,6 +42,7 @@ const AuthProvider = function AuthProvider({
 
   const signOut = useCallback(() => {
     localStorage.removeItem("TOKEN")
+    localStorage.removeItem("CART")
     setToken(null)
     router.push("/")
   }, [router])

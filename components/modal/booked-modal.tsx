@@ -1,13 +1,13 @@
 import Image from "next/image"
 import React from "react"
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
+import MyButton from "../button"
 
 const BookedModal = function BookedModal({
   isOpen,
@@ -36,9 +36,9 @@ const BookedModal = function BookedModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={onClose}>
+          <MyButton color="primary" onClick={onClose} radius="sm" fullWidth>
             Done
-          </Button>
+          </MyButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

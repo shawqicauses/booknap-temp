@@ -3,7 +3,7 @@ import {MdLocalOffer} from "react-icons/md"
 import {HiClipboardDocumentList} from "react-icons/hi2"
 import Link from "next/link"
 import {useRouter} from "next/router"
-import MyButton from "../button"
+import {MyButton} from "../navbar"
 
 const IconSidebar = function IconSidebar({
   setShowBookingSidebar
@@ -19,7 +19,6 @@ const IconSidebar = function IconSidebar({
             startContent={<MdLocalOffer className="h-5 w-5 text-[#B9B9B9]" />}
             size="sm"
             radius="sm"
-            color="regect"
             onClick={() => setShowBookingSidebar(true)}
           />
         </div>
@@ -27,17 +26,12 @@ const IconSidebar = function IconSidebar({
           <MyButton
             as={Link}
             href="/booking"
-            startContent={
-              <HiClipboardDocumentList
-                className={`h-5 w-5 ${
-                  pathname === "/booking" ? "text-white" : "text-[#B9B9B9]"
-                }`}
-              />
-            }
             size="sm"
+            isIconOnly
             radius="sm"
-            color={pathname === "/booking" ? "primary" : "regect"}
-          />
+            color={pathname === "/booking" ? "primary" : "default"}>
+            <HiClipboardDocumentList className="h-5 w-5" />
+          </MyButton>
         </div>
       </div>
     </div>

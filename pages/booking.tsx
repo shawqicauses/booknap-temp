@@ -6,7 +6,7 @@ import Sidebar from "../components/sidebar"
 const Booking = function Booking() {
   return (
     <>
-      <div className="flex">
+      <div className="flex bg-white">
         <Sidebar />
         <HotelPageContent />
       </div>

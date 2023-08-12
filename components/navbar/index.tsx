@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Dropdown,
   DropdownItem,
@@ -14,12 +15,14 @@ import {BiMoon, BiTrash, BiUser} from "react-icons/bi"
 import {GoChecklist} from "react-icons/go"
 import {HiOutlineLogout} from "react-icons/hi"
 import {BsFillSunFill} from "react-icons/bs"
+import {AiOutlineShoppingCart} from "react-icons/ai"
 import {GiHamburgerMenu} from "react-icons/gi"
-import {IoMdClose} from "react-icons/io"
+import {IoMdClose, IoMdNotificationsOutline} from "react-icons/io"
 import {Auth} from "../../stores/auth"
 import SignInModal from "../modal/sign-in-modal"
 import DeleteAccountModal from "../modal/delete-account-modal"
 import Lang from "./lang"
+import {useContent} from "../../stores/cart"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -47,7 +50,6 @@ const NavbarOpenToggle = function NavbarOpenToggle({
   )
 }
 
-// DONE REVIEWING
 const NavbarCloseToggle = function NavbarCloseToggle({
   setIsOpened
 }: INavbarProps): ReactElement {
@@ -67,7 +69,12 @@ const NavbarCloseToggle = function NavbarCloseToggle({
 export const MyButton = extendVariants(Button, {
   variants: {
     size: {
-      md: "px-unit-2 min-w-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex"
+      md: "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex"
+    },
+    color: {
+      default:
+        "bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89]",
+      primary: "text-white bg-[#2F5597]"
     }
   },
   defaultVariants: {
@@ -76,13 +83,89 @@ export const MyButton = extendVariants(Button, {
   }
 })
 
+const items = [
+  {
+    id: 1,
+    logo: "/user-profile.jpg",
+    title: "Lorem Ipsum Dolor Sit Amet",
+    date: "6 June 2023",
+    time: "02:26 PM"
+  },
+  {
+    id: 2,
+    logo: "/user-profile.jpg",
+    title: "Lorem Ipsum Dolor Sit Amet",
+    date: "6 June 2023",
+    time: "02:26 PM"
+  },
+  {
+    id: 3,
+    logo: "/user-profile.jpg",
+    title: "Lorem Ipsum Dolor Sit Amet",
+    date: "6 June 2023",
+    time: "02:26 PM"
+  },
+  {
+    id: 4,
+    logo: "/user-profile.jpg",
+    title: "Lorem Ipsum Dolor Sit Amet",
+    date: "6 June 2023",
+    time: "02:26 PM"
+  },
+  {
+    id: 5,
+    logo: "/user-profile.jpg",
+    title: "Lorem Ipsum Dolor Sit Amet",
+    date: "6 June 2023",
+    time: "02:26 PM"
+  }
+]
+
+const Notifications = function Notifications() {
+  return (
+    <Dropdown classNames={{base: "p-0"}}>
+      <DropdownTrigger>
+        <MyButton isIconOnly>
+          <Badge color="danger" content={5} shape="circle" disableOutline>
+            <IoMdNotificationsOutline className="w-6 h-6" />
+          </Badge>
+        </MyButton>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label="Dynamic Actions"
+        items={items}
+        className="divide-y-1"
+        itemClasses={{
+          base: "rounded-none",
+          wrapper: "p-0"
+        }}>
+        {items.map(({id, logo, title, date, time}) => (
+          <DropdownItem key={id}>
+            <div className="flex gap-2 p-2">
+              <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                <Image src={logo} alt="logo" className="relative" fill />
+              </div>
+              <div>
+                <h3 className="">{title}</h3>
+                <span className="body-sm">
+                  {date} - {time}
+                </span>
+              </div>
+            </div>
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
+  )
+}
+
 const Navbar = function Navbar() {
   const [theme, setTheme] = useState("light")
   const [isOpened, setIsOpened] = useState(false)
   const {token, signOut} = useContext(Auth)
   const signIn = useDisclosure()
   const deleteAccount = useDisclosure()
-
+  const {cart} = useContent()
   useEffect(() => {
     document.body.classList.remove(theme === "light" ? "dark" : "light")
     document.body.classList.add(theme)
@@ -127,7 +210,7 @@ const Navbar = function Navbar() {
                       <li key={navLink.id}>
                         <Link
                           href={navLink.href}
-                          className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg lg:hover:bg-gray-300"
+                          className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg  text-[#B9B9B9]  dark:text-[#5B6C89] hover:bg-gray-300 dark:hover:bg-[#12213B]"
                           onClick={() => {
                             setIsOpened(false)
                             document.body.style.overflowY = "scroll"
@@ -149,9 +232,9 @@ const Navbar = function Navbar() {
                           )
                         }}>
                         {theme === "light" ? (
-                          <BiMoon className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89]" />
+                          <BiMoon className="w-6 h-6 " />
                         ) : (
-                          <BsFillSunFill className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89]" />
+                          <BsFillSunFill className="w-6 h-6" />
                         )}
                       </MyButton>
                     </li>
@@ -170,65 +253,85 @@ const Navbar = function Navbar() {
                       </li>
                     ) : null}
                     {token ? (
-                      <li>
-                        <Dropdown
-                          showArrow
-                          classNames={{
-                            base: "py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black",
-                            arrow: "bg-default-200"
-                          }}>
-                          <DropdownTrigger>
-                            <div className="my-flex gap-2 cursor-pointer bg-gray-100 py-1 px-2 rounded-lg">
-                              <Image
-                                src="/user.png"
-                                alt="user profile"
-                                className="!relative !w-9"
-                                fill
-                              />
-                              <span className="inline-block">Adam Joe</span>
-                            </div>
-                          </DropdownTrigger>
-                          <DropdownMenu
-                            variant="faded"
-                            aria-label="Dropdown menu">
-                            <DropdownItem
-                              startContent={
-                                <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                              }>
-                              Profile
-                              <Link
-                                href="/profile"
-                                className="inline-block w-full h-full">
+                      <>
+                        <li>
+                          <MyButton as={Link} href="/cart" isIconOnly>
+                            {cart.length > 0 ? (
+                              <Badge
+                                color="danger"
+                                content={cart.length}
+                                shape="circle"
+                                disableOutline>
+                                <AiOutlineShoppingCart className="w-6 h-6" />
+                              </Badge>
+                            ) : (
+                              <AiOutlineShoppingCart className="w-6 h-6" />
+                            )}
+                          </MyButton>
+                        </li>
+                        <li>
+                          <Notifications />
+                        </li>
+                        <li>
+                          <Dropdown
+                            showArrow
+                            classNames={{
+                              base: "py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black",
+                              arrow: "bg-default-200"
+                            }}>
+                            <DropdownTrigger>
+                              <div className="my-flex gap-2 cursor-pointer bg-gray-100 py-1 px-2 rounded-lg">
+                                <Image
+                                  src="/user.png"
+                                  alt="user profile"
+                                  className="!relative !w-9"
+                                  fill
+                                />
+                                <span className="inline-block">Adam Joe</span>
+                              </div>
+                            </DropdownTrigger>
+                            <DropdownMenu
+                              variant="faded"
+                              aria-label="Dropdown menu">
+                              <DropdownItem
+                                startContent={
+                                  <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                }>
                                 Profile
-                              </Link>
-                            </DropdownItem>
-                            <DropdownItem
-                              startContent={
-                                <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                              }>
-                              <Link
-                                href="/bookings"
-                                className="inline-block w-full h-full">
-                                Bookings
-                              </Link>
-                            </DropdownItem>
-                            <DropdownItem
-                              startContent={
-                                <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                              }
-                              onClick={deleteAccount.onOpen}>
-                              Delete Account
-                            </DropdownItem>
-                            <DropdownItem
-                              startContent={
-                                <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                              }
-                              onClick={signOut}>
-                              Logout
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                      </li>
+                                <Link
+                                  href="/profile"
+                                  className="inline-block w-full h-full">
+                                  Profile
+                                </Link>
+                              </DropdownItem>
+                              <DropdownItem
+                                startContent={
+                                  <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                }>
+                                <Link
+                                  href="/bookings"
+                                  className="inline-block w-full h-full">
+                                  Bookings
+                                </Link>
+                              </DropdownItem>
+                              <DropdownItem
+                                startContent={
+                                  <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                }
+                                onClick={deleteAccount.onOpen}>
+                                Delete Account
+                              </DropdownItem>
+                              <DropdownItem
+                                startContent={
+                                  <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                }
+                                onClick={signOut}>
+                                Logout
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </li>
+                      </>
                     ) : null}
                   </ul>
                 </li>

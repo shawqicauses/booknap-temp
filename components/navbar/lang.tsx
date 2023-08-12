@@ -3,9 +3,7 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-  Button,
-  extendVariants
+  DropdownItem
 } from "@nextui-org/react"
 import "flag-icons/css/flag-icons.min.css"
 
@@ -13,18 +11,6 @@ const languages = [
   {id: 0, shortname: "en", name: "English", flag: "us"},
   {id: 1, shortname: "ar", name: "Arabic", flag: "eg"}
 ]
-
-const MyButton = extendVariants(Button, {
-  variants: {
-    size: {
-      md: "px-unit-2 min-w-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex bg-gray-100"
-    }
-  },
-  defaultVariants: {
-    color: "default",
-    size: "md"
-  }
-})
 
 const Lang = function Lang() {
   const [selectedLanguage, setSelectedLanguage] = React.useState(languages[0])
@@ -49,14 +35,10 @@ const Lang = function Lang() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <MyButton
-          variant="bordered"
-          className="capitalize h-full border-0"
-          startContent={
-            <span className={`fi fi-${selectedValue.flag} fis h-full`} />
-          }>
-          {selectedValue.name}
-        </MyButton>
+        <div className="flex gap-2 items-center bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89] py-2 px-4 rounded-lg">
+          <span className={`fi fi-${selectedValue.flag} fis h-full`} />
+          <span className="hidden md:block">{selectedValue.name}</span>
+        </div>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Single selection actions"
@@ -64,13 +46,16 @@ const Lang = function Lang() {
         disallowEmptySelection
         selectionMode="single"
         selectedKeys={[selectedLanguage.id]}
-        onSelectionChange={handleSelectionChange}>
+        onSelectionChange={handleSelectionChange}
+        className="!p-0"
+        closeOnSelect={false}>
         {languages.map((language) => (
           <DropdownItem
             key={language.id}
             startContent={
               <span className={`fi fi-${language.flag} fis h-full`} />
-            }>
+            }
+            className="hover:bg-gray-200 !m-0">
             {language.name}
           </DropdownItem>
         ))}

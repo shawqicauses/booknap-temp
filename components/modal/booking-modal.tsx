@@ -1,12 +1,12 @@
 import React, {useReducer, useState} from "react"
-import {FaPlus} from "react-icons/fa"
-import {FiMinus} from "react-icons/fi"
+import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react"
 
 import SignInModal from "./sign-in-modal"
+import MyButton from "../button"
 
 interface IInitObject {
   noAdults: number
@@ -58,7 +59,7 @@ const reducer = (state: IInitObject, action: IAction) => {
   }
 }
 
-const Counter = function Counter({
+export const Counter = function Counter({
   value,
   handleClickPlus,
   handleClickMinus
@@ -73,7 +74,7 @@ const Counter = function Counter({
         type="button"
         className="button-gray inline-block p-1 rounded-xl"
         onClick={handleClickPlus}>
-        <FaPlus className="h-5 w-5 text-gray-400" />
+        <FiPlus className="h-5 w-5 text-gray-400" />
       </button>
       <span className="text-lg inline-block  w-10 text-center">{value}</span>
       <button
@@ -152,8 +153,8 @@ const FormPageTow = function FormPageTow({
   const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
-      <Button type="submit" isIconOnly onClick={() => setPage(0)}>
-        <AiOutlineDoubleLeft className="h-5 w-5" />
+      <Button size="sm" radius="full" isIconOnly onClick={() => setPage(0)}>
+        <AiOutlineDoubleLeft className="h-4 w-4" />
       </Button>
       <div className="mt-4 flex flex-col gap-3">
         <CounterStyled
@@ -208,9 +209,10 @@ const FormPageTow = function FormPageTow({
           tabNumber={4}
           setOpenTab={setOpenTab}
         />
-        <Button type="submit" isIconOnly onClick={openSignIn} fullWidth>
+
+        <MyButton type="submit" color="primary" onClick={openSignIn} fullWidth>
           Order
-        </Button>
+        </MyButton>
       </div>
     </div>
   )
@@ -292,17 +294,22 @@ const BookingModal = function BookingModal({
                         From:
                       </label>
                       <div className="my-flex gap-2">
-                        <input
+                        <Input
                           type="date"
-                          id="date"
                           {...register("FromDate", {required: true})}
-                          className="input p-3 leading-5 bg-gray-100 rounded-xl fle-1"
                           min={toDayDate}
+                          variant="flat"
+                          classNames={{
+                            inputWrapper: "shadow-none "
+                          }}
                         />
-                        <input
+                        <Input
                           type="time"
                           {...register("FromTime", {required: true})}
-                          className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-max"
+                          variant="flat"
+                          classNames={{
+                            inputWrapper: "shadow-none "
+                          }}
                         />
                       </div>
                     </div>
@@ -311,17 +318,22 @@ const BookingModal = function BookingModal({
                         To:
                       </label>
                       <div className="my-flex gap-2">
-                        <input
+                        <Input
                           type="date"
-                          id="date"
                           {...register("ToDate", {required: true})}
-                          className="input p-3 leading-5 bg-gray-100 rounded-xl flex-1"
                           min={toDayDate}
+                          variant="flat"
+                          classNames={{
+                            inputWrapper: "shadow-none "
+                          }}
                         />
-                        <input
+                        <Input
                           type="time"
                           {...register("ToTime", {required: true})}
-                          className="input p-3 leading-5 bg-gray-100 rounded-xl max-w-min"
+                          variant="flat"
+                          classNames={{
+                            inputWrapper: "shadow-none "
+                          }}
                         />
                       </div>
                     </div>
@@ -366,9 +378,9 @@ const BookingModal = function BookingModal({
                       className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
                     />
                   </div>
-                  <Button
+                  <MyButton
                     type="submit"
-                    isIconOnly
+                    color="primary"
                     onClick={() => {
                       if (
                         getValues().FromDate &&
@@ -383,7 +395,7 @@ const BookingModal = function BookingModal({
                     }}
                     fullWidth>
                     Order
-                  </Button>
+                  </MyButton>
                 </>
               ) : (
                 <FormPageTow

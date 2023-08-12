@@ -1,9 +1,10 @@
-import {Button, Input, Textarea} from "@nextui-org/react"
+import {Input, Textarea} from "@nextui-org/react"
 import React from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {BsTelephone} from "react-icons/bs"
 import {HiOutlineMap} from "react-icons/hi"
 import {TfiHeadphoneAlt} from "react-icons/tfi"
+import MyButton from "../button"
 
 interface ICountactUsForm {
   firstName: string
@@ -12,7 +13,9 @@ interface ICountactUsForm {
 }
 
 const CountactUsForm = function CountactUsForm() {
-  const {register, handleSubmit} = useForm<ICountactUsForm>()
+  const {register, handleSubmit} = useForm<ICountactUsForm>({
+    defaultValues: {firstName: "", email: "", massage: ""}
+  })
   const onSubmit: SubmitHandler<ICountactUsForm> = (
     formData: ICountactUsForm
   ) => formData
@@ -23,24 +26,30 @@ const CountactUsForm = function CountactUsForm() {
       className="p-3 flex flex-col  gap-3">
       <div className="flex flex-col md:flex-row gap-3">
         <Input
-          size="lg"
           label="First Name"
           labelPlacement="outside"
           type="text"
           {...register("firstName")}
-          id="firstName"
           placeholder="First Name"
-          variant="bordered"
+          variant="flat"
+          size="lg"
+          radius="sm"
+          classNames={{
+            inputWrapper: "shadow-none bg-white"
+          }}
         />
         <Input
-          size="lg"
           label="Eamil"
           labelPlacement="outside"
           type="email"
           {...register("email")}
-          id="email"
           placeholder="Email"
-          variant="bordered"
+          variant="flat"
+          size="lg"
+          radius="sm"
+          classNames={{
+            inputWrapper: "shadow-none bg-white"
+          }}
         />
       </div>
       <div className="w-full">
@@ -49,21 +58,20 @@ const CountactUsForm = function CountactUsForm() {
           {...register("massage")}
           id="massage"
           minRows={50}
-          variant="bordered"
+          variant="flat"
           label="Your Massage"
           labelPlacement="outside"
           placeholder="Message"
-          radius="lg"
+          radius="sm"
+          classNames={{
+            inputWrapper: "shadow-none bg-white"
+          }}
         />
       </div>
       <div className="my-flex">
-        <Button size="lg" color="primary">
-          <input
-            type="submit"
-            value="Submit"
-            className="inline-block w-full h-full cursor-pointer"
-          />
-        </Button>
+        <MyButton type="submit" size="xl" color="primary">
+          Submit
+        </MyButton>
       </div>
     </form>
   )
@@ -83,7 +91,7 @@ const CountactUsContent = function CountactUsContent() {
         <div className="flex items-start gap-5 flex-col-reverse lg:flex-row">
           <div className="bg-gray-100 p-10 rounded-lg w-full lg:w-auto">
             <h2 className="heading-2 mb-4">HEAD OFFICE</h2>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-4">
               <li className="whitespace-nowrap flex gap-2">
                 <HiOutlineMap className="h-7 w-7" />
                 <span>684 West College St. Sun City, United States.</span>

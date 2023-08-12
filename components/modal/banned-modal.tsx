@@ -2,13 +2,13 @@ import Image from "next/image"
 import React from "react"
 import {IoLogoWhatsapp} from "react-icons/io"
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
+import MyButton from "../button"
 
 const BannedModal = function BannedModal({
   isOpen,
@@ -37,13 +37,22 @@ const BannedModal = function BannedModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <div className="flex gap-2 justify-center w-[80%] m-auto">
-            <Button isIconOnly onClick={() => {}} color="success">
-              <IoLogoWhatsapp className="h-6 w-6" />
-            </Button>
-            <Button color="primary" onClick={onClose}>
-              Ok
-            </Button>
+          <div className="flex w-full gap-2">
+            <MyButton
+              isIconOnly
+              onClick={() => {}}
+              color="primary2"
+              radius="sm">
+              <IoLogoWhatsapp className="!h-6 !w-6" />
+            </MyButton>
+            <MyButton
+              color="primary"
+              onClick={onClose}
+              radius="sm"
+              fullWidth
+              className="flex-1">
+              ok
+            </MyButton>
           </div>
         </ModalFooter>
       </ModalContent>
