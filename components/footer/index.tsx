@@ -48,58 +48,62 @@ const socialMedia = [
 const Footer = function Footer() {
   return (
     <footer>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 my-container py-5 gap-4">
-        <div className="pt-2">
-          <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
-            <Image
-              src="/logo/blue-logo.png"
-              alt="Logo"
-              fill
-              className="!relative  object-contain !w-52 !h-fit"
-            />
-          </Link>
-          <p className="body text-sm">
-            lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. at vero eos et accusam et justo duo dolores
-            et ea rebum.
-          </p>
-        </div>
-        <div>
-          <h2 className="heading-2 text-blue-700">COMPANY LINKS</h2>
-          <ul className="flex flex-col gap-2">
-            {companyLinks.map(({id, label, link}) => (
-              <li key={id} className="hover:text-blue-500">
-                <Link href={link}>{label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2 className="heading-2 text-blue-700">SERVICES</h2>
-          <ul className="flex flex-col gap-2">
-            {services.map(({id, label}) => (
-              <li key={id}>
-                <h3>{label}</h3>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2 className="heading-2 text-blue-700">SOCIAL MEDIA</h2>
-          <ul className="flex  gap-2">
-            {socialMedia.map(({id, link, icon}) => (
-              <li key={id}>
-                <a
-                  href={link}
-                  className="inline-block p-3 bg-white hover:bg-blue-900 hover:text-white rounded-lg">
-                  {icon}
-                </a>
-              </li>
-            ))}
-          </ul>
+      <div className="bg-[#F5F5F5]">
+        {" "}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 my-container py-5 gap-4">
+          <div className="pt-2">
+            <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
+              <Image
+                src="/logo/blue-logo.png"
+                alt="Logo"
+                fill
+                className="!relative  object-contain !w-52 !h-fit"
+              />
+            </Link>
+            <p className="body text-sm">
+              lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua. at vero eos et accusam et justo duo
+              dolores et ea rebum.
+            </p>
+          </div>
+          <div>
+            <h2 className="heading-2 text-blue-700">COMPANY LINKS</h2>
+            <ul className="flex flex-col gap-2">
+              {companyLinks.map(({id, label, link}) => (
+                <li key={id} className="hover:text-blue-500">
+                  <Link href={link}>{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="heading-2 text-blue-700">SERVICES</h2>
+            <ul className="flex flex-col gap-2">
+              {services.map(({id, label}) => (
+                <li key={id}>
+                  <h3>{label}</h3>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="heading-2 text-blue-700">SOCIAL MEDIA</h2>
+            <ul className="flex  gap-2">
+              {socialMedia.map(({id, link, icon}) => (
+                <li key={id}>
+                  <a
+                    href={link}
+                    className="inline-block p-3 bg-white hover:bg-blue-900 hover:text-white rounded-lg">
+                    {icon}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
+
       <div className="bg-white py-5">
         <div className="my-flex-between  my-container flex-wrap gap-2">
           <p className="whitespace-nowrap flex-1">
@@ -108,7 +112,7 @@ const Footer = function Footer() {
               BOOKNAP
             </Link>
           </p>
-          <div className="my-flex-between flex-1 gap-1 flex-wrap">
+          <div className="my-flex gap-10 flex-1  flex-wrap">
             <Link href="/" className="whitespace-nowrap">
               PRIVACY POLICY
             </Link>

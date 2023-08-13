@@ -28,9 +28,9 @@ interface IBooking {
 }
 
 const booking: IBooking = {
-  startDate: "2023-08-5",
+  startDate: "2023-08-10",
   startTime: "12:00:00",
-  endDate: "2023-08-10",
+  endDate: "2023-08-15",
   endTime: "12:00:00",
   noOfRoom: 1,
   noOfAdults: 1,

@@ -16,7 +16,8 @@ const MyButton = extendVariants(Button, {
       selectedFilter: "bg-[#E9EDF4] text-black",
       regect: "bg-[#E9EDF4] text-[#2F5597]",
       offer: "bg-[#F7F7F7]",
-      transparent: "bg-transparent"
+      transparent: "bg-transparent",
+      danger: "bg-red-600 text-white"
     }
   },
   defaultVariants: {

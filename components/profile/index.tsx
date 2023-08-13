@@ -34,7 +34,7 @@ const ProfileContent = function ProfileContent() {
   const [gender, setGender] = useState("male")
   const onSubmit: SubmitHandler<IProfile> = (formData: IProfile) => formData
   return (
-    <div className="m-32 mt-28  pt-20 bg-gray-100 relative rounded-lg">
+    <div className="m-32 mt-28  pt-20 bg-gray-100 dark:bg-[#12213B] relative rounded-lg">
       <div className="absolute top-[0] left-[50%] -translate-x-[50%] -translate-y-[50%]  w-40 h-40 overflow-hidden rounded-full">
         <Image src="/user-profile.jpg" alt="user" className="!relative" fill />
       </div>
@@ -60,7 +60,7 @@ const ProfileContent = function ProfileContent() {
             {...register("firstName")}
             id="firstName"
             placeholder="First Name"
-            variant="bordered"
+            variant="flat"
             classNames={inputStyle}
           />
           <Input
@@ -71,7 +71,7 @@ const ProfileContent = function ProfileContent() {
             {...register("lastName")}
             id="lastName"
             placeholder="Last Name"
-            variant="bordered"
+            variant="flat"
             classNames={inputStyle}
           />
           <Input
@@ -82,7 +82,7 @@ const ProfileContent = function ProfileContent() {
             {...register("phone")}
             id="phone"
             placeholder="0000000000"
-            variant="bordered"
+            variant="flat"
             startContent={
               <select className="py-1 rounded-lg">
                 <option value="+970">+970</option>
@@ -98,7 +98,7 @@ const ProfileContent = function ProfileContent() {
             {...register("email")}
             id="email"
             placeholder="Email"
-            variant="bordered"
+            variant="flat"
             className="flex-1"
             classNames={inputStyle}
           />
@@ -129,7 +129,7 @@ const ProfileContent = function ProfileContent() {
             labelPlacement="outside"
             {...register("dateOfBirth")}
             placeholder="YYYY/MM/DD"
-            variant="bordered"
+            variant="flat"
             type="date"
             classNames={inputStyle}
           />

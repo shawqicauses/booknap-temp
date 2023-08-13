@@ -13,7 +13,7 @@ const IconSidebar = function IconSidebar({
   const {pathname} = useRouter()
   return (
     <div className="relative">
-      <div className="fixed main-hight p-2 flex  flex-col z-10 bg-white/50  gap-3 border-r-1">
+      <div className="fixed main-hight p-2 flex  flex-col z-10 bg-white/50 dark:bg-black/50 gap-3 border-r-1">
         <div>
           <MyButton
             startContent={<MdLocalOffer className="h-5 w-5 text-[#B9B9B9]" />}

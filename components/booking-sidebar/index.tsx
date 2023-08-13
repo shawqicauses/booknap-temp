@@ -1,10 +1,17 @@
 /* eslint-disable import/no-unresolved */
 import React, {useState} from "react"
+import {
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  Spinner,
+  useDisclosure
+} from "@nextui-org/react"
 import {FaUsers} from "react-icons/fa"
 import {MdLocalOffer} from "react-icons/md"
 import {AiFillStar, AiOutlineCheck} from "react-icons/ai"
 import {BiTime} from "react-icons/bi"
-import {PiSpinner} from "react-icons/pi"
 import {LuMail} from "react-icons/lu"
 import Image from "next/image"
 import Rating from "@mui/material/Rating"
@@ -12,13 +19,8 @@ import {Swiper, SwiperSlide} from "swiper/react"
 import {Autoplay} from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"
-import {
-  Link,
-  Modal,
-  ModalBody,
-  ModalContent,
-  useDisclosure
-} from "@nextui-org/react"
+import {noPadding} from "../modal-styles"
+
 import CancelModal from "../modal/cancel-modal"
 import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
@@ -86,13 +88,7 @@ const HotelPageModal = function HotelPageModal({
       isOpen={isOpen}
       onClose={onClose}
       radius="lg"
-      classNames={{
-        body: "p-0",
-        backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-        base: "max-w-sm",
-        closeButton:
-          "hover:bg-white/50 active:bg-white/10 bg-white/70 rounded-lg z-10 top-3 left-3"
-      }}>
+      classNames={noPadding}>
       <ModalContent>
         <ModalBody>
           <div>
@@ -129,7 +125,7 @@ const HotelPageModal = function HotelPageModal({
                 modules={[Autoplay]}>
                 {swiperSlides.map(({id, imgUrl}) => (
                   <SwiperSlide key={id}>
-                    <div className="relative w-full h-auto !rounded-lg overflow-hidden">
+                    <div className="relative w-full h-auto">
                       <Image
                         src={imgUrl}
                         alt="Web Application"
@@ -243,9 +239,7 @@ const HotelOfferBox = function HotelOfferBox({
             className="!w-[72px]"
             isLoading={reqect}
             onClick={() => setReqect((pre) => !pre)}
-            spinner={
-              <PiSpinner className="animate-spin h-full w-5 font-semi-bold" />
-            }>
+            spinner={<Spinner size="md" />}>
             {!reqect ? "reject" : ""}
           </MyButton>
           <MyButton size="sm" color="primary" onClick={handelBooked}>

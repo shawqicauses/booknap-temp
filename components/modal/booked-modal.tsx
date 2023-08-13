@@ -8,6 +8,7 @@ import {
   ModalHeader
 } from "@nextui-org/react"
 import MyButton from "../button"
+import {type3} from "../modal-styles"
 
 const BookedModal = function BookedModal({
   isOpen,
@@ -17,7 +18,12 @@ const BookedModal = function BookedModal({
   onClose: () => void
 }) {
   return (
-    <Modal size="lg" isOpen={isOpen} onClose={onClose}>
+    <Modal
+      size="lg"
+      isOpen={isOpen}
+      onClose={onClose}
+      className="bg-[#F5F5F5]"
+      classNames={type3}>
       <ModalContent>
         <ModalHeader>
           <h2 className="heading-1">Booked</h2>

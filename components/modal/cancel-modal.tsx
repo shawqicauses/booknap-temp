@@ -7,6 +7,7 @@ import {
   ModalHeader
 } from "@nextui-org/react"
 import MyButton from "../button"
+import {type3} from "../modal-styles"
 
 const reasons = [
   {id: 1, reason: "I Changed My Mind"},
@@ -26,7 +27,12 @@ const CancelModal = function CancelModal({
   const [cancelReason, setCancelReason] = useState<string | null>(null)
   const [otherReason, setOtherReason] = useState<string>("")
   return (
-    <Modal size="lg" isOpen={isOpen} onClose={onClose}>
+    <Modal
+      size="lg"
+      isOpen={isOpen}
+      onClose={onClose}
+      className="bg-[#F5F5F5]"
+      classNames={type3}>
       <ModalContent>
         <ModalHeader>
           <h1 className="heading-2 mb-2">Cancel Reason</h1>
@@ -35,21 +41,25 @@ const CancelModal = function CancelModal({
           {reasons.map(({id, reason}) => (
             <MyButton
               key={id}
+              color="white"
               onClick={() => setCancelReason(reason)}
               className={`${
                 reason === cancelReason ? "border-2 border-blue-500" : ""
               }`}
-              disableAnimation>
+              disableAnimation
+              radius="full">
               {reason}
             </MyButton>
           ))}
           <MyButton
             onClick={() => setCancelReason("other")}
+            color="white"
             fullWidth
             className={`${
               cancelReason === "other" ? "border-2 border-blue-500" : ""
             }`}
-            disableAnimation>
+            disableAnimation
+            radius="full">
             Other
           </MyButton>
           {cancelReason === "other" ? (
@@ -66,6 +76,7 @@ const CancelModal = function CancelModal({
         </ModalBody>
         <ModalFooter>
           <MyButton
+            color="primary"
             fullWidth
             onClick={() => {
               if (

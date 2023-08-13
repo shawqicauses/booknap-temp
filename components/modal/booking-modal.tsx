@@ -9,12 +9,12 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalHeader,
   useDisclosure
 } from "@nextui-org/react"
 
 import SignInModal from "./sign-in-modal"
 import MyButton from "../button"
+import {type4} from "../modal-styles"
 
 interface IInitObject {
   noAdults: number
@@ -152,7 +152,12 @@ const FormPageTow = function FormPageTow({
   const [openTab, setOpenTab] = useState<number | null>(1)
   return (
     <div>
-      <MyButton size="sm" radius="full" isIconOnly onClick={() => setPage(0)}>
+      <MyButton
+        size="sm"
+        radius="full"
+        color="white"
+        isIconOnly
+        onClick={() => setPage(0)}>
         <AiOutlineDoubleLeft className="h-4 w-4" />
       </MyButton>
       <div className="mt-4 flex flex-col gap-3">
@@ -260,19 +265,19 @@ const BookingModal = function BookingModal({
   return (
     <>
       <Modal
-        size="md"
+        size="sm"
         isDismissable={false}
         isOpen={isOpen}
         onClose={onClose}
+        classNames={type4}
         placement="center">
         <ModalContent>
-          <ModalHeader />
           <ModalBody>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 relative justify-start">
               {page === 0 ? (
-                <>
+                <div className="pt-10 px-5">
                   <div>
                     <label htmlFor="destination" className="label-gray">
                       Destination:
@@ -289,7 +294,9 @@ const BookingModal = function BookingModal({
                       Date:
                     </label>
                     <div className="flex justify-between !gap-0 items-center mb-2">
-                      <label htmlFor="date" className="w-[60px]">
+                      <label
+                        htmlFor="date"
+                        className="w-[60px] dark:text-white">
                         From:
                       </label>
                       <div className="my-flex gap-2">
@@ -299,7 +306,8 @@ const BookingModal = function BookingModal({
                           min={toDayDate}
                           variant="flat"
                           classNames={{
-                            inputWrapper: "shadow-none "
+                            inputWrapper: "shadow-none",
+                            input: "dark:text-white"
                           }}
                         />
                         <Input
@@ -307,13 +315,16 @@ const BookingModal = function BookingModal({
                           {...register("FromTime", {required: true})}
                           variant="flat"
                           classNames={{
-                            inputWrapper: "shadow-none "
+                            inputWrapper: "shadow-none",
+                            input: "dark:text-white"
                           }}
                         />
                       </div>
                     </div>
                     <div className="flex justify-between !gap-0 items-center">
-                      <label htmlFor="date" className="w-[60px]">
+                      <label
+                        htmlFor="date"
+                        className="w-[60px] dark:text-white">
                         To:
                       </label>
                       <div className="my-flex gap-2">
@@ -323,7 +334,8 @@ const BookingModal = function BookingModal({
                           min={toDayDate}
                           variant="flat"
                           classNames={{
-                            inputWrapper: "shadow-none "
+                            inputWrapper: "shadow-none",
+                            input: "dark:text-white"
                           }}
                         />
                         <Input
@@ -331,7 +343,8 @@ const BookingModal = function BookingModal({
                           {...register("ToTime", {required: true})}
                           variant="flat"
                           classNames={{
-                            inputWrapper: "shadow-none "
+                            inputWrapper: "shadow-none",
+                            input: "dark:text-white"
                           }}
                         />
                       </div>
@@ -342,7 +355,9 @@ const BookingModal = function BookingModal({
                       Number Of People:
                     </label>
                     <div className="flex justify-between items-center mb-2">
-                      <label htmlFor="noAdults">Adults</label>
+                      <label htmlFor="noAdults" className="dark:text-white">
+                        Adults
+                      </label>
                       <Counter
                         value={data.noAdults}
                         handleClickPlus={() =>
@@ -354,7 +369,9 @@ const BookingModal = function BookingModal({
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <label htmlFor="noAdults">Children</label>
+                      <label htmlFor="noAdults" className="dark:text-white">
+                        Children
+                      </label>
                       <Counter
                         value={data.noChildren}
                         handleClickPlus={() =>
@@ -366,8 +383,7 @@ const BookingModal = function BookingModal({
                       />
                     </div>
                   </div>
-
-                  <div>
+                  <div className="mb-3">
                     <label htmlFor="note" className="label-gray">
                       Note:
                     </label>
@@ -395,7 +411,7 @@ const BookingModal = function BookingModal({
                     fullWidth>
                     Order
                   </MyButton>
-                </>
+                </div>
               ) : (
                 <FormPageTow
                   data={data}

@@ -184,6 +184,7 @@ input[type="number"] {
 }
 .main-hight {
   height: calc(100vh - 78px);
+
 }
 .test-h {
   height: calc(100vh - 360px);

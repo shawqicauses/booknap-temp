@@ -35,7 +35,7 @@ const Lang = function Lang() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <div className="flex gap-2 items-center bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89] py-2 px-4 rounded-lg">
+        <div className="flex gap-2 items-center bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] h-full dark:text-[#5B6C89] py-2 px-4 rounded-lg">
           <span className={`fi fi-${selectedValue.flag} fis h-full`} />
           <span className="hidden md:block">{selectedValue.name}</span>
         </div>
@@ -55,7 +55,7 @@ const Lang = function Lang() {
             startContent={
               <span className={`fi fi-${language.flag} fis h-full`} />
             }
-            className="hover:bg-gray-200 !m-0">
+            className="hover:bg-gray-200 !m-0 dark:text-white">
             {language.name}
           </DropdownItem>
         ))}

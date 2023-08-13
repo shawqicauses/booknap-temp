@@ -280,14 +280,16 @@ const Navbar = function Navbar() {
                               arrow: "bg-default-200"
                             }}>
                             <DropdownTrigger>
-                              <div className="my-flex gap-2 cursor-pointer bg-gray-100 py-1 px-2 rounded-lg">
+                              <div className="my-flex gap-2 cursor-pointer bg-gray-100 dark:bg-[#12213B] py-1 px-2 rounded-lg">
                                 <Image
                                   src="/user.png"
                                   alt="user profile"
                                   className="!relative !w-9"
                                   fill
                                 />
-                                <span className="inline-block">Adam Joe</span>
+                                <span className="inline-block dark:text-white">
+                                  Adam Joe
+                                </span>
                               </div>
                             </DropdownTrigger>
                             <DropdownMenu
@@ -297,10 +299,9 @@ const Navbar = function Navbar() {
                                 startContent={
                                   <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }>
-                                Profile
                                 <Link
                                   href="/profile"
-                                  className="inline-block w-full h-full">
+                                  className="inline-block w-full h-full dark:text-white">
                                   Profile
                                 </Link>
                               </DropdownItem>
@@ -310,7 +311,7 @@ const Navbar = function Navbar() {
                                 }>
                                 <Link
                                   href="/bookings"
-                                  className="inline-block w-full h-full">
+                                  className="inline-block w-full h-full dark:text-white">
                                   Bookings
                                 </Link>
                               </DropdownItem>
@@ -319,14 +320,16 @@ const Navbar = function Navbar() {
                                   <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
                                 onClick={deleteAccount.onOpen}>
-                                Delete Account
+                                <span className="dark:text-white">
+                                  Delete Account
+                                </span>
                               </DropdownItem>
                               <DropdownItem
                                 startContent={
                                   <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
                                 onClick={signOut}>
-                                Logout
+                                <span className="dark:text-white">Logout</span>
                               </DropdownItem>
                             </DropdownMenu>
                           </Dropdown>

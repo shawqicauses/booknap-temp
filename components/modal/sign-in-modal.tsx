@@ -3,6 +3,7 @@ import {SubmitHandler, useForm} from "react-hook-form"
 import {BsApple, BsGoogle} from "react-icons/bs"
 import {Modal, ModalBody, ModalContent, ModalHeader} from "@nextui-org/react"
 import MyButton from "../button"
+import {type3} from "../modal-styles"
 
 interface ISignIn {
   username: string
@@ -160,7 +161,12 @@ const SignInModal = function SignInModal({
   const [page, setPage] = useState<number>(0)
 
   return (
-    <Modal size="lg" isOpen={isOpen} onClose={onClose}>
+    <Modal
+      size="lg"
+      isOpen={isOpen}
+      onClose={onClose}
+      className="bg-[#F5F5F5]"
+      classNames={type3}>
       <ModalContent>
         <div className="p-5">
           {page === 0 ? <SignIn setPage={setPage} /> : <ConfigCode />}
