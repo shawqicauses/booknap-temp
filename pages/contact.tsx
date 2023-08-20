@@ -1,7 +1,7 @@
 import React from "react"
-import Footer from "../components/footer"
+import Footer from "../components/layout/footer"
 import CountactUsContent from "../components/countact-us"
-import Sidebar from "../components/sidebar"
+import Sidebar from "../components/uis/sidebar"
 
 const CountactUs = function CountactUs() {
   return (

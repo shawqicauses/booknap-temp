@@ -1,11 +1,9 @@
 import {
   Badge,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  extendVariants,
   useDisclosure
 } from "@nextui-org/react"
 import Image from "next/image"
@@ -18,11 +16,14 @@ import {BsFillSunFill} from "react-icons/bs"
 import {AiOutlineShoppingCart} from "react-icons/ai"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {IoMdClose, IoMdNotificationsOutline} from "react-icons/io"
-import {Auth} from "../../stores/auth"
-import SignInModal from "../modal/sign-in-modal"
-import DeleteAccountModal from "../modal/delete-account-modal"
+import {useMutation} from "@tanstack/react-query"
+import axios from "axios"
+import {Auth} from "../../../stores/auth"
+import SignInModal from "../../modal/sign-in-modal"
+import DeleteAccountModal from "../../modal/delete-account-modal"
 import Lang from "./lang"
-import {useContent} from "../../stores/cart"
+import {useContent} from "../../../stores/cart"
+import MyButton from "../../uis/button"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -66,22 +67,6 @@ const NavbarCloseToggle = function NavbarCloseToggle({
     </button>
   )
 }
-export const MyButton = extendVariants(Button, {
-  variants: {
-    size: {
-      md: "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex"
-    },
-    color: {
-      default:
-        "bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89]",
-      primary: "text-white bg-[#2F5597]"
-    }
-  },
-  defaultVariants: {
-    color: "default",
-    size: "md"
-  }
-})
 
 const items = [
   {
@@ -125,7 +110,7 @@ const Notifications = function Notifications() {
   return (
     <Dropdown classNames={{base: "p-0"}}>
       <DropdownTrigger>
-        <MyButton isIconOnly>
+        <MyButton isIconOnly size="navIcon" color="navIcon">
           <Badge color="danger" content={5} shape="circle" disableOutline>
             <IoMdNotificationsOutline className="w-6 h-6" />
           </Badge>
@@ -170,6 +155,20 @@ const Navbar = function Navbar() {
     document.body.classList.remove(theme === "light" ? "dark" : "light")
     document.body.classList.add(theme)
   }, [theme])
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios
+        .post("https://booknap-api.wpgooal.com/api/logout", undefined, {
+          headers: {Authorization: `Bearer ${token}`}
+        })
+        .then((res: any) => {
+          signOut()
+        })
+    }
+  })
+  const handleSignOut = () => {
+    mutation.mutate()
+  }
 
   return (
     <>
@@ -226,6 +225,8 @@ const Navbar = function Navbar() {
                     <li>
                       <MyButton
                         isIconOnly
+                        size="navIcon"
+                        color="navIcon"
                         onClick={() => {
                           setTheme((pre) =>
                             pre === "light" ? "dark" : "light"
@@ -246,6 +247,8 @@ const Navbar = function Navbar() {
                         <MyButton
                           as={Link}
                           href="/"
+                          size="navIcon"
+                          color="navIcon"
                           isIconOnly
                           onClick={signIn.onOpen}>
                           <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
@@ -255,7 +258,12 @@ const Navbar = function Navbar() {
                     {token ? (
                       <>
                         <li>
-                          <MyButton as={Link} href="/cart" isIconOnly>
+                          <MyButton
+                            size="navIcon"
+                            color="navIcon"
+                            as={Link}
+                            href="/cart"
+                            isIconOnly>
                             {cart.length > 0 ? (
                               <Badge
                                 color="danger"
@@ -328,7 +336,7 @@ const Navbar = function Navbar() {
                                 startContent={
                                   <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
-                                onClick={signOut}>
+                                onClick={handleSignOut}>
                                 <span className="dark:text-white">Logout</span>
                               </DropdownItem>
                             </DropdownMenu>

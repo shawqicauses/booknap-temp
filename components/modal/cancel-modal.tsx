@@ -6,8 +6,8 @@ import {
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
-import MyButton from "../button"
-import {type3} from "../modal-styles"
+import MyButton from "../uis/button"
+import {type3} from "../uis/modal-styles"
 
 const reasons = [
   {id: 1, reason: "I Changed My Mind"},

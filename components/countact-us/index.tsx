@@ -4,7 +4,7 @@ import {SubmitHandler, useForm} from "react-hook-form"
 import {BsTelephone} from "react-icons/bs"
 import {HiOutlineMap} from "react-icons/hi"
 import {TfiHeadphoneAlt} from "react-icons/tfi"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 
 interface ICountactUsForm {
   firstName: string

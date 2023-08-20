@@ -1,7 +1,7 @@
 import React from "react"
-import Footer from "../components/footer"
+import Footer from "../components/layout/footer"
 import ProfileContent from "../components/profile"
-import Sidebar from "../components/sidebar"
+import Sidebar from "../components/uis/sidebar"
 
 const profile = function profile() {
   return (

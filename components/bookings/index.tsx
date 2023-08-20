@@ -4,7 +4,7 @@ import Image from "next/image"
 import React from "react"
 import {useRouter} from "next/navigation"
 import BookingDetailsModal from "../modal/booking-details-modal"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 
 interface Ibooking {
   hotelName: string

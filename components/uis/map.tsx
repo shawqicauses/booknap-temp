@@ -1,5 +1,5 @@
-import {GoogleMap} from "@react-google-maps/api"
-import {Dispatch, SetStateAction} from "react"
+import {GoogleMap, Marker} from "@react-google-maps/api"
+import React, {Dispatch, SetStateAction} from "react"
 
 interface IPostion {
   lat: number
@@ -9,27 +9,33 @@ interface IPostion {
 const MyGoogleMap = function MyGoogleMap({
   pos,
   setPos,
-  handleClick
+  handleClick,
+  hotels
 }: {
   pos: IPostion
   setPos: Dispatch<SetStateAction<IPostion | undefined>>
   handleClick: () => void
+  hotels: Array<IPostion>
 }) {
+  console.log(hotels)
+
   return (
     <GoogleMap
       zoom={10}
       center={pos}
       mapContainerClassName="w-full h-full"
-      options={{disableDefaultUI: true, maxZoom: 20, minZoom: 15}}
       onClick={(e) => {
         handleClick()
         setPos({
           lat: e.latLng?.lat() ?? pos.lat,
           lng: e.latLng?.lng() ?? pos.lng
         })
-      }}
-    />
+      }}>
+      {hotels.map((hotelPos) => (
+        <Marker position={hotelPos} />
+      ))}
+    </GoogleMap>
   )
 }
 
-export default MyGoogleMap
+export default React.memo(MyGoogleMap)

@@ -19,12 +19,12 @@ import {Swiper, SwiperSlide} from "swiper/react"
 import {Autoplay} from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"
-import {noPadding} from "../modal-styles"
+import {noPadding} from "../uis/modal-styles"
 
 import CancelModal from "../modal/cancel-modal"
 import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 
 interface HotelOfferBoxProps {
   // eslint-disable-next-line react/no-unused-prop-types

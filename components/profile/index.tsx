@@ -1,9 +1,10 @@
 import {Rating} from "@mui/material"
-import {Button, Input, extendVariants} from "@nextui-org/react"
+import {Input} from "@nextui-org/react"
 import Image from "next/image"
 import React, {useState} from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {AiTwotoneStar} from "react-icons/ai"
+import MyButton from "../uis/button"
 
 interface IProfile {
   firstName: string
@@ -17,17 +18,6 @@ const inputStyle = {
   label: "text-black dark:text-white/90 text-lg",
   inputWrapper: ["bg-white"]
 }
-export const MyButton = extendVariants(Button, {
-  variants: {
-    size: {
-      md: "px-6 py-3 min-w-unit-20  h-full text-lg gap-unit-2 rounded-lg inline-flex"
-    }
-  },
-  defaultVariants: {
-    color: "default",
-    size: "md"
-  }
-})
 
 const ProfileContent = function ProfileContent() {
   const {register, handleSubmit} = useForm<IProfile>()
@@ -84,7 +74,7 @@ const ProfileContent = function ProfileContent() {
             placeholder="0000000000"
             variant="flat"
             startContent={
-              <select className="py-1 rounded-lg">
+              <select className="py-1 rounded-lg dark:text-white">
                 <option value="+970">+970</option>
               </select>
             }
@@ -102,13 +92,16 @@ const ProfileContent = function ProfileContent() {
             className="flex-1"
             classNames={inputStyle}
           />
-          <div>
+          <div className="h-full">
             <span className="block font-medium pb-1.5 will-change-auto origin-top-left transition-all !duration-200 !ease-[cubic-bezier(0,0,0.2,1)] motion-reduce:transition-none text-black dark:text-white/90 text-lg">
               Gender
             </span>
             <div className="my-flex gap-2">
               <MyButton
                 onClick={() => setGender("male")}
+                size="xl2"
+                color="white"
+                fullWidth
                 className={`${
                   gender === "male" ? "border-2 border-blue-500" : ""
                 }`}>
@@ -116,6 +109,9 @@ const ProfileContent = function ProfileContent() {
               </MyButton>
               <MyButton
                 onClick={() => setGender("female")}
+                size="xl2"
+                color="white"
+                fullWidth
                 className={`${
                   gender === "female" ? "border-2 border-blue-500" : ""
                 }`}>

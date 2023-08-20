@@ -5,7 +5,11 @@ const MyButton = extendVariants(Button, {
     size: {
       xl: "px-5 py-2 min-w-unit-10 h-full text-xl gap-unit-2 rounded-small inline-flex  w-auto",
       smSquare:
-        "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex"
+        "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex",
+      navIcon:
+        "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex",
+
+      xl2: "px-5 py-3 min-w-unit-10 h-full !text-xl gap-unit-2 rounded-small inline-flex  w-full h-full"
     },
     color: {
       white: "bg-white text-blcak",
@@ -17,7 +21,9 @@ const MyButton = extendVariants(Button, {
       regect: "bg-[#E9EDF4] text-[#2F5597]",
       offer: "bg-[#F7F7F7]",
       transparent: "bg-transparent",
-      danger: "bg-red-600 text-white"
+      danger: "bg-red-600 text-white",
+      navIcon:
+        "bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89]"
     }
   },
   defaultVariants: {

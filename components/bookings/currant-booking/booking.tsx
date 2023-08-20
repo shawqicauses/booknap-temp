@@ -3,7 +3,7 @@ import {HiMiniClipboardDocumentList} from "react-icons/hi2"
 import React, {useEffect, useMemo, useState} from "react"
 import {AiTwotoneCalendar} from "react-icons/ai"
 import Image from "next/image"
-import MyButton from "../button"
+import MyButton from "../../uis/button"
 
 interface IItem {
   id: string
@@ -28,9 +28,9 @@ interface IBooking {
 }
 
 const booking: IBooking = {
-  startDate: "2023-08-10",
+  startDate: "2023-08-14",
   startTime: "12:00:00",
-  endDate: "2023-08-15",
+  endDate: "2023-08-18",
   endTime: "12:00:00",
   noOfRoom: 1,
   noOfAdults: 1,

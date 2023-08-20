@@ -1,7 +1,7 @@
 import React from "react"
-import Footer from "../components/footer"
-import HotelPageContent from "../components/booking"
-import Sidebar from "../components/sidebar"
+import Footer from "../components/layout/footer"
+import HotelPageContent from "../components/bookings/currant-booking"
+import Sidebar from "../components/uis/sidebar"
 
 const Booking = function Booking() {
   return (

@@ -12,7 +12,7 @@ import Booking from "./booking"
 import RoomsDetails from "./rooms-details"
 import About from "./about"
 import Shop from "./shop"
-import MyButton from "../button"
+import MyButton from "../../uis/button"
 
 const swiperSlides = [
   {

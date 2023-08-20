@@ -2,7 +2,7 @@ import Image from "next/image"
 import React from "react"
 import {TbTrashXFilled} from "react-icons/tb"
 import {Counter} from "../modal/booking-modal"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 import {useContent} from "../../stores/cart"
 
 const columns = [
@@ -39,13 +39,15 @@ const ItemTabel = function ItemTabel() {
     return (
       <table className="table-fixed border-collapse w-full">
         <thead>
-          {columns.map(({key, label}) => (
-            <th
-              key={key}
-              className="p-4 border-2  border-l-transparent  border-r-transparent">
-              {label}
-            </th>
-          ))}
+          <tr>
+            {columns.map(({key, label}) => (
+              <th
+                key={key}
+                className="p-4 border-2  border-l-transparent  border-r-transparent">
+                {label}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
           {cart.map(({id, image, product, price, quantity}) => (

@@ -1,6 +1,6 @@
 import {Modal, ModalContent} from "@nextui-org/react"
-import MyButton from "../button"
-import {type3} from "../modal-styles"
+import MyButton from "../uis/button"
+import {type3} from "../uis/modal-styles"
 
 const DeleteAccountModal = function DeleteAccountModal({
   isOpen,

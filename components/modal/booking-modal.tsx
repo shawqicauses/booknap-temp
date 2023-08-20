@@ -13,8 +13,8 @@ import {
 } from "@nextui-org/react"
 
 import SignInModal from "./sign-in-modal"
-import MyButton from "../button"
-import {type4} from "../modal-styles"
+import MyButton from "../uis/button"
+import {type5} from "../uis/modal-styles"
 
 interface IInitObject {
   noAdults: number
@@ -269,7 +269,7 @@ const BookingModal = function BookingModal({
         isDismissable={false}
         isOpen={isOpen}
         onClose={onClose}
-        classNames={type4}
+        classNames={type5}
         placement="center">
         <ModalContent>
           <ModalBody>
@@ -277,7 +277,7 @@ const BookingModal = function BookingModal({
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 relative justify-start">
               {page === 0 ? (
-                <div className="pt-10 px-5">
+                <div className="pt-10 px-5 w-auto">
                   <div>
                     <label htmlFor="destination" className="label-gray">
                       Destination:

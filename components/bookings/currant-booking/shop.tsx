@@ -2,10 +2,10 @@ import Image from "next/image"
 import React, {useState} from "react"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
-import {useContent} from "../../stores/cart"
-import {IItem} from "../../types"
-import MyButton from "../button"
-import {Counter} from "../modal/booking-modal"
+import {useContent} from "../../../stores/cart"
+import {IItem} from "../../../types"
+import MyButton from "../../uis/button"
+import {Counter} from "../../modal/booking-modal"
 
 const itemList = [
   {
@@ -258,7 +258,8 @@ const Shop = function Shop({tab}: {tab: string}) {
   const currontShop = {
     resturant: <Resturant />,
     clothes: <Clothes />,
-    favorite: <Favorite />
+    favorite: <Favorite />,
+    itemPage: <ItemPage />
   }[tab]
 
   return (

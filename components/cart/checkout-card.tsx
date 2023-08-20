@@ -1,6 +1,6 @@
 import React, {useMemo} from "react"
 import {useContent} from "../../stores/cart"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 
 const CheckoutCard = function CheckoutCard() {
   const {cart} = useContent()

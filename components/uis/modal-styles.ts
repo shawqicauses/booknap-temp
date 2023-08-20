@@ -28,4 +28,10 @@ const type4 = {
   closeButton:
     "hover:bg-white/50 active:bg-white/10 bg-white/70 rounded-lg z-10 top-3 right-3"
 }
-export {noPadding, normal, type3, type4}
+const type5 = {
+  body: "px-3",
+  backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+  closeButton:
+    "hover:bg-white/50 active:bg-white/10 bg-white/70 rounded-lg z-10 top-3 right-3"
+}
+export {noPadding, normal, type3, type4, type5}

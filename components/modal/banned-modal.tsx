@@ -8,7 +8,7 @@ import {
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react"
-import MyButton from "../button"
+import MyButton from "../uis/button"
 
 const BannedModal = function BannedModal({
   isOpen,

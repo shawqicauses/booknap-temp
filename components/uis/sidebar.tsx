@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react"
-import IconSidebar from "./icon-sidebar"
-import BookingSidebar from "./booking-sidebar"
-import {Auth} from "../stores/auth"
+import IconSidebar from "../icon-sidebar"
+import BookingSidebar from "../bookings/booking-sidebar"
+import {Auth} from "../../stores/auth"
 
 const Sidebar = function Sidebar() {
   const [showBookingSidebar, setShowBookingSidebar] = useState(false)
