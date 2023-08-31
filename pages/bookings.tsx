@@ -1,7 +1,8 @@
+import {NextPage} from "next"
 import BookingsContent from "../components/bookings"
 import Footer from "../components/layout/footer"
 
-const Bookings = function Bookings() {
+const Bookings: NextPage = function Bookings() {
   return (
     <div>
       <BookingsContent />

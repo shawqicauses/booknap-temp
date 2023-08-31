@@ -48,8 +48,7 @@ const socialMedia = [
 const Footer = function Footer() {
   return (
     <footer>
-      <div className="bg-[#F5F5F5]">
-        {" "}
+      <div className="bg-[#F5F5F5] dark:bg-[#1A2230]">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 my-container py-5 gap-4">
           <div className="pt-2">
             <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
@@ -94,7 +93,7 @@ const Footer = function Footer() {
                 <li key={id}>
                   <a
                     href={link}
-                    className="inline-block p-3 bg-white hover:bg-blue-900 hover:text-white rounded-lg">
+                    className="inline-block p-3 bg-white dark:bg-[#010919] hover:bg-blue-900 hover:text-white rounded-lg">
                     {icon}
                   </a>
                 </li>
@@ -104,7 +103,7 @@ const Footer = function Footer() {
         </div>
       </div>
 
-      <div className="bg-white py-5">
+      <div className="bg-white dark:bg-[#010919] py-5">
         <div className="my-flex-between  my-container flex-wrap gap-2">
           <p className="whitespace-nowrap flex-1">
             © COPYRIGHTED & DESIGNED BY{" "}

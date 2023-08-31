@@ -56,8 +56,10 @@ const CartProvider = function CartProvider({
   const [ready, setReady] = useState<boolean>(false)
   const [cart, dispatch] = useReducer(reducer, initState)
 
-  const addItemToCart = useCallback((item: IItem) => {
+  const addItemToCart = useCallback(async (item: IItem) => {
     dispatch({type: "addItem", item})
+    // const res = await client("shopping/show/carts", {method: "GET"})
+    // console.log(res)
   }, [])
 
   const updateItemQuantity = useCallback((id: number, quantity: number) => {

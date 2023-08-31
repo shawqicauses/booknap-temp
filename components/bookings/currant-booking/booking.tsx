@@ -28,9 +28,9 @@ interface IBooking {
 }
 
 const booking: IBooking = {
-  startDate: "2023-08-14",
+  startDate: "2023-08-25",
   startTime: "12:00:00",
-  endDate: "2023-08-18",
+  endDate: "2023-08-28",
   endTime: "12:00:00",
   noOfRoom: 1,
   noOfAdults: 1,
@@ -115,7 +115,7 @@ const Booking = function Booking() {
   }
   return (
     <>
-      <div className="p-3 bg-gray-100 rounded-lg my-4">
+      <div className="p-3 bg-gray-100 dark:bg-[#1A2230] rounded-lg my-4">
         <div className="flex gap-2 mb-4">
           {Array.from({length: totalDays}).map((_, index) => {
             return (
@@ -154,7 +154,9 @@ const Booking = function Booking() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-4 my-4 min-h-[400px]">
         {booking.orders.map((order) => (
-          <div className="bg-gray-100 rounded-lg p-3" key={order.id}>
+          <div
+            className="bg-gray-100 dark:bg-[#1A2230] rounded-lg p-3"
+            key={order.id}>
             <div className="my-flex-between py-2 text-gray-400">
               <span className=" inline-block px-2 py-1 font-semi-bold">
                 Order {order.id}

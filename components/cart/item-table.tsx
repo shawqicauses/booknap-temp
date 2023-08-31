@@ -32,18 +32,16 @@ const columns = [
   }
 ]
 
-const ItemTabel = function ItemTabel() {
+const ItemTable = function ItemTable() {
   const {cart, updateItemQuantity, deleteItem, ready} = useContent()
 
   if (ready) {
     return (
       <table className="table-fixed border-collapse w-full">
         <thead>
-          <tr>
+          <tr className="border-2  border-l-transparent  border-r-transparent">
             {columns.map(({key, label}) => (
-              <th
-                key={key}
-                className="p-4 border-2  border-l-transparent  border-r-transparent">
+              <th key={key} className="p-4">
                 {label}
               </th>
             ))}
@@ -98,4 +96,4 @@ const ItemTabel = function ItemTabel() {
   }
   return null
 }
-export default ItemTabel
+export default ItemTable

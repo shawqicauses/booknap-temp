@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, {useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {
   Link,
   Modal,
@@ -25,32 +25,36 @@ import CancelModal from "../modal/cancel-modal"
 import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
 import MyButton from "../uis/button"
+import client from "../../helpers/client"
+import {CurrentBookingOrder} from "../../stores/current-booking-order"
 
 interface HotelOfferBoxProps {
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: number
-  isNewOffer?: boolean
-  oldPrice?: number
-  logo: string
-  name: string
-  rating: number
-  price: number
-  handelBooked: () => void
+  offer: any
+  openBookedModal: () => void
 }
-const offers = [
-  {
-    id: 1,
-    isNewOffer: true,
-    oldPrice: 150,
-    logo: "/hotel-logo.png",
-    name: "Hotel Name",
-    rating: 4,
-    price: 130
-  },
-  {id: 2, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
-  {id: 3, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
-  {id: 4, logo: "/hotel-logo.png", name: "Hotel Name", rating: 5, price: 150}
-]
+export interface IData {
+  id: number
+  price: number
+  status: number
+  booking_id: number
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: string
+}
+export interface Result {
+  current_page: number
+  data: IData[]
+  from: number
+  to: number
+  total: number
+}
+export interface IGetOffersRes {
+  success: boolean
+  message: string
+  result: Result
+}
 
 const hotelData = {
   img: "/hotel-logo-about.png",
@@ -182,42 +186,41 @@ const HotelPageModal = function HotelPageModal({
     </Modal>
   )
 }
-const HotelOfferBox = function HotelOfferBox({
-  logo,
-  name,
-  rating,
-  price,
-  isNewOffer,
-  oldPrice,
-  handelBooked
-}: HotelOfferBoxProps) {
-  const [reqect, setReqect] = useState(false)
-  const {isOpen, onClose, onOpen} = useDisclosure()
 
+const HotelOfferBox = function HotelOfferBox({
+  offer,
+  openBookedModal
+}: HotelOfferBoxProps) {
+  const [reject, setReject] = useState(false)
+  const {isOpen, onClose, onOpen} = useDisclosure()
+  const handleBooked = () => {
+    client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})
+    openBookedModal()
+  }
   return (
     <>
       <div className="bg-white p-2 rounded-lg shadow-base snap-center relative">
-        {isNewOffer ? (
+        {/* {isNewOffer ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
           </div>
-        ) : null}
+        ) : null} */}
         <div className="flex justify-between gap-2 mb-2">
           <div
             className="flex gap-2 cursor-pointer"
             onClick={onOpen}
             aria-hidden="true">
             <Image
-              src={logo}
-              alt={name}
+              src={offer.hotel.logo}
+              alt={offer.hotel.name}
               fill
-              className="!relative !inset-auto !w-max"
+              className="!relative !inset-auto !w-20 !h-20"
             />
             <div className="flex flex-col gap-1">
-              <h3 className="heading-3">{name}</h3>
+              <h3 className="heading-3">{offer.hotel.name}</h3>
               <Rating
                 name="read-only"
-                value={rating}
+                value={offer.hotel.stars}
                 readOnly
                 size="small"
                 style={{color: "#2F5597"}}
@@ -226,23 +229,25 @@ const HotelOfferBox = function HotelOfferBox({
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center">
-            <span className="text-red-500 text-xl font-bold">{price}$</span>
-            {isNewOffer && oldPrice ? (
+            <span className="text-red-500 text-xl font-bold">
+              {offer.price}$
+            </span>
+            {/* {isNewOffer && oldPrice ? (
               <span className="line-through text-gray-400">{oldPrice}$</span>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
         <div className="flex justify-end gap-2">
           <MyButton
             size="sm"
-            color="regect"
+            color="reject"
             className="!w-[72px]"
-            isLoading={reqect}
-            onClick={() => setReqect((pre) => !pre)}
+            isLoading={reject}
+            onClick={() => setReject((pre) => !pre)}
             spinner={<Spinner size="md" />}>
-            {!reqect ? "reject" : ""}
+            {!reject ? "reject" : ""}
           </MyButton>
-          <MyButton size="sm" color="primary" onClick={handelBooked}>
+          <MyButton size="sm" color="primary" onClick={handleBooked}>
             Accept
           </MyButton>
         </div>
@@ -252,10 +257,20 @@ const HotelOfferBox = function HotelOfferBox({
   )
 }
 
-HotelOfferBox.defaultProps = {
-  isNewOffer: false,
-  oldPrice: null
-}
+// const offers = [
+//   {
+//     id: 1,
+//     isNewOffer: true,
+//     oldPrice: 150,
+//     logo: "/hotel-logo.png",
+//     name: "Hotel Name",
+//     rating: 4,
+//     price: 130
+//   },
+//   {id: 2, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
+//   {id: 3, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
+//   {id: 4, logo: "/hotel-logo.png", name: "Hotel Name", rating: 5, price: 150}
+// ]
 const BookingSidebar = function BookingSidebar({
   show,
   setShow
@@ -266,8 +281,40 @@ const BookingSidebar = function BookingSidebar({
   const booked = useDisclosure()
   const cancel = useDisclosure()
   const banned = useDisclosure()
-
+  const [offers, setOffers] = useState<IData[]>([])
   const [filter, serFilter] = useState("Highest Rated")
+  const {result, clearCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const [time, setTime] = useState({minutes: 20, seconds: 0})
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime()
+      const diff = now - new Date(result?.created_at!).getTime()
+      if (time.minutes <= 0) {
+        clearInterval(interval)
+        clearCurrentBookingOrder()
+      } else {
+        const minutes = 19 - Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = 59 - Math.floor((diff % (1000 * 60)) / 1000)
+        setTime({minutes, seconds})
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result, clearCurrentBookingOrder])
+
+  useEffect(() => {
+    const getOffers = async () => {
+      const res: IGetOffersRes = await client(
+        "hotels/bookings/offers/guest-index",
+        {
+          method: "GET"
+        }
+      )
+      setOffers(res.result.data)
+    }
+    getOffers()
+  }, [time.minutes])
 
   return (
     <div className="relative h-full">
@@ -286,7 +333,8 @@ const BookingSidebar = function BookingSidebar({
           </MyButton>
           <span className="flex items-center gap-2">
             <BiTime className="h-5 w-5 text-gray-300" />
-            12:15
+            {String(time.minutes).padStart(2, "0")}:
+            {String(time.seconds).padStart(2, "0")}
           </span>
           <MyButton color="transparent" onClick={cancel.onOpen}>
             Cancel
@@ -338,11 +386,11 @@ const BookingSidebar = function BookingSidebar({
             </MyButton>
           </div>
           <div className="flex flex-col relative gap-3">
-            {offers.map((offer) => (
+            {offers.map((offer: any) => (
               <HotelOfferBox
                 key={offer.id}
-                {...offer}
-                handelBooked={booked.onOpen}
+                offer={offer}
+                openBookedModal={booked.onOpen}
               />
             ))}
           </div>

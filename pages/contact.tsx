@@ -1,18 +1,19 @@
 import React from "react"
+import {NextPage} from "next"
 import Footer from "../components/layout/footer"
-import CountactUsContent from "../components/countact-us"
+import ContactUsContent from "../components/contact-us"
 import Sidebar from "../components/uis/sidebar"
 
-const CountactUs = function CountactUs() {
+const ContactUs: NextPage = function ContactUs() {
   return (
     <div>
       <div className="flex">
         <Sidebar />
-        <CountactUsContent />
+        <ContactUsContent />
       </div>
       <Footer />
     </div>
   )
 }
 
-export default CountactUs
+export default ContactUs

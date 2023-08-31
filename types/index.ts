@@ -1,5 +1,3 @@
-import {Url} from "next/dist/shared/lib/router/router"
-
 export interface IItem {
   id: number
   image?: string
@@ -7,26 +5,135 @@ export interface IItem {
   price?: number
   quantity?: number
 }
-// 29|vOl8X1Iuoh8z3QRoa3SPsWgt7cyQaNsfDJ1vtSoy
-
-export interface ISignInRes {
-  token: string
-  user: {
-    created_at: string
-    id: number
-    mobile: string
-    name: string
-    profile_photo_url: Url
-    type: "1"
-    updated_at: string
-  }
+export interface IUser {
+  avatar: string | null
+  created_at: string | null
+  current_team_id: number | null
+  deleted_at: string | null
+  dob: string | null
+  email: string | null
+  email_verified_at: string | null
+  first_name: string | null
+  gauth_id: number | null
+  gauth_type: number | null
+  gender: 1 | 2 | null
+  id: number
+  last_name: string | null
+  last_online_date: string | null
+  last_session: string | null
+  mobile: string | null
+  name: string
+  online: number | null
+  profile_photo_path: string | null
+  profile_photo_url: string
+  two_factor_confirmed_at: string | null
+  type: 1
+  stars: number
+  updated_at: string | null
 }
-// token: "29|vOl8X1Iuoh8z3QRoa3SPsWgt7cyQaNsfDJ1vtSoy"
-// user: Object { name: "Ahmed Al-khateeb", mobile: "+972592546772", type: "1", … }
-// created_at: "2023-08-20T08:34:03.000000Z"
-// id: 18
-// mobile: "+972592546772"
-// name: "Ahmed Al-khateeb"
-// profile_photo_url: "https://ui-avatars.com/api/?name=A+A&color=7F9CF5&background=EBF4FF"
-// type: "1"
-// updated_at: "2023-08-20T08:34:03.000000Z"
+
+interface room {
+  type: number
+  number: number
+}
+
+export interface IBookingReq {
+  date_from: string
+  date_to: string
+  lat: number
+  lng: number
+  distance: number
+  children: number
+  adults: number
+  notes?: string
+  country_id: number
+  city_id: number
+  rooms: Array<room>
+}
+
+export interface IGListBookingOffersHotel {
+  data: []
+}
+export interface Room {
+  type: number
+  number: number
+}
+export interface Booking {
+  id: number
+  date_from: string
+  date_to: string
+  children: number
+  adults: number
+  rooms: Room[]
+  notes: string
+  cancel: number
+  canceled_at: string
+  cancel_reason: number
+  cancel_reason_other: string
+  status: number
+  country_id: number
+  city_id: number
+  offer_id: number
+  hotel_id: number | number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: string
+  ignore: number
+  date_ignore: string
+  lat: string
+  lng: string
+  distance: number
+  rooms_no: number
+}
+
+export interface ISginIn {
+  user: IUser
+  success: boolean
+  token: string
+  booking: Booking
+  has_booking: number
+}
+export interface IProfileRes {
+  success: string
+  user: IUser
+  booking: Booking
+  has_booking: number
+}
+export interface Lang {
+  id: number
+  name: string
+  about: string
+  address: string
+  lang_id: number
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}
+export interface IHotel {
+  id: number
+  name: string
+  about: string
+  features: string
+  logo: string
+  banner: null
+  lat: string
+  lng: string
+  address: string
+  phone: string
+  website: string
+  stars: number
+  country_id: number
+  city_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  bot_service: number
+  date_start_service: null
+  date_end_service: null
+  date_stop_service: null
+  langs: Lang[]
+}

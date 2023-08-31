@@ -14,6 +14,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 const auth = getAuth(app)
-auth.useDeviceLanguage()
 auth.config.apiKey = "AIzaSyCsyZvpsvjN7hR8VzMRplApXNllTl_lDDw"
 export default auth

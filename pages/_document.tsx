@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
         <Head>
           <link href={font} rel="stylesheet" />
         </Head>
-        <body className="bg-zinc-50 font-poppins">
+        <body className="bg-white dark:bg-[#010919] font-poppins">
           <Main />
           <NextScript />
         </body>

@@ -1,9 +1,12 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable camelcase */
 import {
   Badge,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Spinner,
   useDisclosure
 } from "@nextui-org/react"
 import Image from "next/image"
@@ -16,14 +19,15 @@ import {BsFillSunFill} from "react-icons/bs"
 import {AiOutlineShoppingCart} from "react-icons/ai"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {IoMdClose, IoMdNotificationsOutline} from "react-icons/io"
-import {useMutation} from "@tanstack/react-query"
-import axios from "axios"
 import {Auth} from "../../../stores/auth"
 import SignInModal from "../../modal/sign-in-modal"
 import DeleteAccountModal from "../../modal/delete-account-modal"
 import Lang from "./lang"
 import {useContent} from "../../../stores/cart"
 import MyButton from "../../uis/button"
+import client from "../../../helpers/client"
+import {User} from "../../../stores/user"
+import {Notifications} from "../../../stores/notifications"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -68,77 +72,113 @@ const NavbarCloseToggle = function NavbarCloseToggle({
   )
 }
 
-const items = [
-  {
-    id: 1,
-    logo: "/user-profile.jpg",
-    title: "Lorem Ipsum Dolor Sit Amet",
-    date: "6 June 2023",
-    time: "02:26 PM"
-  },
-  {
-    id: 2,
-    logo: "/user-profile.jpg",
-    title: "Lorem Ipsum Dolor Sit Amet",
-    date: "6 June 2023",
-    time: "02:26 PM"
-  },
-  {
-    id: 3,
-    logo: "/user-profile.jpg",
-    title: "Lorem Ipsum Dolor Sit Amet",
-    date: "6 June 2023",
-    time: "02:26 PM"
-  },
-  {
-    id: 4,
-    logo: "/user-profile.jpg",
-    title: "Lorem Ipsum Dolor Sit Amet",
-    date: "6 June 2023",
-    time: "02:26 PM"
-  },
-  {
-    id: 5,
-    logo: "/user-profile.jpg",
-    title: "Lorem Ipsum Dolor Sit Amet",
-    date: "6 June 2023",
-    time: "02:26 PM"
-  }
-]
+// const items = [
+//   {
+//     id: 1,
+//     logo: "/user-profile.jpg",
+//     title: "Lorem Ipsum Dolor Sit Amet",
+//     date: "6 June 2023",
+//     time: "02:26 PM"
+//   },
+//   {
+//     id: 2,
+//     logo: "/user-profile.jpg",
+//     title: "Lorem Ipsum Dolor Sit Amet",
+//     date: "6 June 2023",
+//     time: "02:26 PM"
+//   },
+//   {
+//     id: 3,
+//     logo: "/user-profile.jpg",
+//     title: "Lorem Ipsum Dolor Sit Amet",
+//     date: "6 June 2023",
+//     time: "02:26 PM"
+//   },
+//   {
+//     id: 4,
+//     logo: "/user-profile.jpg",
+//     title: "Lorem Ipsum Dolor Sit Amet",
+//     date: "6 June 2023",
+//     time: "02:26 PM"
+//   },
+//   {
+//     id: 5,
+//     logo: "/user-profile.jpg",
+//     title: "Lorem Ipsum Dolor Sit Amet",
+//     date: "6 June 2023",
+//     time: "02:26 PM"
+//   }
+// ]
 
-const Notifications = function Notifications() {
+const NotificationsDropDown = function NotificationsDropDown() {
+  const {notifications, ready} = useContext(Notifications)
   return (
     <Dropdown classNames={{base: "p-0"}}>
       <DropdownTrigger>
-        <MyButton isIconOnly size="navIcon" color="navIcon">
-          <Badge color="danger" content={5} shape="circle" disableOutline>
+        <MyButton
+          isIconOnly
+          size="navIcon"
+          color="navIcon"
+          onClick={() => {
+            if (ready) {
+              notifications.forEach((noti: any) => {
+                if (!noti.read_at) {
+                  client(`notifications/read/${noti.id}`, {method: "GET"})
+                }
+              })
+            }
+          }}>
+          <Badge
+            color="danger"
+            content={notifications ? notifications.length : 0}
+            shape="circle"
+            disableOutline>
             <IoMdNotificationsOutline className="w-6 h-6" />
           </Badge>
         </MyButton>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Dynamic Actions"
-        items={items}
+        items={ready ? notifications : [{}]}
         className="divide-y-1"
         itemClasses={{
           base: "rounded-none",
           wrapper: "p-0"
         }}>
-        {items.map(({id, logo, title, date, time}) => (
-          <DropdownItem key={id}>
-            <div className="flex gap-2 p-2">
-              <div className="relative w-10 h-10 rounded-lg overflow-hidden">
-                <Image src={logo} alt="logo" className="relative" fill />
+        {ready ? (
+          notifications.length > 0 ? (
+            notifications.map((notfi: any) => (
+              <DropdownItem key={notfi.id}>
+                <div className="flex gap-2 p-2">
+                  <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                    <Image
+                      src="/user-profile.jpg"
+                      alt="logo"
+                      className="relative"
+                      fill
+                    />
+                  </div>
+                  <div>
+                    <h3 className="">{notfi.data.title}</h3>
+                    <span className="body-sm">{notfi.data.details}</span>
+                  </div>
+                </div>
+              </DropdownItem>
+            ))
+          ) : (
+            <DropdownItem>
+              <div className="h-[100px] w-full flex justify-center items-center">
+                <h3>No Notifictions</h3>
               </div>
-              <div>
-                <h3 className="">{title}</h3>
-                <span className="body-sm">
-                  {date} - {time}
-                </span>
-              </div>
+            </DropdownItem>
+          )
+        ) : (
+          <DropdownItem>
+            <div className="max-h-[150px] flex justify-center items-center">
+              <Spinner size="md" />
             </div>
           </DropdownItem>
-        ))}
+        )}
       </DropdownMenu>
     </Dropdown>
   )
@@ -148,46 +188,34 @@ const Navbar = function Navbar() {
   const [theme, setTheme] = useState("light")
   const [isOpened, setIsOpened] = useState(false)
   const {token, signOut} = useContext(Auth)
-  const signIn = useDisclosure()
+  const signInModel = useDisclosure()
   const deleteAccount = useDisclosure()
   const {cart} = useContent()
+  const {user, ready} = useContext(User)
   useEffect(() => {
-    document.body.classList.remove(theme === "light" ? "dark" : "light")
-    document.body.classList.add(theme)
-  }, [theme])
-  const mutation = useMutation({
-    mutationFn: async () => {
-      await axios
-        .post("https://booknap-api.wpgooal.com/api/logout", undefined, {
-          headers: {Authorization: `Bearer ${token}`}
-        })
-        .then((res: any) => {
-          signOut()
-        })
+    if (document.body.parentElement) {
+      document.body.parentElement.classList.remove(
+        theme === "light" ? "dark" : "light"
+      )
+      document.body.parentElement.classList.add(theme)
     }
-  })
-  const handleSignOut = () => {
-    mutation.mutate()
+  }, [theme])
+
+  const handleSignOut = async () => {
+    await client("logout", {method: "POST"})
+    signOut()
   }
 
   return (
     <>
-      <nav className="sticky z-20 top-0 bg-white dark:bg-[#000818] w-full shadow-base">
-        <div className="my-container my-flex md:my-flex-between pb-5 !items-end">
-          <div className="flex gap-3 w-full items-center lg:items-end justify-between md:justify-start">
-            <Link href="/" className="relative w-36 mt-3 lg:mt-0  dark:hidden">
+      <nav className="sticky z-20 top-0 bg-white dark:bg-[rgb(0,8,24)] w-full shadow-base">
+        <div className="my-container my-flex md:my-flex-between py-4 !items-end">
+          <div className="flex gap-3 w-full items-center  justify-between md:justify-start">
+            <Link href="/" className="relative w-36 lg:mt-0">
               <Image
-                src="/logo/blue-logo.png"
-                alt="Logo"
-                fill
-                className="!relative !inset-auto !w-max object-contain"
-              />
-            </Link>
-            <Link
-              href="/"
-              className="relative w-36 mt-3 lg:mt-0 hidden dark:block">
-              <Image
-                src="/logo/white-logo.png"
+                src={`/logo/${
+                  theme === "light" ? "blue-logo" : "white-logo"
+                }.png `}
                 alt="Logo"
                 fill
                 className="!relative !inset-auto !w-max object-contain"
@@ -200,7 +228,7 @@ const Navbar = function Navbar() {
                   isOpened
                     ? "translate-x-0 opacity-100"
                     : "translate-x-full opacity-0",
-                  "my-flex my-transition lg:!items-end lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
+                  "my-flex my-transition  !items-center lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
                 ].join(" ")}>
                 <NavbarCloseToggle setIsOpened={setIsOpened} />
                 <li>
@@ -209,7 +237,7 @@ const Navbar = function Navbar() {
                       <li key={id}>
                         <Link
                           href={href}
-                          className="navbar-link inline-block w-full lg:pt-8 p-3 rounded-b-lg  text-[#B9B9B9]  dark:text-[#5B6C89] hover:bg-gray-300 dark:hover:bg-[#12213B]"
+                          className="navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89]"
                           onClick={() => {
                             setIsOpened(false)
                             document.body.style.overflowY = "scroll"
@@ -221,7 +249,7 @@ const Navbar = function Navbar() {
                   </ul>
                 </li>
                 <li>
-                  <ul className="flex flex-col lg:flex-row gap-3">
+                  <ul className="flex flex-col lg:flex-row gap-3 ">
                     <li>
                       <MyButton
                         isIconOnly
@@ -250,7 +278,7 @@ const Navbar = function Navbar() {
                           size="navIcon"
                           color="navIcon"
                           isIconOnly
-                          onClick={signIn.onOpen}>
+                          onClick={signInModel.onOpen}>
                           <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                         </MyButton>
                       </li>
@@ -278,7 +306,7 @@ const Navbar = function Navbar() {
                           </MyButton>
                         </li>
                         <li>
-                          <Notifications />
+                          <NotificationsDropDown />
                         </li>
                         <li>
                           <Dropdown
@@ -288,17 +316,25 @@ const Navbar = function Navbar() {
                               arrow: "bg-default-200"
                             }}>
                             <DropdownTrigger>
-                              <div className="my-flex gap-2 cursor-pointer bg-gray-100 dark:bg-[#12213B] py-1 px-2 rounded-lg">
-                                <Image
-                                  src="/user.png"
-                                  alt="user profile"
-                                  className="!relative !w-9"
-                                  fill
-                                />
-                                <span className="inline-block dark:text-white">
-                                  Adam Joe
-                                </span>
-                              </div>
+                              {ready ? (
+                                <div className="my-flex gap-2 cursor-pointer bg-gray-100 dark:bg-[#12213B] py-1 px-1.5 rounded-lg">
+                                  <div className="relative !w-10 !h-10  rounded-full overflow-hidden">
+                                    <Image
+                                      src={ready ? user?.avatar! : ""}
+                                      alt="user profile"
+                                      className="!relative"
+                                      fill
+                                    />
+                                  </div>
+                                  <span className="inline-block dark:text-white">
+                                    {user?.name}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="min-w-[100px] h-full flex justify-center items-center bg-gray-100 dark:bg-[#12213B] rounded-lg">
+                                  <Spinner />
+                                </div>
+                              )}
                             </DropdownTrigger>
                             <DropdownMenu
                               variant="faded"
@@ -351,7 +387,7 @@ const Navbar = function Navbar() {
           </div>
         </div>
       </nav>
-      <SignInModal isOpen={signIn.isOpen} onClose={signIn.onClose} />
+      <SignInModal isOpen={signInModel.isOpen} onClose={signInModel.onClose} />
       <DeleteAccountModal
         isOpen={deleteAccount.isOpen}
         onClose={deleteAccount.onClose}

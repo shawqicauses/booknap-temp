@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation"
 import BookingDetailsModal from "../modal/booking-details-modal"
 import MyButton from "../uis/button"
 
-interface Ibooking {
+interface IBooking {
   hotelName: string
   hotelRating: number
   hotelLogo: string
@@ -14,12 +14,12 @@ interface Ibooking {
   startDay: string
   endDay: string
   noAdults: number
-  noChildern: number
+  noChildren: number
   noRoom: number
   state: "done" | "inProgress" | "coming"
 }
 
-const bookings: Ibooking[] = [
+const bookings: IBooking[] = [
   {
     hotelName: "Luxury Resort",
     hotelRating: 5,
@@ -28,7 +28,7 @@ const bookings: Ibooking[] = [
     startDay: "2023-09-20",
     endDay: "2023-09-25",
     noAdults: 3,
-    noChildern: 2,
+    noChildren: 2,
     noRoom: 2,
     state: "inProgress"
   },
@@ -40,7 +40,7 @@ const bookings: Ibooking[] = [
     startDay: "2023-10-05",
     endDay: "2023-10-07",
     noAdults: 1,
-    noChildern: 0,
+    noChildren: 0,
     noRoom: 1,
     state: "coming"
   },
@@ -52,7 +52,7 @@ const bookings: Ibooking[] = [
     startDay: "2023-08-10",
     endDay: "2023-08-15",
     noAdults: 2,
-    noChildern: 1,
+    noChildren: 1,
     noRoom: 1,
     state: "done"
   },
@@ -64,17 +64,17 @@ const bookings: Ibooking[] = [
     startDay: "2023-08-10",
     endDay: "2023-08-15",
     noAdults: 2,
-    noChildern: 1,
+    noChildren: 1,
     noRoom: 1,
     state: "done"
   }
 ]
-interface Istates {
+interface IStates {
   done: "default"
   inProgress: "success"
   coming: "primary"
 }
-const states: Istates = {
+const states: IStates = {
   done: "default",
   inProgress: "success",
   coming: "primary"
@@ -95,7 +95,7 @@ const BookingsContent = function BookingsContent() {
             startDay,
             endDay,
             noAdults,
-            noChildern,
+            noChildren,
             noRoom,
             state
           }) => (
@@ -108,7 +108,7 @@ const BookingsContent = function BookingsContent() {
               <div>
                 <h3 className="heading-3">{hotelName}</h3>
                 <Rating value={hotelRating} />
-                <p className="body-sm">{`${startDay} To ${endDay} - ${noAdults} Adults - ${noChildern} Childern - ${noRoom} Room`}</p>
+                <p className="body-sm">{`${startDay} To ${endDay} - ${noAdults} Adults - ${noChildren} Children - ${noRoom} Room`}</p>
               </div>
               <div className="flex-1 flex justify-end">
                 <MyButton

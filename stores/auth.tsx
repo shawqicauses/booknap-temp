@@ -10,12 +10,14 @@ import {
 
 interface IAuth {
   token: string | null
+  signIn: () => {}
   signOut: () => void
   ready: boolean
 }
 
 const Auth = createContext({
   token: null,
+  signIn: () => {},
   signOut: () => {},
   ready: false
 } as IAuth)
@@ -31,25 +33,28 @@ const AuthProvider = function AuthProvider({
   const [token, setToken] = useState<string | null>(null)
   const [ready, setReady] = useState<boolean>(false)
 
-  useEffect(() => {
+  const signIn = useCallback(() => {
     if (typeof window !== "undefined") {
-      const tokenStored = JSON.stringify(localStorage.getItem("TOKEN"))
-      if (tokenStored) setToken(JSON.parse(tokenStored))
+      const tokenStored = localStorage.getItem("TOKEN")
+      if (tokenStored) setToken(tokenStored)
       else setToken(null)
       setReady(true)
     }
   }, [])
 
+  useEffect(() => {
+    signIn()
+  }, [signIn])
+
   const signOut = useCallback(() => {
     localStorage.removeItem("TOKEN")
-    localStorage.removeItem("CART")
     setToken(null)
     router.push("/")
   }, [router])
 
   const value = useMemo(
-    () => ({token, signOut, ready} as IAuth),
-    [token, signOut, ready]
+    () => ({token, signIn, signOut, ready} as IAuth),
+    [token, signIn, signOut, ready]
   )
   return <Auth.Provider value={value}>{children}</Auth.Provider>
 }

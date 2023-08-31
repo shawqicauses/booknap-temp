@@ -74,22 +74,22 @@ const RoomsDetails = function RoomsDetails() {
   return (
     <div className=" flex gap-5  flex-col">
       {rooms.map(({id, type, roomNumber, details, features}) => (
-        <div className="rounded-lg p-4 bg-[#F5F5F5]" key={id}>
+        <div className="rounded-lg p-4 bg-[#F5F5F5] dark:bg-[#1A2230]" key={id}>
           <div className="flex gap-5 mb-4">
-            <div className="bg-gray-200 p-3 rounded-lg text-[#2F5597]">
+            <div className="bg-gray-200 dark:bg-[#242E3F] p-3 rounded-lg text-[#2F5597]">
               {roomTypeIcon[type.toLowerCase()]}
             </div>
             <div>
-              <h2 className="heading-3">{type}</h2>
-              <span className="text-gray-300">{roomNumber}</span>
+              <h2 className="heading-3 dark:text-white">{type}</h2>
+              <span className="text-gray-300 ">{roomNumber}</span>
             </div>
           </div>
           <div className="mb-3">
-            <h3 className="heading-3 mb-4">Details</h3>
-            <p className="body-sm text-black">{details}</p>
+            <h3 className="heading-3 mb-4 dark:text-white">Details</h3>
+            <p className="body-sm text-black dark:text-white">{details}</p>
           </div>
           <div>
-            <h3 className="heading-3 mb-4">Features</h3>
+            <h3 className="heading-3 mb-4 dark:text-white">Features</h3>
             <ul className="flex gap-10">
               {features.map((feature) => (
                 <li className="flex gap-3 items-center" key={feature}>

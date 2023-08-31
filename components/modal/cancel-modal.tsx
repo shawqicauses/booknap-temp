@@ -1,4 +1,5 @@
-import React, {useState} from "react"
+/* eslint-disable camelcase */
+import React, {useContext, useEffect, useState} from "react"
 import {
   Modal,
   ModalBody,
@@ -8,12 +9,14 @@ import {
 } from "@nextui-org/react"
 import MyButton from "../uis/button"
 import {type3} from "../uis/modal-styles"
+import client from "../../helpers/client"
+import {CurrentBookingOrder} from "../../stores/current-booking-order"
 
-const reasons = [
-  {id: 1, reason: "I Changed My Mind"},
-  {id: 2, reason: "I No Longer Need Offers"},
-  {id: 3, reason: "I Did Not Find Suitable Offers"}
-]
+interface reason {
+  id: number
+  en_name: string
+  ar_name: string
+}
 
 const CancelModal = function CancelModal({
   isOpen,
@@ -24,8 +27,35 @@ const CancelModal = function CancelModal({
   onClose: () => void
   openBannedModal: () => void
 }) {
-  const [cancelReason, setCancelReason] = useState<string | null>(null)
+  const [cancelListReason, setCancelListReason] = useState<Array<reason>>([])
+  const [cancelReason, setCancelReason] = useState<number | null>(null)
   const [otherReason, setOtherReason] = useState<string>("")
+  const {result, clearCurrentBookingOrder} = useContext(CurrentBookingOrder)
+
+  const handleCancel = async () => {
+    if (
+      cancelReason !== null ||
+      (cancelReason === null && otherReason !== "")
+    ) {
+      client(`hotels/bookings/cancel/${result?.id}`, {
+        body: JSON.stringify({reason: cancelReason, reason_other: otherReason}),
+        method: "POST"
+      })?.then((res) => {
+        onClose()
+        clearCurrentBookingOrder()
+        if (res.banned) {
+          openBannedModal()
+        }
+      })
+    }
+  }
+  useEffect(() => {
+    const getData = async () => {
+      const data = await client("front/reasons", {method: "GET"})
+      setCancelListReason(data.result)
+    }
+    getData()
+  }, [])
   return (
     <Modal
       size="lg"
@@ -38,31 +68,31 @@ const CancelModal = function CancelModal({
           <h1 className="heading-2 mb-2">Cancel Reason</h1>
         </ModalHeader>
         <ModalBody>
-          {reasons.map(({id, reason}) => (
+          {cancelListReason.map(({id, en_name}) => (
             <MyButton
               key={id}
               color="white"
-              onClick={() => setCancelReason(reason)}
+              onClick={() => setCancelReason(id)}
               className={`${
-                reason === cancelReason ? "border-2 border-blue-500" : ""
+                id === cancelReason ? "border-2 border-blue-500" : ""
               }`}
               disableAnimation
               radius="full">
-              {reason}
+              {en_name}
             </MyButton>
           ))}
           <MyButton
-            onClick={() => setCancelReason("other")}
+            onClick={() => setCancelReason(null)}
             color="white"
             fullWidth
             className={`${
-              cancelReason === "other" ? "border-2 border-blue-500" : ""
+              cancelReason === null ? "border-2 border-blue-500" : ""
             }`}
             disableAnimation
             radius="full">
             Other
           </MyButton>
-          {cancelReason === "other" ? (
+          {cancelReason === null ? (
             <div>
               <input
                 value={otherReason}
@@ -75,18 +105,7 @@ const CancelModal = function CancelModal({
           ) : null}
         </ModalBody>
         <ModalFooter>
-          <MyButton
-            color="primary"
-            fullWidth
-            onClick={() => {
-              if (
-                (cancelReason !== null && cancelReason !== "other") ||
-                (cancelReason === "other" && otherReason !== "")
-              ) {
-                onClose()
-                openBannedModal()
-              }
-            }}>
+          <MyButton color="primary" fullWidth onClick={handleCancel}>
             Send
           </MyButton>
         </ModalFooter>

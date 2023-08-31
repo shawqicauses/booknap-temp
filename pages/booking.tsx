@@ -1,17 +1,18 @@
 import React from "react"
+import {NextPage} from "next"
 import Footer from "../components/layout/footer"
 import HotelPageContent from "../components/bookings/currant-booking"
 import Sidebar from "../components/uis/sidebar"
 
-const Booking = function Booking() {
+const Booking: NextPage = function Booking() {
   return (
-    <>
-      <div className="flex bg-white">
+    <div>
+      <div className="flex">
         <Sidebar />
         <HotelPageContent />
       </div>
       <Footer />
-    </>
+    </div>
   )
 }
 

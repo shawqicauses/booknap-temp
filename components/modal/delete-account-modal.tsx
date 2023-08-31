@@ -1,6 +1,9 @@
 import {Modal, ModalContent} from "@nextui-org/react"
+import {useContext} from "react"
 import MyButton from "../uis/button"
 import {type3} from "../uis/modal-styles"
+import client from "../../helpers/client"
+import {Auth} from "../../stores/auth"
 
 const DeleteAccountModal = function DeleteAccountModal({
   isOpen,
@@ -9,6 +12,19 @@ const DeleteAccountModal = function DeleteAccountModal({
   isOpen: boolean
   onClose: () => void
 }) {
+  const {token, signOut} = useContext(Auth)
+
+  const handleDeleteAccount = async () => {
+    if (token) {
+      client("delete", {method: "POST"})?.then((res) => {
+        if (res.success) {
+          signOut()
+          onClose()
+        }
+      })
+    }
+  }
+
   return (
     <Modal
       size="lg"
@@ -25,7 +41,12 @@ const DeleteAccountModal = function DeleteAccountModal({
             <MyButton onClick={onClose} radius="sm" fullWidth>
               Cancel
             </MyButton>
-            <MyButton size="lg" color="danger" radius="sm" fullWidth>
+            <MyButton
+              size="lg"
+              color="danger"
+              radius="sm"
+              fullWidth
+              onClick={handleDeleteAccount}>
               Delete
             </MyButton>
           </div>

@@ -1,46 +1,56 @@
-import {Spinner, useDisclosure} from "@nextui-org/react"
+import {useDisclosure} from "@nextui-org/react"
 import type {NextPage} from "next"
-import {useLoadScript} from "@react-google-maps/api"
-import {useEffect, useState} from "react"
-import {useQuery} from "@tanstack/react-query"
+import {Libraries, useLoadScript} from "@react-google-maps/api"
+import {useEffect, useMemo, useState} from "react"
 import BookingModal from "../components/modal/booking-modal"
 import MyGoogleMap from "../components/uis/map"
 import Sidebar from "../components/uis/sidebar"
+import LoadingDiv from "../components/uis/loading"
+import useFetch from "../hooks/use-fetch"
+import {IHotel} from "../types"
 
-interface IPostion {
+export interface Result {
+  data: IHotel[]
+  total: number
+}
+export interface IMapHotelsRes {
+  success: boolean
+  message: string
+  result: Result
+}
+
+interface IPosition {
   lat: number
   lng: number
 }
 const MyHome: NextPage = function MyHome() {
-  const {isLoading, isError, isFetched, data} = useQuery({
-    queryKey: ["hotelsMapList"],
-    queryFn: async () => {
-      const response = await fetch(
-        "https://booknap-api.wpgooal.com/api/hotels/front/map-list/31/30/35"
-      )
-      if (!response.ok) {
-        throw new Error("Network response was not ok")
-      }
-      return response.json()
-    }
-  })
+  const {data: respond} = useFetch<IMapHotelsRes>(
+    "hotels/front/map-list/31.522816/34.4489984/1000"
+  )
 
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-  const {isLoaded} = useLoadScript({googleMapsApiKey: apiKey || ""})
-  const [pos, setPos] = useState<IPostion>()
-  const [hotels, setHotels] = useState<Array<IPostion>>([])
+  const libraries: Libraries = useMemo(() => ["places", "geocoding"], [])
+
+  const {isLoaded} = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+    libraries
+  })
+
+  const [userPos, setUserPos] = useState<IPosition>()
+  const [pos, setPos] = useState<IPosition>()
+  const [hotels, setHotels] = useState<Array<IHotel>>([])
+
   useEffect(() => {
-    if (!isLoading && !isError && isFetched) {
-      setHotels([...(data?.result?.data ?? []), {lat: 30, lng: 40}])
+    if (respond) {
+      setHotels(respond.result.data)
     }
-  }, [isFetched, isLoading, isError, data?.result?.data])
+  }, [respond])
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
-          setPos({
+          setUserPos({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           })
@@ -48,17 +58,17 @@ const MyHome: NextPage = function MyHome() {
       )
     }
   }, [])
+
   return (
     <main className="main-hight">
       <div className="flex main-hight">
         <Sidebar />
-        {!isLoaded || isLoading ? (
-          <div className="w-full h-full my-flex">
-            <Spinner size="lg" />
-          </div>
+        {!isLoaded || !userPos ? (
+          <LoadingDiv />
         ) : (
           <MyGoogleMap
             pos={{lat: 30, lng: 40}}
+            center={userPos ?? {lat: 30, lng: 30}}
             setPos={setPos}
             hotels={hotels}
             handleClick={onOpen}

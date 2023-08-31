@@ -4,9 +4,9 @@ import {AiFillCheckCircle} from "react-icons/ai"
 
 const AboutUsContent = function AboutUsContent() {
   return (
-    <div className="py-4 bg-white">
+    <div className="py-4">
       <div className="my-container">
-        <div className="text-center bg-gray-100 p-4 pt-8 bg-[url('/mask.png')] mb-6">
+        <div className="text-center bg-gray-100 dark:bg-[#1A2230] p-4 pt-8 bg-[url('/mask.png')] mb-6">
           <h1 className="heading-1 text-blue-600 mb-4">ABOUT US</h1>
           <p className="body">
             our company was founded in 2020. we work daily to become better and
@@ -15,7 +15,7 @@ const AboutUsContent = function AboutUsContent() {
         </div>
         <div className="mb-6 flex flex-col-reverse gap-4 lg:flex-row justify-between items-center">
           <div className="lg:w-2/5">
-            <h2 className="heading-2 mb-4">What Are BOOKNAP</h2>
+            <h2 className="heading-2 mb-4 dark:text-white">What Are BOOKNAP</h2>
             <p className="body-sm">
               lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
               nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
@@ -46,7 +46,7 @@ const AboutUsContent = function AboutUsContent() {
         <div className="flex flex-col-reverse gap-4 lg:flex-row justify-between items-center">
           <div className="lg:w-2/5">
             <div className="mb-3">
-              <h2 className="heading-2 mb-4">Our goals</h2>
+              <h2 className="heading-2 mb-4 dark:text-white">Our goals</h2>
               <p className="body-sm">
                 lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                 diam nonumy eirmod tempor invidunt ut labore et dolore magna
@@ -58,7 +58,9 @@ const AboutUsContent = function AboutUsContent() {
               </p>
             </div>
             <div>
-              <h2 className="heading-2 mb-4">Lorem Ipsum is simply</h2>
+              <h2 className="heading-2 mb-4 dark:text-white">
+                Lorem Ipsum is simply
+              </h2>
               <p className="body-sm mb-2">
                 lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
                 diam nonumy eirmod tempor invidunt ut labore et dolore magna
@@ -67,19 +69,19 @@ const AboutUsContent = function AboutUsContent() {
               <ul className="flex flex-col gap-2">
                 <li className="flex gap-1">
                   <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
-                  <span className="inline-block body-sm text-black">
+                  <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
                 </li>
                 <li className="flex gap-1">
                   <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
-                  <span className="inline-block body-sm text-black">
+                  <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
                 </li>
                 <li className="flex gap-1">
                   <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
-                  <span className="inline-block body-sm text-black">
+                  <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
                 </li>

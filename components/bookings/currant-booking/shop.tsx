@@ -52,7 +52,9 @@ const CardItem = function CardItem({
   handleClick: () => void
 }) {
   return (
-    <div className="p-3 h-auto bg-gray-100 rounded-lg" key={id}>
+    <div
+      className="p-3 h-auto bg-gray-100 dark:bg-[#1A2230] rounded-lg"
+      key={id}>
       <div className="relative h-auto rounded-lg overflow-hidden">
         <Image src={image} alt={product} fill className="!relative" />
       </div>
@@ -81,7 +83,7 @@ const CardItem = function CardItem({
   )
 }
 
-const Resturant = function Resturant() {
+const Restaurant = function Restaurant() {
   const {cart, addItemToCart, deleteItem} = useContent()
 
   return (
@@ -255,8 +257,8 @@ const ItemPage = function ItemPage() {
 }
 
 const Shop = function Shop({tab}: {tab: string}) {
-  const currontShop = {
-    resturant: <Resturant />,
+  const currantShop = {
+    restaurant: <Restaurant />,
     clothes: <Clothes />,
     favorite: <Favorite />,
     itemPage: <ItemPage />
@@ -265,7 +267,7 @@ const Shop = function Shop({tab}: {tab: string}) {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-5 h-auto">
-        {currontShop}
+        {currantShop}
       </div>
       {/* <ItemPage /> */}
     </>

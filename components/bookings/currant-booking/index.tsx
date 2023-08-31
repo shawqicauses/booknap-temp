@@ -34,11 +34,11 @@ const hotelData = {
   hotelName: "Hotel Name",
   rating: 3
 }
-const shopTabs = ["resturant", "clothes", "favorite"]
+const shopTabs = ["restaurant", "clothes", "favorite"]
 
 const HotelPageContent = function HotelPageContent() {
   const [tab, setTab] = useState(0)
-  const [shopTab, setShopTab] = useState("resturant")
+  const [shopTab, setShopTab] = useState("restaurant")
   const tabsContent = [
     <Booking />,
     <RoomsDetails />,
@@ -47,8 +47,8 @@ const HotelPageContent = function HotelPageContent() {
   ]
 
   return (
-    <div className="my-container mt-6">
-      <div className="p-3 bg-gray-100 rounded-lg mb-5">
+    <div className="my-container my-6">
+      <div className="p-3 bg-gray-100 dark:bg-[#1A2230] rounded-lg mb-5">
         <div className="relative mb-2">
           <div className="flex gap-3 absolute bottom-3 left-4 z-10">
             <Image

@@ -1,28 +1,31 @@
-import {GoogleMap, Marker} from "@react-google-maps/api"
-import React, {Dispatch, SetStateAction} from "react"
+import {GoogleMap, MarkerF} from "@react-google-maps/api"
+import React, {Dispatch, SetStateAction, useMemo} from "react"
+import {IHotel} from "../../types"
 
-interface IPostion {
+interface IPosition {
   lat: number
   lng: number
 }
 
 const MyGoogleMap = function MyGoogleMap({
   pos,
+  center,
   setPos,
   handleClick,
   hotels
 }: {
-  pos: IPostion
-  setPos: Dispatch<SetStateAction<IPostion | undefined>>
+  pos: IPosition
+  center: IPosition
+  setPos: Dispatch<SetStateAction<IPosition | undefined>>
   handleClick: () => void
-  hotels: Array<IPostion>
+  hotels: Array<IHotel>
 }) {
-  console.log(hotels)
+  const user = useMemo(() => center, [center])
 
   return (
     <GoogleMap
       zoom={10}
-      center={pos}
+      center={center}
       mapContainerClassName="w-full h-full"
       onClick={(e) => {
         handleClick()
@@ -31,8 +34,14 @@ const MyGoogleMap = function MyGoogleMap({
           lng: e.latLng?.lng() ?? pos.lng
         })
       }}>
+      <MarkerF position={{lat: 30, lng: 40}} visible />
+      <MarkerF position={user} visible />
       {hotels.map((hotelPos) => (
-        <Marker position={hotelPos} />
+        <MarkerF
+          key={hotelPos.id}
+          visible
+          position={{lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)}}
+        />
       ))}
     </GoogleMap>
   )

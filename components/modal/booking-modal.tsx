@@ -1,4 +1,6 @@
-import React, {useReducer, useState} from "react"
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
+import React, {useContext, useState} from "react"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
@@ -11,28 +13,17 @@ import {
   ModalContent,
   useDisclosure
 } from "@nextui-org/react"
-
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng
+} from "use-places-autocomplete"
 import SignInModal from "./sign-in-modal"
 import MyButton from "../uis/button"
 import {type5} from "../uis/modal-styles"
-
-interface IInitObject {
-  noAdults: number
-  noChildren: number
-  noSingleRoom: number
-  noDoubleRoom: number
-  noSuiteRooms: number
-  noPresidentialSuite: number
-}
-
-const initObject: IInitObject = {
-  noAdults: 0,
-  noChildren: 0,
-  noSingleRoom: 0,
-  noDoubleRoom: 0,
-  noSuiteRooms: 0,
-  noPresidentialSuite: 0
-}
+import {Auth} from "../../stores/auth"
+import client from "../../helpers/client"
+import {IBookingReq} from "../../types"
+import {CurrentBookingOrder} from "../../stores/current-booking-order"
 
 export interface IAction {
   type: string
@@ -41,21 +32,19 @@ export interface IAction {
 }
 
 interface BasicFormData {
-  destination: string
+  lat: number
+  lng: number
   FromDate: string
   FromTime: string
   ToDate: string
   ToTime: string
   note: string
-}
-
-const reducer = (state: IInitObject, action: IAction) => {
-  switch (action.type) {
-    case "update":
-      return {...state, [action.filed]: action.value}
-    default:
-      return state
-  }
+  noAdults: number
+  noChildren: number
+  noSingleRoom: number
+  noDoubleRoom: number
+  noSuiteRooms: number
+  noPresidentialSuite: number
 }
 
 export const Counter = function Counter({
@@ -141,15 +130,14 @@ const CounterStyled = function CounterStyled({
 const FormPageTow = function FormPageTow({
   handleClick,
   data,
-  setPage,
-  openSignIn
+  setPage
 }: {
   setPage: React.Dispatch<React.SetStateAction<number>>
   handleClick: Function
-  data: IInitObject
-  openSignIn: () => void
+  data: BasicFormData
 }) {
   const [openTab, setOpenTab] = useState<number | null>(1)
+
   return (
     <div>
       <MyButton
@@ -213,10 +201,80 @@ const FormPageTow = function FormPageTow({
           tabNumber={4}
           setOpenTab={setOpenTab}
         />
-
-        <MyButton type="submit" color="primary" onClick={openSignIn} fullWidth>
+        <MyButton type="submit" color="primary" fullWidth>
           Order
         </MyButton>
+      </div>
+    </div>
+  )
+}
+
+const PlacesSuggestionInput = function PlacesSuggestionInput({
+  setPosition
+}: {
+  setPosition: Function
+}) {
+  const {
+    ready,
+    value,
+    suggestions: {status, data},
+    setValue,
+    clearSuggestions,
+    init
+  } = usePlacesAutocomplete({
+    callbackName: "YOUR_CALLBACK_NAME",
+    requestOptions: {},
+    debounce: 300
+  })
+  init()
+  const handleInput = (e: any) => {
+    setValue(e.target.value)
+  }
+
+  const handleSelect = (e: any) => () => {
+    setValue(e.description, false)
+    clearSuggestions()
+    console.log(e)
+    getGeocode({address: e.description}).then((results) => {
+      const {lat, lng} = getLatLng(results[0])
+      console.log("📍 Coordinates: ", {lat, lng})
+      setPosition(lat, lng)
+    })
+  }
+  return (
+    <div>
+      <label htmlFor="destination" className="label-gray">
+        Destination:
+      </label>
+      <div className="relative">
+        <input
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Where are you going?"
+          className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
+        />
+        {status === "OK" && (
+          <ul className="absolute top-[100%] left-0 overflow-y-scroll h-[200px] bg-white z-10 flex flex-col gap-2 w-full shadow-md rounded-base divide-y-1">
+            {data.map((suggestion) => {
+              const {
+                place_id,
+                structured_formatting: {main_text, secondary_text}
+              } = suggestion
+
+              return (
+                <li
+                  key={place_id}
+                  onClick={handleSelect(suggestion)}
+                  aria-hidden="true"
+                  className="p-3 w-full flex justify-between flex-wrap">
+                  <span className="heading-3">{main_text}</span>
+                  <span className="body">{secondary_text}</span>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     </div>
   )
@@ -229,38 +287,92 @@ const BookingModal = function BookingModal({
   isOpen: boolean
   onClose: () => void
 }) {
-  const [data, dispatch] = useReducer(reducer, initObject)
+  const {token} = useContext(Auth)
+  const {handleCurrentBookingOrder} = useContext(CurrentBookingOrder)
   const [page, setPage] = useState<number>(0)
+
+  const signIn = useDisclosure()
+  const {register, handleSubmit, getValues, watch, setValue} =
+    useForm<BasicFormData>({
+      defaultValues: {
+        FromDate: "",
+        FromTime: "",
+        ToDate: "",
+        ToTime: "",
+        note: "",
+        noAdults: 0,
+        noChildren: 0,
+        noDoubleRoom: 0,
+        noPresidentialSuite: 0,
+        noSingleRoom: 0,
+        noSuiteRooms: 0
+      }
+    })
+
   const handleClick = (
     num: number,
-    filedName: string,
+    filedName:
+      | "noAdults"
+      | "noChildren"
+      | "noSingleRoom"
+      | "noDoubleRoom"
+      | "noSuiteRooms"
+      | "noPresidentialSuite",
     currantValue: number
   ) => {
     if (currantValue + num >= 0) {
-      dispatch({
-        type: "update",
-        filed: filedName,
-        value: currantValue + num
+      setValue(filedName, currantValue + num)
+    }
+  }
+
+  const onSubmit: SubmitHandler<BasicFormData> = async (
+    formData: BasicFormData
+  ) => {
+    console.log(formData)
+    if (!token) {
+      signIn.onOpen()
+    } else if (
+      new Date(`${formData.FromDate} ${formData.FromTime}`) >=
+      new Date(`${formData.ToDate} ${formData.ToTime}`)
+    ) {
+      console.log("Hello")
+    } else {
+      client("hotels/bookings/create", {
+        method: "POST",
+        body: JSON.stringify({
+          lat: formData.lat,
+          lng: formData.lng,
+          date_from: `${formData.FromDate} ${formData.FromTime}`,
+          date_to: `${formData.ToDate} ${formData.ToTime}`,
+          adults: formData.noAdults,
+          children: formData.noChildren,
+          notes: formData.note,
+          country_id: 1,
+          city_id: 2,
+          distance: 1000,
+          rooms: [
+            {type: 1, number: formData.noSingleRoom},
+            {type: 2, number: formData.noDoubleRoom},
+            {type: 3, number: formData.noSuiteRooms},
+            {type: 4, number: formData.noPresidentialSuite}
+          ]
+        } as IBookingReq)
+      })?.then((res) => {
+        console.log(res)
+        if (res.result) {
+          handleCurrentBookingOrder(res.result)
+          onClose()
+        }
       })
     }
   }
 
-  const {register, handleSubmit, getValues} = useForm<BasicFormData>()
-  const onSubmit: SubmitHandler<BasicFormData> = (formData: BasicFormData) => {
-    const finalData = {
-      ...formData,
-      ...data
-    }
-    if (
-      new Date(`${finalData.FromDate} ${finalData.FromTime}`) >=
-      new Date(`${finalData.ToDate} ${finalData.ToTime}`)
-    ) {
-      // return
-    }
-    // console.log(finalData)
+  const setPosition = (lat: number, lng: number) => {
+    setValue("lat", lat)
+    setValue("lng", lng)
   }
+
   const toDayDate = new Date().toISOString().split("T")[0]
-  const signIn = useDisclosure()
 
   return (
     <>
@@ -278,17 +390,7 @@ const BookingModal = function BookingModal({
               className="flex flex-col gap-1 relative justify-start">
               {page === 0 ? (
                 <div className="pt-10 px-5 w-auto">
-                  <div>
-                    <label htmlFor="destination" className="label-gray">
-                      Destination:
-                    </label>
-                    <select
-                      id="destination"
-                      {...register("destination", {required: true})}
-                      className="input p-3 leading-5 bg-gray-100 rounded-xl">
-                      <option value="1">Where are you going?</option>
-                    </select>
-                  </div>
+                  <PlacesSuggestionInput setPosition={setPosition} />
                   <div>
                     <label htmlFor="date" className="label-gray">
                       Date:
@@ -302,8 +404,11 @@ const BookingModal = function BookingModal({
                       <div className="my-flex gap-2">
                         <Input
                           type="date"
-                          {...register("FromDate", {required: true})}
-                          min={toDayDate}
+                          value={watch().FromDate}
+                          {...register("FromDate", {
+                            required: true,
+                            min: watch().FromDate ?? toDayDate
+                          })}
                           variant="flat"
                           classNames={{
                             inputWrapper: "shadow-none",
@@ -312,6 +417,7 @@ const BookingModal = function BookingModal({
                         />
                         <Input
                           type="time"
+                          value={watch().FromTime}
                           {...register("FromTime", {required: true})}
                           variant="flat"
                           classNames={{
@@ -330,6 +436,7 @@ const BookingModal = function BookingModal({
                       <div className="my-flex gap-2">
                         <Input
                           type="date"
+                          value={watch().ToDate}
                           {...register("ToDate", {required: true})}
                           min={toDayDate}
                           variant="flat"
@@ -340,6 +447,7 @@ const BookingModal = function BookingModal({
                         />
                         <Input
                           type="time"
+                          value={watch().ToTime}
                           {...register("ToTime", {required: true})}
                           variant="flat"
                           classNames={{
@@ -359,12 +467,12 @@ const BookingModal = function BookingModal({
                         Adults
                       </label>
                       <Counter
-                        value={data.noAdults}
+                        value={watch().noAdults}
                         handleClickPlus={() =>
-                          handleClick(1, "noAdults", data.noAdults)
+                          handleClick(1, "noAdults", watch().noAdults)
                         }
                         handleClickMinus={() =>
-                          handleClick(-1, "noAdults", data.noAdults)
+                          handleClick(-1, "noAdults", watch().noAdults)
                         }
                       />
                     </div>
@@ -373,12 +481,12 @@ const BookingModal = function BookingModal({
                         Children
                       </label>
                       <Counter
-                        value={data.noChildren}
+                        value={watch().noChildren}
                         handleClickPlus={() =>
-                          handleClick(1, "noChildren", data.noChildren)
+                          handleClick(1, "noChildren", watch().noChildren)
                         }
                         handleClickMinus={() =>
-                          handleClick(-1, "noChildren", data.noChildren)
+                          handleClick(-1, "noChildren", watch().noChildren)
                         }
                       />
                     </div>
@@ -389,12 +497,12 @@ const BookingModal = function BookingModal({
                     </label>
                     <textarea
                       id="note"
+                      value={watch().note}
                       {...register("note")}
                       className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
                     />
                   </div>
                   <MyButton
-                    type="submit"
                     color="primary"
                     onClick={() => {
                       if (
@@ -402,8 +510,9 @@ const BookingModal = function BookingModal({
                         getValues().FromTime &&
                         getValues().ToDate &&
                         getValues().ToTime &&
-                        getValues().destination &&
-                        (data.noAdults > 0 || data.noChildren > 0)
+                        getValues().lat &&
+                        getValues().lng &&
+                        (getValues().noAdults > 0 || getValues().noChildren > 0)
                       ) {
                         setPage(1)
                       }
@@ -414,10 +523,9 @@ const BookingModal = function BookingModal({
                 </div>
               ) : (
                 <FormPageTow
-                  data={data}
+                  data={watch()}
                   handleClick={handleClick}
                   setPage={setPage}
-                  openSignIn={signIn.onOpen}
                 />
               )}
             </form>
