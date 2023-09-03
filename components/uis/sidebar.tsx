@@ -1,27 +1,35 @@
-import React, {useContext, useState} from "react"
+import React, {useState} from "react"
 import IconSidebar from "../icon-sidebar"
-import BookingSidebar from "../bookings/booking-sidebar"
-import {Auth} from "../../stores/auth"
-import {CurrentBookingOrder} from "../../stores/current-booking-order"
+import OffersSidebar from "../bookings/offers-list-sidebar"
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
+import {useAuth} from "../../stores/auth"
+import BookingSidebar from "../bookings/bookings-list-sidebar"
 
 const Sidebar = function Sidebar() {
-  const [showBookingSidebar, setShowBookingSidebar] = useState(true)
-  const {token} = useContext(Auth)
-  const {result} = useContext(CurrentBookingOrder)
+  const [showOffersSidebar, setShowOffersSidebar] = useState<boolean>(true)
+  const [showBookingsSidebar, setShowBookingsSidebar] = useState<boolean>(false)
+
+  const {token} = useAuth()
+  const {currentBooking} = useCurrentBookingOrder()
 
   if (token) {
     return (
       <div>
         <IconSidebar
-          setShowBookingSidebar={setShowBookingSidebar}
-          isBookingNow={!!result}
+          setShowOffersSidebar={setShowOffersSidebar}
+          setShowBookingsSidebar={setShowBookingsSidebar}
+          isBookingNow={!!currentBooking}
         />
-        {result ? (
-          <BookingSidebar
-            show={showBookingSidebar}
-            setShow={setShowBookingSidebar}
+        {currentBooking ? (
+          <OffersSidebar
+            show={showOffersSidebar}
+            setShow={setShowOffersSidebar}
           />
         ) : null}
+        <BookingSidebar
+          show={showBookingsSidebar}
+          setShow={setShowBookingsSidebar}
+        />
       </div>
     )
   }

@@ -9,8 +9,8 @@ import {
 } from "react"
 import {IProfileRes, IUser} from "../types"
 import client from "../helpers/client"
-import {Auth} from "./auth"
-import {CurrentBookingOrder} from "./current-booking-order"
+import {useAuth} from "./auth"
+import {useCurrentBookingOrder} from "./current-booking-order"
 
 interface IUserContext {
   user: IUser | null
@@ -35,8 +35,8 @@ const UserProvider = function UserProvider({
 }: IAuthProvider): ReactElement {
   const [user, setUser] = useState<IUser | null>(null)
   const [ready, setReady] = useState<boolean>(false)
-  const {token} = useContext(Auth)
-  const {handleCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const {token} = useAuth()
+  const {handleCurrentBookingOrder} = useCurrentBookingOrder()
   const getData = useCallback(async () => {
     client("profile", {method: "GET"})?.then((res: IProfileRes) => {
       if (res.success) {
@@ -76,5 +76,11 @@ const UserProvider = function UserProvider({
   )
   return <User.Provider value={value}>{children}</User.Provider>
 }
-
-export {User, UserProvider}
+const useUser = function useUser() {
+  const context = useContext(User)
+  if (!context) {
+    throw new Error("useUser must be used within an UserProvider")
+  }
+  return context
+}
+export {useUser, UserProvider}

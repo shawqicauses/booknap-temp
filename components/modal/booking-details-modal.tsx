@@ -2,6 +2,7 @@ import {Rating} from "@mui/material"
 import {Modal, ModalBody, ModalContent} from "@nextui-org/react"
 import Image from "next/image"
 import React from "react"
+import {IBooking} from "../../types"
 
 const bookingData = {
   hotelName: "Grand Hotel",
@@ -19,10 +20,12 @@ const bookingData = {
 
 const BookingDetailsModal = function BookingDetailsModal({
   isOpen,
-  onClose
+  onClose,
+  Booking
 }: {
   isOpen: boolean
   onClose: () => void
+  Booking: IBooking
 }) {
   return (
     <Modal
@@ -36,39 +39,33 @@ const BookingDetailsModal = function BookingDetailsModal({
           <div className="p-10">
             <div className="my-flex-between py-2 text-sm">
               <span className="bg-white rounded-full inline-block px-2 py-1 ">
-                Order {bookingData.bookingId}
+                Order {Booking.id}
               </span>
               <span className="bg-white rounded-full inline-block px-2 py-1">
-                {bookingData.endDay}
+                {Booking.date_to}
               </span>
             </div>
-            <div
-              key={bookingData.bookingId}
-              className="flex gap-3 rounded-lg py-2">
+            <div className="flex gap-3 rounded-lg py-2">
               <div className="relative h-20 w-20 rounded-lg overflow-hidden">
                 <Image
-                  src={bookingData.hotelLogo}
-                  alt={bookingData.hotelName}
+                  src={Booking.hotel?.logo!}
+                  alt={Booking.hotel?.name!}
                   fill
                 />
               </div>
               <div>
                 <h3 className="heading-3">{bookingData.hotelName}</h3>
-                <Rating value={bookingData.hotelRating} readOnly />
+                <Rating value={Booking.hotel?.stars} readOnly />
               </div>
             </div>
             <div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
                 <span>From:</span>
-                <span>{bookingData.startDay}</span>
+                <span>{Booking.date_from}</span>
               </div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
                 <span>To:</span>
-                <span>{bookingData.startDay}</span>
-              </div>
-              <div className="my-flex-between py-2 border-b-1 border-gray-200">
-                <span>Time:</span>
-                <span>{bookingData.endTime}</span>
+                <span>{Booking.date_to}</span>
               </div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
                 <span>Grand Room:</span>
@@ -76,15 +73,15 @@ const BookingDetailsModal = function BookingDetailsModal({
               </div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
                 <span>Adults:</span>
-                <span>{bookingData.noAdults}</span>
+                <span>{Booking.adults}</span>
               </div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
-                <span>Childern:</span>
-                <span>{bookingData.noChildern}</span>
+                <span>Children:</span>
+                <span>{Booking.children}</span>
               </div>
               <div className="my-flex-between py-2  font-semi-bold text-medium">
                 <span>Price:</span>
-                <span className="text-red-500">{bookingData.price}$</span>
+                <span className="text-red-500">{Booking.rooms_no}$</span>
               </div>
             </div>
           </div>

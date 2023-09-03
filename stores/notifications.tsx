@@ -8,7 +8,7 @@ import {
   useState
 } from "react"
 import client from "../helpers/client"
-import {Auth} from "./auth"
+import {useAuth} from "./auth"
 
 interface INotification {
   id: string
@@ -37,7 +37,7 @@ const NotificationProvider = function NotificationProvider({
 }: INotificationsProvider): ReactElement {
   const [notifications, setNotifications] = useState<Array<INotification>>([])
   const [ready, setReady] = useState<boolean>(false)
-  const {token} = useContext(Auth)
+  const {token} = useAuth()
   const reFetch = useCallback(async () => {
     setReady(false)
     client("notifications")?.then((res) => {
@@ -67,5 +67,14 @@ const NotificationProvider = function NotificationProvider({
     <Notifications.Provider value={value}>{children}</Notifications.Provider>
   )
 }
+const useNotifications = function useNotifications() {
+  const context = useContext(Notifications)
+  if (!context) {
+    throw new Error(
+      "useNotifications must be used within an NotificationProvider"
+    )
+  }
+  return context
+}
 
-export {Notifications, NotificationProvider}
+export {useNotifications, NotificationProvider}

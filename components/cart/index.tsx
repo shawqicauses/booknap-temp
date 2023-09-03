@@ -5,7 +5,7 @@ import CheckoutCard from "./checkout-card"
 const CartContent = function CartContent() {
   return (
     <div className="my-10 my-container flex gap-8 flex-col">
-      <div className="p-5 bg-[#F5F5F5] dark:bg-[#1A2230] rounded-lg mb-3">
+      <div className="p-5 bg-[#F5F5F5] dark:bg-mirage rounded-lg mb-3">
         <ItemTable />
       </div>
       <CheckoutCard />

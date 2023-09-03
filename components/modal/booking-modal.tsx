@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
-import React, {useContext, useState} from "react"
+import React, {useState, useEffect} from "react"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
@@ -20,10 +20,10 @@ import usePlacesAutocomplete, {
 import SignInModal from "./sign-in-modal"
 import MyButton from "../uis/button"
 import {type5} from "../uis/modal-styles"
-import {Auth} from "../../stores/auth"
 import client from "../../helpers/client"
 import {IBookingReq} from "../../types"
-import {CurrentBookingOrder} from "../../stores/current-booking-order"
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
+import {useAuth} from "../../stores/auth"
 
 export interface IAction {
   type: string
@@ -210,9 +210,13 @@ const FormPageTow = function FormPageTow({
 }
 
 const PlacesSuggestionInput = function PlacesSuggestionInput({
-  setPosition
+  setPosition,
+  setDestination,
+  startValue
 }: {
   setPosition: Function
+  setDestination: Function
+  startValue: string
 }) {
   const {
     ready,
@@ -228,8 +232,11 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
   })
   init()
   const handleInput = (e: any) => {
-    setValue(e.target.value)
+    setDestination(e.target.value)
   }
+  useEffect(() => {
+    setValue(startValue)
+  }, [startValue, setValue])
 
   const handleSelect = (e: any) => () => {
     setValue(e.description, false)
@@ -287,12 +294,12 @@ const BookingModal = function BookingModal({
   isOpen: boolean
   onClose: () => void
 }) {
-  const {token} = useContext(Auth)
-  const {handleCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const {token} = useAuth()
+  const {handleCurrentBookingOrder} = useCurrentBookingOrder()
   const [page, setPage] = useState<number>(0)
 
   const signIn = useDisclosure()
-  const {register, handleSubmit, getValues, watch, setValue} =
+  const {register, handleSubmit, getValues, watch, setValue, reset} =
     useForm<BasicFormData>({
       defaultValues: {
         FromDate: "",
@@ -358,10 +365,11 @@ const BookingModal = function BookingModal({
           ]
         } as IBookingReq)
       })?.then((res) => {
-        console.log(res)
         if (res.result) {
           handleCurrentBookingOrder(res.result)
           onClose()
+          reset()
+          setPage(0)
         }
       })
     }
@@ -373,7 +381,7 @@ const BookingModal = function BookingModal({
   }
 
   const toDayDate = new Date().toISOString().split("T")[0]
-
+  const [destination, setDestination] = useState("")
   return (
     <>
       <Modal
@@ -390,7 +398,11 @@ const BookingModal = function BookingModal({
               className="flex flex-col gap-1 relative justify-start">
               {page === 0 ? (
                 <div className="pt-10 px-5 w-auto">
-                  <PlacesSuggestionInput setPosition={setPosition} />
+                  <PlacesSuggestionInput
+                    setPosition={setPosition}
+                    setDestination={setDestination}
+                    startValue={destination}
+                  />
                   <div>
                     <label htmlFor="date" className="label-gray">
                       Date:

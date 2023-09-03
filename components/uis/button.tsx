@@ -11,14 +11,15 @@ const MyButton = extendVariants(Button, {
       xl2: "px-5 py-3 min-w-unit-10 h-full !text-xl gap-unit-2 rounded-small inline-flex  w-full h-full"
     },
     color: {
-      white: "bg-white text-black",
+      success: "bg-green-500 text-white",
+      white: "bg-white text-black dark:bg-mirage dark:text-white",
       primary: "text-white bg-[#2F5597]",
       primary2: "text-[#2F5597] bg-[#E9EDF4]",
       secondary: "text-blue-300 bg-gray-200",
       gray: "",
       selectedFilter: "bg-[#E9EDF4] text-black",
-      reject: "bg-[#E9EDF4] text-[#2F5597]",
-      offer: "bg-[#F7F7F7]",
+      reject: "bg-[#E9EDF4] text-[#2F5597] dark:bg-ebony-clay dark:text-white",
+      offer: "bg-[#F7F7F7] dark:bg-mirage",
       transparent: "bg-transparent",
       danger: "bg-red-600 text-white",
       navIcon:

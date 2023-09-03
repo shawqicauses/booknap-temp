@@ -9,7 +9,10 @@ import {
   useMemo,
   useState
 } from "react"
-import {Auth} from "./auth"
+import {useAuth} from "./auth"
+import {IListBookingHotelRes} from "../components/bookings"
+import client from "../helpers/client"
+import {IBooking} from "../types"
 
 export interface Result {
   date_from: string
@@ -34,60 +37,87 @@ interface ICurrentBookingOrderProvider {
 }
 
 interface ICurrentBookingOrderContext {
-  result: Result | null
+  currentBooking: Result | null
   ready: boolean
   handleCurrentBookingOrder: Function
   clearCurrentBookingOrder: Function
   setReady: Dispatch<SetStateAction<boolean>>
+  userBookings: IBooking[] | null
+  fetchUserBookings: () => void
 }
 
 const CurrentBookingOrder = createContext({
-  result: null,
+  currentBooking: null,
   ready: false,
   handleCurrentBookingOrder: () => {},
   clearCurrentBookingOrder: () => {},
-  setReady: () => {}
+  setReady: () => {},
+  userBookings: [],
+  fetchUserBookings: () => {}
 } as ICurrentBookingOrderContext)
 
 const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
   children
 }: ICurrentBookingOrderProvider): ReactElement {
-  const [result, setResult] = useState<Result | null>(null)
+  const [currentBooking, setCurrentBooking] = useState<Result | null>(null)
+  const [userBookings, setUserBookings] = useState<IBooking[] | null>(null)
+
   const [ready, setReady] = useState<boolean>(false)
-  const {token} = useContext(Auth)
+  const {token} = useAuth()
+
+  const fetchUserBookings = useCallback(() => {
+    client("hotels/bookings", {method: "GET"})?.then(
+      (res: IListBookingHotelRes) => {
+        const data = res.result.data.filter((booking) => {
+          const today = new Date()
+          const dateFrom = new Date(booking.date_from)
+          const dateTo = new Date(booking.date_to)
+          if (booking.hotel && today > dateFrom && today < dateTo) return true
+          return false
+        })
+        setUserBookings(data)
+      }
+    )
+  }, [])
 
   useEffect(() => {
     if (!token) {
       setReady(false)
-      setResult(null)
+      setCurrentBooking(null)
+    } else {
+      fetchUserBookings()
     }
-  }, [token])
+  }, [token, fetchUserBookings])
 
   const handleCurrentBookingOrder = useCallback((data: Result) => {
-    setResult(data)
+    setCurrentBooking(data)
     setReady(true)
   }, [])
 
   const clearCurrentBookingOrder = useCallback(() => {
-    setResult(null)
+    setCurrentBooking(null)
     setReady(false)
   }, [])
 
   const value = useMemo(
     () =>
       ({
-        result,
+        currentBooking,
         ready,
         handleCurrentBookingOrder,
         clearCurrentBookingOrder,
-        setReady
+        setReady,
+        userBookings,
+        fetchUserBookings
       } as ICurrentBookingOrderContext),
     [
-      result,
+      currentBooking,
       ready,
       handleCurrentBookingOrder,
       clearCurrentBookingOrder,
-      setReady
+      setReady,
+      userBookings,
+      fetchUserBookings
     ]
   )
 
@@ -97,5 +127,14 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
     </CurrentBookingOrder.Provider>
   )
 }
+const useCurrentBookingOrder = function useCurrentBookingOrder() {
+  const context = useContext(CurrentBookingOrder)
+  if (!context) {
+    throw new Error(
+      "useCurrentBookingOrder must be used within an CurrentBookingOrderProvider"
+    )
+  }
+  return context
+}
 
-export {CurrentBookingOrder, CurrentBookingOrderProvider}
+export {useCurrentBookingOrder, CurrentBookingOrderProvider}

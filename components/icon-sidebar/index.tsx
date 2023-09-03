@@ -1,18 +1,18 @@
 import React from "react"
 import {MdLocalOffer} from "react-icons/md"
 import {HiClipboardDocumentList} from "react-icons/hi2"
-import Link from "next/link"
-import {useRouter} from "next/router"
+
 import MyButton from "../uis/button"
 
 const IconSidebar = function IconSidebar({
-  setShowBookingSidebar,
+  setShowOffersSidebar,
+  setShowBookingsSidebar,
   isBookingNow
 }: {
-  setShowBookingSidebar: React.Dispatch<React.SetStateAction<boolean>>
+  setShowOffersSidebar: React.Dispatch<React.SetStateAction<boolean>>
+  setShowBookingsSidebar: React.Dispatch<React.SetStateAction<boolean>>
   isBookingNow: boolean
 }) {
-  const {pathname} = useRouter()
   return (
     <div className="relative">
       <div className="fixed main-hight p-2 flex flex-col z-10 bg-white/20 dark:bg-black/20 gap-3">
@@ -23,19 +23,18 @@ const IconSidebar = function IconSidebar({
               color="navIcon"
               radius="sm"
               isIconOnly
-              onClick={() => setShowBookingSidebar(true)}>
+              onClick={() => setShowOffersSidebar(true)}>
               <MdLocalOffer className="h-5 w-5 text-[#B9B9B9]" />
             </MyButton>
           </div>
         ) : null}
         <div>
           <MyButton
-            as={Link}
-            href="/booking"
             size="navIcon"
-            isIconOnly
+            color="navIcon"
             radius="sm"
-            color={pathname === "/booking" ? "primary" : "navIcon"}>
+            isIconOnly
+            onClick={() => setShowBookingsSidebar(true)}>
             <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
           </MyButton>
         </div>

@@ -1,72 +1,131 @@
 import {Input, Textarea} from "@nextui-org/react"
 import React from "react"
-import {SubmitHandler, useForm} from "react-hook-form"
+import {Controller, SubmitHandler, useForm} from "react-hook-form"
 import {BsTelephone} from "react-icons/bs"
 import {HiOutlineMap} from "react-icons/hi"
 import {TfiHeadphoneAlt} from "react-icons/tfi"
 import MyButton from "../uis/button"
+import client from "../../helpers/client"
 
 interface IContactUsForm {
-  firstName: string
+  name: string
   email: string
-  massage: string
+  message: string
 }
 
 const ContactUsForm = function ContactUsForm() {
-  const {register, handleSubmit} = useForm<IContactUsForm>({
-    defaultValues: {firstName: "", email: "", massage: ""}
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: {errors, isSubmitting}
+  } = useForm<IContactUsForm>({
+    defaultValues: {name: "", email: "", message: ""},
+    criteriaMode: "all"
   })
-  const onSubmit: SubmitHandler<IContactUsForm> = (formData: IContactUsForm) =>
-    formData
+  const onSubmit: SubmitHandler<IContactUsForm> = async (
+    formData: IContactUsForm
+  ) => {
+    await client("front/add-support", {
+      body: JSON.stringify(formData),
+      method: "POST"
+    })
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-3 flex flex-col gap-3">
       <div className="flex flex-col md:flex-row gap-3">
-        <Input
-          label="First Name"
-          labelPlacement="outside"
-          type="text"
-          {...register("firstName")}
-          placeholder="First Name"
-          variant="flat"
-          size="lg"
-          radius="sm"
-          classNames={{
-            inputWrapper: "shadow-none bg-white"
-          }}
-        />
-        <Input
-          label="Email"
-          labelPlacement="outside"
-          type="email"
-          {...register("email")}
-          placeholder="Email"
-          variant="flat"
-          size="lg"
-          radius="sm"
-          classNames={{
-            inputWrapper: "shadow-none bg-white"
-          }}
-        />
+        <div>
+          <Controller
+            render={({field}) => (
+              <Input
+                label="name"
+                labelPlacement="outside"
+                type="text"
+                {...field}
+                placeholder="Name"
+                variant="flat"
+                size="lg"
+                radius="sm"
+                classNames={{
+                  inputWrapper: "shadow-none bg-white"
+                }}
+                disabled={isSubmitting}
+              />
+            )}
+            name="name"
+            control={control}
+            defaultValue=""
+            rules={{required: "This Filed is Required"}}
+          />
+          {errors.name?.type ? (
+            <p className="text-red-500">{errors.name?.message}</p>
+          ) : null}
+        </div>
+        <div>
+          <Controller
+            render={({field}) => (
+              <Input
+                label="Email"
+                labelPlacement="outside"
+                type="email"
+                {...field}
+                placeholder="Email"
+                variant="flat"
+                size="lg"
+                radius="sm"
+                classNames={{
+                  inputWrapper: "shadow-none bg-white"
+                }}
+                disabled={isSubmitting}
+              />
+            )}
+            name="email"
+            control={control}
+            defaultValue=""
+            rules={{required: "This Filed is Required"}}
+          />
+          {errors.email?.type ? (
+            <p className="text-red-500">{errors.email?.message}</p>
+          ) : null}
+        </div>
       </div>
       <div className="w-full">
-        <Textarea
-          size="lg"
-          {...register("massage")}
-          id="massage"
-          minRows={50}
-          variant="flat"
-          label="Your Massage"
-          labelPlacement="outside"
-          placeholder="Message"
-          radius="sm"
-          classNames={{
-            inputWrapper: "shadow-none bg-white"
-          }}
+        <Controller
+          render={({field}) => (
+            <Textarea
+              size="lg"
+              {...field}
+              id="message"
+              minRows={50}
+              variant="flat"
+              label="Your Message"
+              labelPlacement="outside"
+              placeholder="message"
+              radius="sm"
+              classNames={{
+                inputWrapper: "shadow-none bg-white"
+              }}
+              disabled={isSubmitting}
+            />
+          )}
+          name="message"
+          control={control}
+          defaultValue=""
+          rules={{required: "This Filed is Required"}}
         />
+        {errors.message?.type ? (
+          <p className="text-red-500">{errors.message?.message}</p>
+        ) : null}
       </div>
       <div className="my-flex">
-        <MyButton type="submit" size="xl" color="primary">
+        <MyButton
+          type="submit"
+          size="xl"
+          color="primary"
+          isLoading={isSubmitting}
+          disabled={isSubmitting}>
           Submit
         </MyButton>
       </div>
@@ -78,7 +137,7 @@ const ContactUsContent = function ContactUsContent() {
   return (
     <div className="py-4 mx-auto">
       <div className="my-container">
-        <div className="text-center bg-gray-100 dark:bg-[#1A2230] p-4 pt-8 bg-[url('/mask.png')] mb-6 ">
+        <div className="text-center bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6 ">
           <h1 className="heading-1 text-blue-600 mb-4">CONTACT US</h1>
           <p className="body max-w-xl mx-auto">
             please feel free to contact with us for any kinds of inquiries and
@@ -86,7 +145,7 @@ const ContactUsContent = function ContactUsContent() {
           </p>
         </div>
         <div className="flex items-start gap-5 flex-col-reverse lg:flex-row">
-          <div className="bg-gray-100 dark:bg-[#1A2230] p-10 rounded-lg w-full lg:w-auto">
+          <div className="bg-gray-100 dark:bg-mirage p-10 rounded-lg w-full lg:w-auto">
             <h2 className="heading-2 mb-4 dark:text-white">HEAD OFFICE</h2>
             <ul className="flex flex-col gap-4">
               <li className="whitespace-nowrap flex gap-2">
@@ -103,7 +162,7 @@ const ContactUsContent = function ContactUsContent() {
               </li>
             </ul>
           </div>
-          <div className="bg-gray-100 dark:bg-[#1A2230] p-10 rounded-lg flex-1 w-full lg:w-auto">
+          <div className="bg-gray-100 dark:bg-mirage p-10 rounded-lg flex-1 w-full lg:w-auto">
             <h2 className="heading-2 mb-4 dark:text-white">
               SEND US A MESSAGE
             </h2>

@@ -27,6 +27,7 @@ const MyGoogleMap = function MyGoogleMap({
       zoom={10}
       center={center}
       mapContainerClassName="w-full h-full"
+      options={{disableDefaultUI: true, zoomControl: true}}
       onClick={(e) => {
         handleClick()
         setPos({
@@ -40,8 +41,9 @@ const MyGoogleMap = function MyGoogleMap({
         <MarkerF
           key={hotelPos.id}
           visible
-          position={{lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)}}
-        />
+          position={{lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)}}>
+          <div className="w-20 h-20 bg-red-300">Helap.w.aw</div>
+        </MarkerF>
       ))}
     </GoogleMap>
   )

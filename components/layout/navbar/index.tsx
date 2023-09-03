@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react"
 import Image from "next/image"
 import Link from "next/link"
-import React, {ReactElement, useContext, useEffect, useState} from "react"
+import React, {ReactElement, useEffect, useState} from "react"
 import {BiMoon, BiTrash, BiUser} from "react-icons/bi"
 import {GoChecklist} from "react-icons/go"
 import {HiOutlineLogout} from "react-icons/hi"
@@ -19,15 +19,16 @@ import {BsFillSunFill} from "react-icons/bs"
 import {AiOutlineShoppingCart} from "react-icons/ai"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {IoMdClose, IoMdNotificationsOutline} from "react-icons/io"
-import {Auth} from "../../../stores/auth"
+import {useAuth} from "../../../stores/auth"
 import SignInModal from "../../modal/sign-in-modal"
 import DeleteAccountModal from "../../modal/delete-account-modal"
 import Lang from "./lang"
-import {useContent} from "../../../stores/cart"
+import {useCart} from "../../../stores/cart"
 import MyButton from "../../uis/button"
 import client from "../../../helpers/client"
-import {User} from "../../../stores/user"
-import {Notifications} from "../../../stores/notifications"
+import {useUser} from "../../../stores/user"
+import {useNotifications} from "../../../stores/notifications"
+import {useTheme} from "../../../stores/theme"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -50,7 +51,7 @@ const NavbarOpenToggle = function NavbarOpenToggle({
         setIsOpened(true)
         document.body.style.overflowY = "hidden"
       }}>
-      <GiHamburgerMenu strokeWidth={1.5} className="h-5 w-5 stroke-current" />
+      <GiHamburgerMenu strokeWidth={1.5} className="h-6 w-6 stroke-current" />
     </button>
   )
 }
@@ -72,84 +73,47 @@ const NavbarCloseToggle = function NavbarCloseToggle({
   )
 }
 
-// const items = [
-//   {
-//     id: 1,
-//     logo: "/user-profile.jpg",
-//     title: "Lorem Ipsum Dolor Sit Amet",
-//     date: "6 June 2023",
-//     time: "02:26 PM"
-//   },
-//   {
-//     id: 2,
-//     logo: "/user-profile.jpg",
-//     title: "Lorem Ipsum Dolor Sit Amet",
-//     date: "6 June 2023",
-//     time: "02:26 PM"
-//   },
-//   {
-//     id: 3,
-//     logo: "/user-profile.jpg",
-//     title: "Lorem Ipsum Dolor Sit Amet",
-//     date: "6 June 2023",
-//     time: "02:26 PM"
-//   },
-//   {
-//     id: 4,
-//     logo: "/user-profile.jpg",
-//     title: "Lorem Ipsum Dolor Sit Amet",
-//     date: "6 June 2023",
-//     time: "02:26 PM"
-//   },
-//   {
-//     id: 5,
-//     logo: "/user-profile.jpg",
-//     title: "Lorem Ipsum Dolor Sit Amet",
-//     date: "6 June 2023",
-//     time: "02:26 PM"
-//   }
-// ]
+const NotificationsDropDown2 = function NotificationsDropDown2() {
+  const {notifications, ready} = useNotifications()
+  const [isOpen, setIsOpen] = useState(false)
+  const handleClick = () => {
+    setIsOpen((pre) => !pre)
+    if (ready) {
+      notifications.forEach((noti: any) => {
+        if (!noti.read_at) {
+          client(`notifications/read/${noti.id}`, {method: "GET"})
+        }
+      })
+    }
+  }
 
-const NotificationsDropDown = function NotificationsDropDown() {
-  const {notifications, ready} = useContext(Notifications)
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      setIsOpen(false)
+    })
+  }, [])
   return (
-    <Dropdown classNames={{base: "p-0"}}>
-      <DropdownTrigger>
-        <MyButton
-          isIconOnly
-          size="navIcon"
-          color="navIcon"
-          onClick={() => {
-            if (ready) {
-              notifications.forEach((noti: any) => {
-                if (!noti.read_at) {
-                  client(`notifications/read/${noti.id}`, {method: "GET"})
-                }
-              })
-            }
-          }}>
-          <Badge
-            color="danger"
-            content={notifications ? notifications.length : 0}
-            shape="circle"
-            disableOutline>
-            <IoMdNotificationsOutline className="w-6 h-6" />
-          </Badge>
-        </MyButton>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Dynamic Actions"
-        items={ready ? notifications : [{}]}
-        className="divide-y-1"
-        itemClasses={{
-          base: "rounded-none",
-          wrapper: "p-0"
-        }}>
-        {ready ? (
-          notifications.length > 0 ? (
-            notifications.map((notfi: any) => (
-              <DropdownItem key={notfi.id}>
-                <div className="flex gap-2 p-2">
+    <div className="relative h-full">
+      <MyButton isIconOnly size="navIcon" color="navIcon" onClick={handleClick}>
+        <Badge
+          color="danger"
+          content={notifications ? notifications.length : 0}
+          shape="circle"
+          disableOutline>
+          <IoMdNotificationsOutline className="w-6 h-6" />
+        </Badge>
+      </MyButton>
+      <div
+        className={`${
+          isOpen ? "block" : "hidden"
+        } absolute lg:top-14 bottom-14 right-0 w-60  shadow-md z-50`}>
+        <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
+          {ready ? (
+            notifications.length > 0 ? (
+              notifications.map((notfi: any) => (
+                <li
+                  className="flex gap-2 justify-center items-center p-3"
+                  key={notfi.id}>
                   <div className="relative w-10 h-10 rounded-lg overflow-hidden">
                     <Image
                       src="/user-profile.jpg"
@@ -162,44 +126,32 @@ const NotificationsDropDown = function NotificationsDropDown() {
                     <h3 className="">{notfi.data.title}</h3>
                     <span className="body-sm">{notfi.data.details}</span>
                   </div>
-                </div>
-              </DropdownItem>
-            ))
+                </li>
+              ))
+            ) : (
+              <li className="h-[100px] w-full flex justify-center items-center">
+                <h3>No Notifications</h3>
+              </li>
+            )
           ) : (
-            <DropdownItem>
-              <div className="h-[100px] w-full flex justify-center items-center">
-                <h3>No Notifictions</h3>
-              </div>
-            </DropdownItem>
-          )
-        ) : (
-          <DropdownItem>
-            <div className="max-h-[150px] flex justify-center items-center">
+            <li className="max-h-[150px] flex justify-center items-center">
               <Spinner size="md" />
-            </div>
-          </DropdownItem>
-        )}
-      </DropdownMenu>
-    </Dropdown>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
   )
 }
 
 const Navbar = function Navbar() {
-  const [theme, setTheme] = useState("light")
+  const {theme, changeTheme} = useTheme()
   const [isOpened, setIsOpened] = useState(false)
-  const {token, signOut} = useContext(Auth)
+  const {token, signOut} = useAuth()
   const signInModel = useDisclosure()
   const deleteAccount = useDisclosure()
-  const {cart} = useContent()
-  const {user, ready} = useContext(User)
-  useEffect(() => {
-    if (document.body.parentElement) {
-      document.body.parentElement.classList.remove(
-        theme === "light" ? "dark" : "light"
-      )
-      document.body.parentElement.classList.add(theme)
-    }
-  }, [theme])
+  const {cart} = useCart()
+  const {user, ready} = useUser()
 
   const handleSignOut = async () => {
     await client("logout", {method: "POST"})
@@ -208,10 +160,10 @@ const Navbar = function Navbar() {
 
   return (
     <>
-      <nav className="sticky z-20 top-0 bg-white dark:bg-[rgb(0,8,24)] w-full shadow-base">
-        <div className="my-container my-flex md:my-flex-between py-4 !items-end">
+      <nav className="sticky z-40 top-0 bg-white h-[78px] dark:bg-[rgb(0,8,24)] w-full shadow-base">
+        <div className="my-container my-flex md:my-flex-between py-4 !items-end h-full">
           <div className="flex gap-3 w-full items-center  justify-between md:justify-start">
-            <Link href="/" className="relative w-36 lg:mt-0">
+            <Link href="/" className="relative md:w-36 w-40 lg:mt-0">
               <Image
                 src={`/logo/${
                   theme === "light" ? "blue-logo" : "white-logo"
@@ -221,7 +173,7 @@ const Navbar = function Navbar() {
                 className="!relative !inset-auto !w-max object-contain"
               />
             </Link>
-            <div className="relative w-full text-right">
+            <div className="relative w-full text-right h-full">
               <NavbarOpenToggle setIsOpened={setIsOpened} />
               <ul
                 className={[
@@ -255,11 +207,7 @@ const Navbar = function Navbar() {
                         isIconOnly
                         size="navIcon"
                         color="navIcon"
-                        onClick={() => {
-                          setTheme((pre) =>
-                            pre === "light" ? "dark" : "light"
-                          )
-                        }}>
+                        onClick={changeTheme}>
                         {theme === "light" ? (
                           <BiMoon className="w-6 h-6 " />
                         ) : (
@@ -306,7 +254,7 @@ const Navbar = function Navbar() {
                           </MyButton>
                         </li>
                         <li>
-                          <NotificationsDropDown />
+                          <NotificationsDropDown2 />
                         </li>
                         <li>
                           <Dropdown
@@ -319,12 +267,14 @@ const Navbar = function Navbar() {
                               {ready ? (
                                 <div className="my-flex gap-2 cursor-pointer bg-gray-100 dark:bg-[#12213B] py-1 px-1.5 rounded-lg">
                                   <div className="relative !w-10 !h-10  rounded-full overflow-hidden">
-                                    <Image
-                                      src={ready ? user?.avatar! : ""}
-                                      alt="user profile"
-                                      className="!relative"
-                                      fill
-                                    />
+                                    {user?.avatar ? (
+                                      <Image
+                                        src={user?.avatar}
+                                        alt="user profile"
+                                        className="!relative"
+                                        fill
+                                      />
+                                    ) : null}
                                   </div>
                                   <span className="inline-block dark:text-white">
                                     {user?.name}

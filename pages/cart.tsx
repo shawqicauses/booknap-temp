@@ -1,18 +1,18 @@
 import React from "react"
-import {NextPage} from "next"
 import Footer from "../components/layout/footer"
 import Sidebar from "../components/uis/sidebar"
 import CartContent from "../components/cart"
+import Protected from "../components/uis/protected"
 
-const Cart: NextPage = function Cart() {
+const Cart = function Cart() {
   return (
-    <div>
+    <Protected>
       <div className="flex">
         <Sidebar />
         <CartContent />
       </div>
       <Footer />
-    </div>
+    </Protected>
   )
 }
 

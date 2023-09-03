@@ -1,135 +1,57 @@
-import {Rating} from "@mui/material"
 import {useDisclosure} from "@nextui-org/react"
-import Image from "next/image"
-import React from "react"
-import {useRouter} from "next/navigation"
+import React, {useEffect, useState} from "react"
 import BookingDetailsModal from "../modal/booking-details-modal"
-import MyButton from "../uis/button"
+import useFetch from "../../hooks/use-fetch"
+import LoadingDiv from "../uis/loading"
+import {IBooking} from "../../types"
+import BookingBox from "./booking-box"
 
-interface IBooking {
-  hotelName: string
-  hotelRating: number
-  hotelLogo: string
-  bookingId: string
-  startDay: string
-  endDay: string
-  noAdults: number
-  noChildren: number
-  noRoom: number
-  state: "done" | "inProgress" | "coming"
+export interface Result {
+  data: IBooking[]
 }
-
-const bookings: IBooking[] = [
-  {
-    hotelName: "Luxury Resort",
-    hotelRating: 5,
-    hotelLogo: "/user-profile.jpg",
-    bookingId: "xyz789",
-    startDay: "2023-09-20",
-    endDay: "2023-09-25",
-    noAdults: 3,
-    noChildren: 2,
-    noRoom: 2,
-    state: "inProgress"
-  },
-  {
-    hotelName: "Cozy Inn",
-    hotelRating: 3,
-    hotelLogo: "/user-profile.jpg",
-    bookingId: "def456",
-    startDay: "2023-10-05",
-    endDay: "2023-10-07",
-    noAdults: 1,
-    noChildren: 0,
-    noRoom: 1,
-    state: "coming"
-  },
-  {
-    hotelName: "Grand Hotel",
-    hotelRating: 4,
-    hotelLogo: "/user-profile.jpg",
-    bookingId: "abc123",
-    startDay: "2023-08-10",
-    endDay: "2023-08-15",
-    noAdults: 2,
-    noChildren: 1,
-    noRoom: 1,
-    state: "done"
-  },
-  {
-    hotelName: "Grand Hotel",
-    hotelRating: 4,
-    hotelLogo: "/user-profile.jpg",
-    bookingId: "abc124",
-    startDay: "2023-08-10",
-    endDay: "2023-08-15",
-    noAdults: 2,
-    noChildren: 1,
-    noRoom: 1,
-    state: "done"
-  }
-]
-interface IStates {
-  done: "default"
-  inProgress: "success"
-  coming: "primary"
-}
-const states: IStates = {
-  done: "default",
-  inProgress: "success",
-  coming: "primary"
+export interface IListBookingHotelRes {
+  result: Result
 }
 
 const BookingsContent = function BookingsContent() {
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const rout = useRouter()
-  return (
-    <>
-      <div className="mx-4 md:my-container grid grid-cols-1 lg:grid-cols-2 gap-2 my-10">
-        {bookings.map(
-          ({
-            bookingId,
-            hotelLogo,
-            hotelName,
-            hotelRating,
-            startDay,
-            endDay,
-            noAdults,
-            noChildren,
-            noRoom,
-            state
-          }) => (
-            <div
-              key={bookingId}
-              className="flex bg-gray-100 p-3 gap-3 rounded-lg">
-              <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                <Image src={hotelLogo} alt={hotelName} fill />
-              </div>
-              <div>
-                <h3 className="heading-3">{hotelName}</h3>
-                <Rating value={hotelRating} />
-                <p className="body-sm">{`${startDay} To ${endDay} - ${noAdults} Adults - ${noChildren} Children - ${noRoom} Room`}</p>
-              </div>
-              <div className="flex-1 flex justify-end">
-                <MyButton
-                  color={states[state]}
-                  onClick={() => {
-                    if (state !== "inProgress") {
-                      onOpen()
-                    } else {
-                      rout.push("/booking")
-                    }
-                  }}>
-                  {bookingId}
-                </MyButton>
-              </div>
-            </div>
-          )
-        )}
-      </div>
-      <BookingDetailsModal isOpen={isOpen} onClose={onClose} />
-    </>
-  )
+  const [bookings, setBookings] = useState<IBooking[]>([])
+  const {data} = useFetch<IListBookingHotelRes>("hotels/bookings")
+  const [selectedBooking, setSelectedBooking] = useState<IBooking | null>(null)
+  useEffect(() => {
+    if (data) {
+      setBookings(data.result.data)
+    }
+  }, [data])
+
+  if (data) {
+    return (
+      <>
+        <div className="mx-4 md:my-container grid grid-cols-1 lg:grid-cols-2 gap-2 my-10">
+          {bookings
+            .filter((booking) => booking.hotel)
+            .map((booking) => (
+              <BookingBox
+                key={booking.id}
+                {...booking}
+                onOpen={() => {
+                  setSelectedBooking(booking)
+                  onOpen()
+                }}
+              />
+            ))}
+        </div>
+        {selectedBooking ? (
+          <BookingDetailsModal
+            isOpen={isOpen}
+            onClose={onClose}
+            Booking={selectedBooking}
+          />
+        ) : null}
+      </>
+    )
+  }
+  return <LoadingDiv />
 }
 
 export default BookingsContent

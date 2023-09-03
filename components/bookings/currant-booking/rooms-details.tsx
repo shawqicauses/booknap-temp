@@ -74,7 +74,7 @@ const RoomsDetails = function RoomsDetails() {
   return (
     <div className=" flex gap-5  flex-col">
       {rooms.map(({id, type, roomNumber, details, features}) => (
-        <div className="rounded-lg p-4 bg-[#F5F5F5] dark:bg-[#1A2230]" key={id}>
+        <div className="rounded-lg p-4 bg-[#F5F5F5] dark:bg-mirage" key={id}>
           <div className="flex gap-5 mb-4">
             <div className="bg-gray-200 dark:bg-[#242E3F] p-3 rounded-lg text-[#2F5597]">
               {roomTypeIcon[type.toLowerCase()]}

@@ -3,6 +3,7 @@ import {
   ReactElement,
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState
@@ -58,5 +59,12 @@ const AuthProvider = function AuthProvider({
   )
   return <Auth.Provider value={value}>{children}</Auth.Provider>
 }
+const useAuth = function useAuth() {
+  const context = useContext(Auth)
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider")
+  }
+  return context
+}
 
-export {Auth, AuthProvider}
+export {Auth, useAuth, AuthProvider}

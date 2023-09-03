@@ -6,7 +6,7 @@ const AboutUsContent = function AboutUsContent() {
   return (
     <div className="py-4">
       <div className="my-container">
-        <div className="text-center bg-gray-100 dark:bg-[#1A2230] p-4 pt-8 bg-[url('/mask.png')] mb-6">
+        <div className="text-center bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6">
           <h1 className="heading-1 text-blue-600 mb-4">ABOUT US</h1>
           <p className="body">
             our company was founded in 2020. we work daily to become better and

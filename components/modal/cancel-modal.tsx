@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, {useContext, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import {
   Modal,
   ModalBody,
@@ -10,7 +10,7 @@ import {
 import MyButton from "../uis/button"
 import {type3} from "../uis/modal-styles"
 import client from "../../helpers/client"
-import {CurrentBookingOrder} from "../../stores/current-booking-order"
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 
 interface reason {
   id: number
@@ -30,14 +30,14 @@ const CancelModal = function CancelModal({
   const [cancelListReason, setCancelListReason] = useState<Array<reason>>([])
   const [cancelReason, setCancelReason] = useState<number | null>(null)
   const [otherReason, setOtherReason] = useState<string>("")
-  const {result, clearCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
 
   const handleCancel = async () => {
     if (
       cancelReason !== null ||
       (cancelReason === null && otherReason !== "")
     ) {
-      client(`hotels/bookings/cancel/${result?.id}`, {
+      client(`hotels/bookings/cancel/${currentBooking?.id}`, {
         body: JSON.stringify({reason: cancelReason, reason_other: otherReason}),
         method: "POST"
       })?.then((res) => {

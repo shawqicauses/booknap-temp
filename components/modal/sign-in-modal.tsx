@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react"
+import React, {useState, useEffect} from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
 import {BsApple, BsGoogle} from "react-icons/bs"
 import {
@@ -21,9 +21,9 @@ import {type3} from "../uis/modal-styles"
 import auth from "../../firebase/firebase.config"
 import {ISginIn} from "../../types"
 import client from "../../helpers/client"
-import {Auth} from "../../stores/auth"
-import {User} from "../../stores/user"
-import {CurrentBookingOrder} from "../../stores/current-booking-order"
+import {useAuth} from "../../stores/auth"
+import {useUser} from "../../stores/user"
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 
 interface ISignIn {
   name: string
@@ -268,14 +268,15 @@ const SignInModal = function SignInModal({
     handleSubmit,
     watch,
     getValues,
-    formState: {errors}
+    formState: {errors, isSubmitting},
+    reset
   } = useForm<IConfigCode & ISignIn>({
     criteriaMode: "all"
   })
   const [loading, setLoading] = useState<boolean>(false)
-  const {signIn} = useContext(Auth)
-  const {handleUser} = useContext(User)
-  const {handleCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const {signIn} = useAuth()
+  const {handleUser} = useUser()
+  const {handleCurrentBookingOrder} = useCurrentBookingOrder()
 
   const onSubmit: SubmitHandler<IConfigCode & ISignIn> = (formData) => {
     setLoading(true)
@@ -303,6 +304,7 @@ const SignInModal = function SignInModal({
           if (resSign.has_booking) {
             handleCurrentBookingOrder(resSign.booking)
           }
+          reset()
           signIn()
           onClose()
           setPage(0)
@@ -374,7 +376,7 @@ const SignInModal = function SignInModal({
                 color="primary"
                 type={page === 1 ? "submit" : "button"}
                 fullWidth
-                isLoading={loading}
+                isLoading={loading || isSubmitting}
                 onClick={() => {
                   if (getValues().name && getValues().mobile) {
                     onSignUp(getValues().mobile)

@@ -3,7 +3,7 @@ import React from "react"
 import {TbTrashXFilled} from "react-icons/tb"
 import {Counter} from "../modal/booking-modal"
 import MyButton from "../uis/button"
-import {useContent} from "../../stores/cart"
+import {useCart} from "../../stores/cart"
 
 const columns = [
   {
@@ -33,7 +33,7 @@ const columns = [
 ]
 
 const ItemTable = function ItemTable() {
-  const {cart, updateItemQuantity, deleteItem, ready} = useContent()
+  const {cart, updateItemQuantity, deleteItem, ready} = useCart()
 
   if (ready) {
     return (

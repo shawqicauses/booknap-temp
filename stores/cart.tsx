@@ -7,22 +7,56 @@ import React, {
   useCallback,
   useState
 } from "react"
-import {IItem} from "../types"
+import {useAuth} from "./auth"
+import client from "../helpers/client"
 
+export interface Product {
+  id: number
+  shopping_category_id?: string | null
+  name?: string
+  description?: string
+  price?: string
+  discount_price?: string
+  color?: string
+  on_sale?: number
+  quantity?: number
+  featured?: number
+  in_stock?: number
+  created_at?: string
+  updated_at?: string
+  deleted_at?: null
+  image?: string
+}
+// export interface Test {
+//   massage: string
+//   data: Datum[]
+// }
+
+// export interface Datum {
+//   id: string
+//   user_id: number
+//   order_id: number
+//   shopping_product_id: number
+//   quantity: number
+//   options: null
+//   deleted_at: null
+//   created_at: string
+//   updated_at: string
+// }
 interface Action {
   type: string
-  item?: IItem
-  items?: Array<IItem>
+  product?: Product
+  items?: Array<Product>
 }
 const Context = createContext<{
-  cart: IItem[]
-  ready: boolean
+  cart: Product[]
+  cartReady: boolean
   addItemToCart: Function
   updateItemQuantity: Function
   deleteItem: Function
 }>({
   cart: [],
-  ready: false,
+  cartReady: false,
   addItemToCart: () => {},
   updateItemQuantity: () => {},
   deleteItem: () => {}
@@ -33,44 +67,48 @@ const CartProvider = function CartProvider({
 }: {
   children: React.ReactElement
 }) {
-  const initState: Array<IItem> = []
+  const initState: Array<Product> = []
 
-  const reducer = (state: Array<IItem>, action: Action): Array<IItem> => {
+  const reducer = (state: Array<Product>, action: Action): Array<Product> => {
     switch (action.type) {
       case "setItems":
         return action.items || []
       case "addItem":
-        return [...state, action.item!]
+        return [...state, action.product!]
       case "updateItemQuantity":
-        return state.map((item) =>
-          item.id === action.item!.id
-            ? {...item, quantity: action.item!.quantity}
-            : item
+        return state.map((product) =>
+          product.id === action.product!.id
+            ? {...product, quantity: action.product!.quantity}
+            : product
         )
       case "deleteItem":
-        return state.filter((item) => item.id !== action.item!.id)
+        return state.filter((product) => product.id !== action.product!.id)
       default:
         return state
     }
   }
-  const [ready, setReady] = useState<boolean>(false)
+  const {token, ready} = useAuth()
+  const [cartReady, setCartReady] = useState<boolean>(false)
   const [cart, dispatch] = useReducer(reducer, initState)
 
-  const addItemToCart = useCallback(async (item: IItem) => {
-    dispatch({type: "addItem", item})
-    // const res = await client("shopping/show/carts", {method: "GET"})
-    // console.log(res)
+  useEffect(() => {
+    if (ready && token) {
+      // client("")
+    }
+  }, [token, ready])
+  const addItemToCart = useCallback(async (product: Product) => {
+    dispatch({type: "addItem", product})
   }, [])
 
   const updateItemQuantity = useCallback((id: number, quantity: number) => {
     dispatch({
       type: "updateItemQuantity",
-      item: {id, quantity}
+      product: {id, quantity}
     })
   }, [])
 
   const deleteItem = useCallback((id: number) => {
-    dispatch({type: "deleteItem", item: {id}})
+    dispatch({type: "deleteItem", product: {id}})
   }, [])
 
   useEffect(() => {
@@ -78,27 +116,27 @@ const CartProvider = function CartProvider({
       const cartStored = JSON.parse(localStorage.getItem("CART") || "[]")
       if (cartStored) {
         dispatch({type: "setItems", items: cartStored})
-        setReady(true)
+        setCartReady(true)
       }
     }
   }, [])
   useEffect(() => {
-    if (typeof window !== "undefined" && ready) {
+    if (typeof window !== "undefined" && cartReady) {
       localStorage.setItem("CART", JSON.stringify(cart))
     }
-  }, [cart, ready])
+  }, [cart, cartReady])
 
   const exposed = useMemo(
-    () => ({cart, ready, addItemToCart, updateItemQuantity, deleteItem}),
-    [cart, ready, addItemToCart, updateItemQuantity, deleteItem]
+    () => ({cart, cartReady, addItemToCart, updateItemQuantity, deleteItem}),
+    [cart, cartReady, addItemToCart, updateItemQuantity, deleteItem]
   )
   return <Context.Provider value={exposed}>{children}</Context.Provider>
 }
 
-const useContent = () => {
+const useCart = () => {
   const content = useContext(Context)
-  if (!content) throw new Error("Context must be used within a Provider")
+  if (!content) throw new Error("useCart must be used within a CartProvider")
   return content
 }
 
-export {CartProvider, useContent}
+export {useCart, CartProvider}

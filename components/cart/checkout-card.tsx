@@ -1,9 +1,9 @@
 import React, {useMemo} from "react"
-import {useContent} from "../../stores/cart"
+import {useCart} from "../../stores/cart"
 import MyButton from "../uis/button"
 
 const CheckoutCard = function CheckoutCard() {
-  const {cart} = useContent()
+  const {cart} = useCart()
   const total = useMemo(
     () =>
       cart
@@ -21,7 +21,7 @@ const CheckoutCard = function CheckoutCard() {
   )
 
   return (
-    <div className="bg-[#F5F5F5] dark:bg-[#1A2230] max-w-lg p-7 flex gap-5 flex-col rounded-lg">
+    <div className="bg-[#F5F5F5] dark:bg-mirage max-w-lg p-7 flex gap-5 flex-col rounded-lg">
       <h3 className="heading-2 dark:text-white">Cart Totals</h3>
       <div className="flex justify-between items-center text-[#707070] text-lg font-normal">
         <span>Subtotal</span> <span>{total}</span>

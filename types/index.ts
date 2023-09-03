@@ -1,10 +1,3 @@
-export interface IItem {
-  id: number
-  image?: string
-  product?: string
-  price?: number
-  quantity?: number
-}
 export interface IUser {
   avatar: string | null
   created_at: string | null
@@ -99,6 +92,7 @@ export interface IProfileRes {
   user: IUser
   booking: Booking
   has_booking: number
+  massage: string | null
 }
 export interface Lang {
   id: number
@@ -136,4 +130,50 @@ export interface IHotel {
   date_end_service: null
   date_stop_service: null
   langs: Lang[]
+}
+export interface IRoom {
+  type: number
+  number: number
+}
+export interface User {
+  id: number
+  name: string
+  avatar: string
+  type: number
+  mobile: string
+  created_at: string
+  updated_at: string
+  online: number
+  stars: number
+  profile_photo_url: string
+}
+export interface Hotel {
+  id: number
+  name: string
+  about: string
+  features: string
+  logo: string
+  lat: string
+  lng: string
+  address: string
+  phone: string
+  website: string
+  stars: number
+  country_id: number
+  city_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  bot_service: number
+  user: User
+}
+export interface IBooking {
+  id: number
+  date_from: string
+  date_to: string
+  children: number
+  adults: number
+  rooms: IRoom[]
+  rooms_no: number | null
+  hotel: Hotel | null
 }

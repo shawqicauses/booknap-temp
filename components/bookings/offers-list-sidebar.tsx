@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, {useContext, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import {
   Link,
   Modal,
@@ -26,11 +26,13 @@ import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
 import MyButton from "../uis/button"
 import client from "../../helpers/client"
-import {CurrentBookingOrder} from "../../stores/current-booking-order"
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 
 interface HotelOfferBoxProps {
   offer: any
   openBookedModal: () => void
+  clearCurrentBookingOrder: Function
+  setShow: Function
 }
 export interface IData {
   id: number
@@ -189,17 +191,37 @@ const HotelPageModal = function HotelPageModal({
 
 const HotelOfferBox = function HotelOfferBox({
   offer,
-  openBookedModal
+  openBookedModal,
+  clearCurrentBookingOrder,
+  setShow
 }: HotelOfferBoxProps) {
   const [reject, setReject] = useState(false)
   const {isOpen, onClose, onOpen} = useDisclosure()
+
   const handleBooked = () => {
-    client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})
+    client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})?.then(
+      (res) => {
+        if (res.success) {
+          setShow(false)
+          setTimeout(() => {
+            clearCurrentBookingOrder()
+          }, 2000)
+        }
+      }
+    )
     openBookedModal()
+  }
+  const handleReject = () => {
+    setReject(true)
+    client(`hotels/bookings/offers/reject/${offer.id}`, {
+      method: "GET"
+    })?.then((res) => {
+      console.log(res)
+    })
   }
   return (
     <>
-      <div className="bg-white p-2 rounded-lg shadow-base snap-center relative">
+      <div className="bg-white dark:bg-mirage p-2 rounded-lg shadow-base snap-center relative">
         {/* {isNewOffer ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
@@ -210,14 +232,16 @@ const HotelOfferBox = function HotelOfferBox({
             className="flex gap-2 cursor-pointer"
             onClick={onOpen}
             aria-hidden="true">
-            <Image
-              src={offer.hotel.logo}
-              alt={offer.hotel.name}
-              fill
-              className="!relative !inset-auto !w-20 !h-20"
-            />
+            <div className="!w-20 !h-20 overflow-hidden rounded-md">
+              <Image
+                src={offer.hotel.logo}
+                alt={offer.hotel.name}
+                fill
+                className="!relative !inset-auto !w-20 !h-20"
+              />
+            </div>
             <div className="flex flex-col gap-1">
-              <h3 className="heading-3">{offer.hotel.name}</h3>
+              <h3 className="heading-3 dark:text-white">{offer.hotel.name}</h3>
               <Rating
                 name="read-only"
                 value={offer.hotel.stars}
@@ -243,11 +267,15 @@ const HotelOfferBox = function HotelOfferBox({
             color="reject"
             className="!w-[72px]"
             isLoading={reject}
-            onClick={() => setReject((pre) => !pre)}
+            onClick={handleReject}
             spinner={<Spinner size="md" />}>
             {!reject ? "reject" : ""}
           </MyButton>
-          <MyButton size="sm" color="primary" onClick={handleBooked}>
+          <MyButton
+            size="sm"
+            color="primary"
+            onClick={handleBooked}
+            disabled={reject}>
             Accept
           </MyButton>
         </div>
@@ -271,7 +299,7 @@ const HotelOfferBox = function HotelOfferBox({
 //   {id: 3, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
 //   {id: 4, logo: "/hotel-logo.png", name: "Hotel Name", rating: 5, price: 150}
 // ]
-const BookingSidebar = function BookingSidebar({
+const OffersSidebar = function OffersSidebar({
   show,
   setShow
 }: {
@@ -283,15 +311,16 @@ const BookingSidebar = function BookingSidebar({
   const banned = useDisclosure()
   const [offers, setOffers] = useState<IData[]>([])
   const [filter, serFilter] = useState("Highest Rated")
-  const {result, clearCurrentBookingOrder} = useContext(CurrentBookingOrder)
+  const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
   const [time, setTime] = useState({minutes: 20, seconds: 0})
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime()
-      const diff = now - new Date(result?.created_at!).getTime()
-      if (time.minutes <= 0) {
+      const diff = now - new Date(currentBooking?.created_at!).getTime()
+      if (diff >= 1200000) {
         clearInterval(interval)
+        setShow(false)
         clearCurrentBookingOrder()
       } else {
         const minutes = 19 - Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -301,7 +330,7 @@ const BookingSidebar = function BookingSidebar({
     }, 1000)
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result, clearCurrentBookingOrder])
+  }, [currentBooking, clearCurrentBookingOrder])
 
   useEffect(() => {
     const getOffers = async () => {
@@ -322,7 +351,7 @@ const BookingSidebar = function BookingSidebar({
         className={`fixed my-transition z-20 left-0 bottom-0 ${
           show ? "" : "-translate-x-full"
         } max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
-        <div className=" bg-white flex justify-between  items-center p-2">
+        <div className=" bg-white dark:bg-blue-charcoal flex justify-between  items-center p-2">
           <MyButton
             startContent={<MdLocalOffer className="h-5 w-5 text-gray-600" />}
             size="xl"
@@ -340,8 +369,8 @@ const BookingSidebar = function BookingSidebar({
             Cancel
           </MyButton>
         </div>
-        <div className="bg-gray-100 py-3 px-5 flex-1">
-          <p className="py-3 px-6 border body text-black  rounded-lg mb-3">
+        <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1">
+          <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white  rounded-lg mb-3">
             if you Don&apos;t like the offers you can reject The Offers
           </p>
           <div className="flex mb-3 gap-2  w-auto">
@@ -390,7 +419,9 @@ const BookingSidebar = function BookingSidebar({
               <HotelOfferBox
                 key={offer.id}
                 offer={offer}
+                setShow={setShow}
                 openBookedModal={booked.onOpen}
+                clearCurrentBookingOrder={clearCurrentBookingOrder}
               />
             ))}
           </div>
@@ -407,4 +438,4 @@ const BookingSidebar = function BookingSidebar({
   )
 }
 
-export default BookingSidebar
+export default OffersSidebar

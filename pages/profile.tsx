@@ -3,17 +3,18 @@ import {NextPage} from "next"
 import Footer from "../components/layout/footer"
 import ProfileContent from "../components/profile"
 import Sidebar from "../components/uis/sidebar"
+import Protected from "../components/uis/protected"
 
-const profile: NextPage = function profile() {
+const Profile: NextPage = function Profile() {
   return (
-    <div>
+    <Protected>
       <div className="flex">
         <Sidebar />
         <ProfileContent />
       </div>
       <Footer />
-    </div>
+    </Protected>
   )
 }
 
-export default profile
+export default Profile

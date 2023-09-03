@@ -86,7 +86,15 @@ module.exports = {
     },
     dropShadow: {},
     columns: {},
-    blur: {md: "0.75rem"}
+    blur: {md: "0.75rem"},
+    extend: {
+      colors: {
+        "blue-charcoal": "#010919",
+        "mirage": "#1a2230",
+        "ebony-clay": "#242e3f",
+        "waikawa-gray": "#5B6C89"
+      }
+    }
   },
   darkMode: "class",
   plugins: [lc, nextui()]
