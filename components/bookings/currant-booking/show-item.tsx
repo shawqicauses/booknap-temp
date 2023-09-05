@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Image from "next/image"
 import {useState} from "react"
 import {useRouter} from "next/router"
@@ -7,22 +8,30 @@ import {Counter} from "../../modal/booking-modal"
 import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
 import {Product} from "./shop"
+import {useCart} from "../../../stores/cart"
 
-const sizes = ["s", "m", "l", "xl"]
 const ItemPage = function ItemPage() {
   const router = useRouter()
   const id = Number(router.query.itemId)
-  const {data: product} = useFetch<Product>(
+  const {addItemToCart} = useCart()
+
+  const {data: product} = useFetch<{data: Product}>(
     id && !Number.isNaN(id) ? `shopping/products/${id}` : ""
   )
   const [quantity, setQuantity] = useState(1)
   const [isFavorite, setISFavorite] = useState(false)
-  const [size, setSize] = useState("m")
+  const [size, setSize] = useState(0)
+
+  const handleAddItem = () => {
+    if (product) {
+      addItemToCart(product.data, quantity)
+    }
+  }
 
   if (product) {
     return (
       <div className="flex gap-5 flex-col lg:flex-row mt-5 mb-10">
-        <div className="flex flex-1 max-w-[60%]">
+        <div className="flex flex-1 lg:max-w-[60%] w-full">
           <div className="flex flex-col w-52 gap-2 items-center">
             <div className="relative w-full h-1/3 rounded-lg overflow-hidden">
               <Image
@@ -68,21 +77,25 @@ const ItemPage = function ItemPage() {
             />
           </div>
         </div>
-        <div className="flex gap-5 flex-col">
-          <h2 className="heading-2">{product.name}</h2>
-          <p>{product.description}</p>
+        <div className="flex gap-5 flex-col justify-center">
+          <h2 className="heading-2">{product.data.name}</h2>
+          <p>{product.data.description}</p>
           <div>
             <h3 className="body mb-2">Options</h3>
-            <div className="flex gap-2 ">
-              {sizes.map((s) => (
-                <MyButton
-                  key={s}
-                  size="smSquare"
-                  onClick={() => setSize(s)}
-                  className={size === s ? "border !border-blue-600" : ""}>
-                  {s.toUpperCase()}
-                </MyButton>
-              ))}
+            <div className="flex gap-2">
+              {product.data.product_features[1].values.map(
+                ({id: sizeId, name_en}) => (
+                  <MyButton
+                    key={sizeId}
+                    size="smSquare"
+                    onClick={() => setSize(sizeId)}
+                    className={
+                      size === sizeId ? "border !border-blue-600" : ""
+                    }>
+                    {name_en}
+                  </MyButton>
+                )
+              )}
             </div>
           </div>
           <div>
@@ -98,12 +111,17 @@ const ItemPage = function ItemPage() {
                 handleClickPlus={() => setQuantity((pre) => pre + 1)}
               />
               <span className="text-blue-700 heading-2">
-                ${quantity * Number(product.price)}
+                ${quantity * Number(product.data.price)}
               </span>
             </div>
           </div>
           <div>
-            <MyButton color="primary" radius="sm" fullWidth size="xl">
+            <MyButton
+              color="primary"
+              radius="sm"
+              fullWidth
+              size="xl"
+              onClick={handleAddItem}>
               Add To Cart
             </MyButton>
           </div>

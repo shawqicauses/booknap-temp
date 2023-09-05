@@ -59,7 +59,9 @@ const SignIn = function SignIn({
           signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
-      .catch(() => {})
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const apple = async () => {
     const provider = new OAuthProvider("apple.com")
@@ -71,7 +73,9 @@ const SignIn = function SignIn({
           signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
-      .catch(() => {})
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (

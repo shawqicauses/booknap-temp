@@ -1,7 +1,6 @@
 import React, {
   createContext,
   useContext,
-  useReducer,
   useMemo,
   useEffect,
   useCallback,
@@ -27,39 +26,38 @@ export interface Product {
   deleted_at?: null
   image?: string
 }
-// export interface Test {
-//   massage: string
-//   data: Datum[]
-// }
 
-// export interface Datum {
-//   id: string
-//   user_id: number
-//   order_id: number
-//   shopping_product_id: number
-//   quantity: number
-//   options: null
-//   deleted_at: null
-//   created_at: string
-//   updated_at: string
-// }
-interface Action {
-  type: string
+export interface CardProduct {
+  id: string
+  user_id: number
+  order_id: number
+  shopping_product_id: number
+  quantity: number
+  options: null
+  deleted_at: null
+  created_at: string
+  updated_at: string
   product?: Product
-  items?: Array<Product>
 }
+
 const Context = createContext<{
-  cart: Product[]
+  cart: CardProduct[]
   cartReady: boolean
   addItemToCart: Function
   updateItemQuantity: Function
   deleteItem: Function
+  getTotal: Function
+  total: string
+  handleCheckOut: Function
 }>({
   cart: [],
   cartReady: false,
   addItemToCart: () => {},
   updateItemQuantity: () => {},
-  deleteItem: () => {}
+  deleteItem: () => {},
+  getTotal: () => {},
+  total: "",
+  handleCheckOut: () => {}
 })
 
 const CartProvider = function CartProvider({
@@ -67,55 +65,77 @@ const CartProvider = function CartProvider({
 }: {
   children: React.ReactElement
 }) {
-  const initState: Array<Product> = []
-
-  const reducer = (state: Array<Product>, action: Action): Array<Product> => {
-    switch (action.type) {
-      case "setItems":
-        return action.items || []
-      case "addItem":
-        return [...state, action.product!]
-      case "updateItemQuantity":
-        return state.map((product) =>
-          product.id === action.product!.id
-            ? {...product, quantity: action.product!.quantity}
-            : product
-        )
-      case "deleteItem":
-        return state.filter((product) => product.id !== action.product!.id)
-      default:
-        return state
-    }
-  }
   const {token, ready} = useAuth()
   const [cartReady, setCartReady] = useState<boolean>(false)
-  const [cart, dispatch] = useReducer(reducer, initState)
+  const [total, setTotal] = useState<string>("0.00")
+  const [cart, setCart] = useState<CardProduct[]>([])
+
+  const getTotal = useCallback(() => {
+    client("shopping/cart/total")?.then((res: {total: string[]}) => {
+      setTotal(res.total[0])
+    })
+  }, [])
+  const getCardItems = useCallback(() => {
+    client("shopping/show/carts")?.then((res: {data: Array<CardProduct>}) => {
+      setCart(res.data)
+      getTotal()
+    })
+  }, [getTotal])
 
   useEffect(() => {
     if (ready && token) {
-      // client("")
+      getCardItems()
     }
-  }, [token, ready])
-  const addItemToCart = useCallback(async (product: Product) => {
-    dispatch({type: "addItem", product})
-  }, [])
+  }, [token, ready, getCardItems])
 
-  const updateItemQuantity = useCallback((id: number, quantity: number) => {
-    dispatch({
-      type: "updateItemQuantity",
-      product: {id, quantity}
+  const addItemToCart = useCallback(
+    (product: Product, quantity: number) => {
+      client(`shopping/carts/${product.id}`, {
+        method: "POST",
+        body: JSON.stringify({quantity: quantity})
+      })?.then(() => {
+        getTotal()
+        getCardItems()
+      })
+    },
+    [getTotal, getCardItems]
+  )
+
+  const updateItemQuantity = useCallback(
+    (id: number, quantity: number) => {
+      client(`shopping/carts/update/${id}`, {
+        method: "POST",
+        body: JSON.stringify({quantity: quantity})
+      })?.then(() => {
+        getTotal()
+        getCardItems()
+      })
+    },
+    [getTotal, getCardItems]
+  )
+
+  const deleteItem = useCallback(
+    (id: number) => {
+      client(`shopping/carts/delete/${id}`, {
+        method: "POST"
+      })?.then(() => {
+        getTotal()
+        getCardItems()
+      })
+    },
+    [getTotal, getCardItems]
+  )
+  const handleCheckOut = useCallback(() => {
+    client("shopping/cart/create/order", {method: "POST"})?.then(() => {
+      getTotal()
+      getCardItems()
     })
-  }, [])
-
-  const deleteItem = useCallback((id: number) => {
-    dispatch({type: "deleteItem", product: {id}})
-  }, [])
+  }, [getTotal, getCardItems])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const cartStored = JSON.parse(localStorage.getItem("CART") || "[]")
       if (cartStored) {
-        dispatch({type: "setItems", items: cartStored})
         setCartReady(true)
       }
     }
@@ -127,8 +147,26 @@ const CartProvider = function CartProvider({
   }, [cart, cartReady])
 
   const exposed = useMemo(
-    () => ({cart, cartReady, addItemToCart, updateItemQuantity, deleteItem}),
-    [cart, cartReady, addItemToCart, updateItemQuantity, deleteItem]
+    () => ({
+      cart,
+      cartReady,
+      addItemToCart,
+      updateItemQuantity,
+      deleteItem,
+      getTotal,
+      total,
+      handleCheckOut
+    }),
+    [
+      cart,
+      cartReady,
+      addItemToCart,
+      updateItemQuantity,
+      deleteItem,
+      getTotal,
+      total,
+      handleCheckOut
+    ]
   )
   return <Context.Provider value={exposed}>{children}</Context.Provider>
 }

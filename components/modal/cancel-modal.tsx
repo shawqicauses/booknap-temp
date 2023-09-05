@@ -21,11 +21,13 @@ interface reason {
 const CancelModal = function CancelModal({
   isOpen,
   onClose,
-  openBannedModal
+  openBannedModal,
+  setShow
 }: {
   isOpen: boolean
   onClose: () => void
   openBannedModal: () => void
+  setShow: Function
 }) {
   const [cancelListReason, setCancelListReason] = useState<Array<reason>>([])
   const [cancelReason, setCancelReason] = useState<number | null>(null)
@@ -43,6 +45,7 @@ const CancelModal = function CancelModal({
       })?.then((res) => {
         onClose()
         clearCurrentBookingOrder()
+        setShow(false)
         if (res.banned) {
           openBannedModal()
         }

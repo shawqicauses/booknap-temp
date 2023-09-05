@@ -33,9 +33,9 @@ const columns = [
 ]
 
 const ItemTable = function ItemTable() {
-  const {cart, updateItemQuantity, deleteItem, ready} = useCart()
+  const {cart, updateItemQuantity, deleteItem} = useCart()
 
-  if (ready) {
+  if (cart) {
     return (
       <table className="table-fixed border-collapse w-full">
         <thead>
@@ -48,20 +48,20 @@ const ItemTable = function ItemTable() {
           </tr>
         </thead>
         <tbody>
-          {cart.map(({id, image, product, price, quantity}) => (
+          {cart.map(({id, product, quantity}) => (
             <tr key={id}>
               <td className="p-2 border-2 border-l-transparent">
-                <div className="relative w-40 h-40 m-auto rounded-lg overflow-hidden">
+                <div className="relative max-w-40  max-h-40 m-auto rounded-lg overflow-hidden">
                   <Image
-                    src={image!}
-                    alt={product!}
-                    className="relative h-full object-contain"
+                    src={product?.image!}
+                    alt={product?.name!}
+                    className="!relative h-full object-contain"
                     fill
                   />
                 </div>
               </td>
-              <td className="text-center border-2"> {product}</td>
-              <td className="text-center border-2"> {price}</td>
+              <td className="text-center border-2"> {product?.name!}</td>
+              <td className="text-center border-2"> {product?.price!}</td>
               <td className="border-2">
                 <div className="flex justify-center">
                   <Counter
@@ -78,7 +78,7 @@ const ItemTable = function ItemTable() {
                 </div>
               </td>
               <td className="text-center border-2">
-                {(quantity! * price!).toFixed(2)}
+                {(quantity! * Number(product?.price!)).toFixed(2)}
               </td>
               <td className="text-center border-2 border-r-transparent ">
                 <MyButton

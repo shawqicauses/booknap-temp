@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, Dispatch, SetStateAction} from "react"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
@@ -13,6 +13,7 @@ import {
   ModalContent,
   useDisclosure
 } from "@nextui-org/react"
+import {toast} from "react-toastify"
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng
@@ -46,6 +47,10 @@ interface BasicFormData {
   noSuiteRooms: number
   noPresidentialSuite: number
 }
+interface IPosition {
+  lat: number
+  lng: number
+}
 
 export const Counter = function Counter({
   value,
@@ -57,17 +62,17 @@ export const Counter = function Counter({
   handleClickMinus: React.MouseEventHandler<Element>
 }) {
   return (
-    <div className="input w-fit p-0.5 flex items-center rounded-xl bg-gray-100">
+    <div className=" w-fit p-2 flex items-center rounded-xl bg-gray-100 dark:bg-blue-charcoal">
       <button
         type="button"
-        className="button-gray inline-block p-1 rounded-xl"
+        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
         onClick={handleClickPlus}>
         <FiPlus className="h-5 w-5 text-gray-400" />
       </button>
       <span className="text-lg inline-block  w-10 text-center">{value}</span>
       <button
         type="button"
-        className="button-gray inline-block p-1 rounded-xl"
+        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
         onClick={handleClickMinus}>
         <FiMinus className="h-5 w-5 text-gray-400" />
       </button>
@@ -95,9 +100,9 @@ const CounterStyled = function CounterStyled({
   const isOpen = openTab === tabNumber
   return (
     <div
-      className={`${
+      className={`dark:bg-mirage ${
         isOpen ? "rounded-xl pb-3" : "rounded-full "
-      }  bg-gray-50 px-4 pt-1.5`}>
+      }  bg-gray-50 px-4 py-1.5`}>
       <div className="flex justify-between items-center">
         <h3>
           {label}{" "}
@@ -289,13 +294,17 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
 
 const BookingModal = function BookingModal({
   isOpen,
-  onClose
+  onClose,
+  setPos,
+  myZoom
 }: {
   isOpen: boolean
   onClose: () => void
+  setPos: Dispatch<SetStateAction<IPosition | undefined>>
+  myZoom: number
 }) {
   const {token} = useAuth()
-  const {handleCurrentBookingOrder} = useCurrentBookingOrder()
+  const {handleCurrentBookingOrder, currentBooking} = useCurrentBookingOrder()
   const [page, setPage] = useState<number>(0)
 
   const signIn = useDisclosure()
@@ -335,14 +344,35 @@ const BookingModal = function BookingModal({
   const onSubmit: SubmitHandler<BasicFormData> = async (
     formData: BasicFormData
   ) => {
-    console.log(formData)
+    if (currentBooking) {
+      toast.error("You are Booking Now", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored"
+      })
+      return
+    }
     if (!token) {
       signIn.onOpen()
     } else if (
       new Date(`${formData.FromDate} ${formData.FromTime}`) >=
       new Date(`${formData.ToDate} ${formData.ToTime}`)
     ) {
-      console.log("Hello")
+      toast.error("Dates and Time are incorrect", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored"
+      })
     } else {
       client("hotels/bookings/create", {
         method: "POST",
@@ -356,7 +386,7 @@ const BookingModal = function BookingModal({
           notes: formData.note,
           country_id: 1,
           city_id: 2,
-          distance: 1000,
+          distance: 1000 * myZoom,
           rooms: [
             {type: 1, number: formData.noSingleRoom},
             {type: 2, number: formData.noDoubleRoom},
@@ -364,40 +394,55 @@ const BookingModal = function BookingModal({
             {type: 4, number: formData.noPresidentialSuite}
           ]
         } as IBookingReq)
-      })?.then((res) => {
-        if (res.result) {
-          handleCurrentBookingOrder(res.result)
-          onClose()
-          reset()
-          setPage(0)
-        }
       })
+        ?.then((res) => {
+          if (res.result) {
+            handleCurrentBookingOrder(res.result)
+            onClose()
+            reset()
+            setPage(0)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          toast.error("You are Banned", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+          })
+        })
     }
   }
 
   const setPosition = (lat: number, lng: number) => {
     setValue("lat", lat)
     setValue("lng", lng)
+    setPos({lat: lat, lng: lng})
   }
 
-  const toDayDate = new Date().toISOString().split("T")[0]
+  const toDayDate = new Date().toISOString().split("T")
   const [destination, setDestination] = useState("")
   return (
     <>
       <Modal
         size="sm"
+        backdrop="transparent"
         isDismissable={false}
         isOpen={isOpen}
         onClose={onClose}
-        classNames={type5}
-        placement="center">
+        classNames={{...type5, base: "fixed top-5 right-10"}}>
         <ModalContent>
           <ModalBody>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 relative justify-start">
               {page === 0 ? (
-                <div className="pt-10 px-5 w-auto">
+                <div className="pt-10 px-5 w-auto flex gap-2 flex-col">
                   <PlacesSuggestionInput
                     setPosition={setPosition}
                     setDestination={setDestination}
@@ -419,7 +464,7 @@ const BookingModal = function BookingModal({
                           value={watch().FromDate}
                           {...register("FromDate", {
                             required: true,
-                            min: watch().FromDate ?? toDayDate
+                            min: toDayDate[0]
                           })}
                           variant="flat"
                           classNames={{
@@ -430,7 +475,10 @@ const BookingModal = function BookingModal({
                         <Input
                           type="time"
                           value={watch().FromTime}
-                          {...register("FromTime", {required: true})}
+                          {...register("FromTime", {
+                            required: true,
+                            min: toDayDate[1]
+                          })}
                           variant="flat"
                           classNames={{
                             inputWrapper: "shadow-none",
@@ -449,8 +497,10 @@ const BookingModal = function BookingModal({
                         <Input
                           type="date"
                           value={watch().ToDate}
-                          {...register("ToDate", {required: true})}
-                          min={toDayDate}
+                          {...register("ToDate", {
+                            required: true,
+                            min: toDayDate[0]
+                          })}
                           variant="flat"
                           classNames={{
                             inputWrapper: "shadow-none",
@@ -460,7 +510,10 @@ const BookingModal = function BookingModal({
                         <Input
                           type="time"
                           value={watch().ToTime}
-                          {...register("ToTime", {required: true})}
+                          {...register("ToTime", {
+                            required: true,
+                            min: toDayDate[1]
+                          })}
                           variant="flat"
                           classNames={{
                             inputWrapper: "shadow-none",

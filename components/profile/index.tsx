@@ -21,7 +21,6 @@ interface IProfile {
   email: string
   gender: 1 | 2
   dob: string
-  phoneCode: string
 }
 
 const inputStyle = {
@@ -64,7 +63,7 @@ const ProfileContent = function ProfileContent() {
       body: JSON.stringify({
         first_name: formData.first_name,
         last_name: formData.last_name,
-        mobile: formData.phoneCode + formData.mobile,
+        mobile: formData.mobile,
         email: formData.email,
         dob: formData.dob,
         gender: gender
@@ -243,15 +242,8 @@ const ProfileContent = function ProfileContent() {
                       type="string"
                       {...register("mobile", {required: true})}
                       id="mobile"
-                      placeholder="0000000000"
+                      placeholder="+000000000000"
                       variant="flat"
-                      startContent={
-                        <select
-                          {...register("phoneCode", {required: true})}
-                          className="py-2 pr-1 pl-2 rounded-lg dark:text-white">
-                          <option value="+970">+970</option>
-                        </select>
-                      }
                       radius="sm"
                       classNames={inputStyle}
                     />
@@ -290,7 +282,7 @@ const ProfileContent = function ProfileContent() {
                         className={`${
                           gender === 1
                             ? "border-2 bg-[#E9EDF4] dark:bg-[#909090] border-blue-500"
-                            : "dark:bg-blue-charcoal text-white"
+                            : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Male
                       </MyButton>
@@ -302,7 +294,7 @@ const ProfileContent = function ProfileContent() {
                         className={`${
                           gender === 2
                             ? "border-2 bg-[#E9EDF4] dark:bg-[#909090] border-blue-500"
-                            : "dark:bg-blue-charcoal text-white"
+                            : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Female
                       </MyButton>

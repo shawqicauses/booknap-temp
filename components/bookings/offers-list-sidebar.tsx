@@ -1,39 +1,53 @@
-/* eslint-disable import/no-unresolved */
 import React, {useEffect, useState} from "react"
-import {
-  Link,
-  Modal,
-  ModalBody,
-  ModalContent,
-  Spinner,
-  useDisclosure
-} from "@nextui-org/react"
-import {FaUsers} from "react-icons/fa"
+import {Spinner, useDisclosure} from "@nextui-org/react"
 import {MdLocalOffer} from "react-icons/md"
-import {AiFillStar, AiOutlineCheck} from "react-icons/ai"
 import {BiTime} from "react-icons/bi"
-import {LuMail} from "react-icons/lu"
 import Image from "next/image"
 import Rating from "@mui/material/Rating"
-import {Swiper, SwiperSlide} from "swiper/react"
-import {Autoplay} from "swiper/modules"
-import "swiper/css"
-import "swiper/css/pagination"
-import {noPadding} from "../uis/modal-styles"
-
+import {AiOutlineCheck} from "react-icons/ai"
 import CancelModal from "../modal/cancel-modal"
 import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
 import MyButton from "../uis/button"
 import client from "../../helpers/client"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
+import HotelPageModal from "../modal/hotel-page-modal"
 
-interface HotelOfferBoxProps {
-  offer: any
-  openBookedModal: () => void
-  clearCurrentBookingOrder: Function
-  setShow: Function
+export interface Room {
+  type: number
+  number: number
+  name_ar: string
+  name_en: string
 }
+export interface Booking {
+  id: number
+  date_from: string
+  date_to: string
+  children: number
+  adults: number
+  rooms: Room[]
+  notes: string
+  cancel: number
+  canceled_at: null
+  cancel_reason: number
+  cancel_reason_other: null
+  status: number
+  country_id: number
+  city_id: number
+  offer_id: number
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  ignore: number
+  date_ignore: null
+  lat: string
+  lng: string
+  distance: number
+  rooms_no: number
+}
+
 export interface IData {
   id: number
   price: number
@@ -44,6 +58,9 @@ export interface IData {
   created_at: string
   updated_at: string
   deleted_at: string
+  price_after_reject: number | null
+  hotel: any
+  booking: Booking
 }
 export interface Result {
   current_page: number
@@ -57,143 +74,43 @@ export interface IGetOffersRes {
   message: string
   result: Result
 }
-
-const hotelData = {
-  img: "/hotel-logo-about.png",
-  hotelName: "Hotel Name",
-  rating: 3,
-  mail: "No 53, 2Nd Avenue, The Houghton Apartments Gate 2, Houghton Estate",
-  phone: "+97 059 254 6772",
-  websiteLink: "https://google.com"
+interface HotelOfferBoxProps {
+  offer: IData
+  openBookedModal: () => void
+  clearCurrentBookingOrder: Function
+  setShow: Function
+  getOffers: () => void
 }
-const swiperSlides = [
-  {
-    id: 1,
-    imgUrl: "/hotel-galary.jpg"
-  },
-  {
-    id: 2,
-    imgUrl: "/hotel-galary.jpg"
-  },
-  {
-    id: 3,
-    imgUrl: "/hotel-galary.jpg"
-  }
-]
 
-const HotelPageModal = function HotelPageModal({
-  isOpen,
-  onClose
-}: {
-  isOpen: boolean
-  onClose: () => void
-}) {
-  return (
-    <Modal
-      backdrop="opaque"
-      isOpen={isOpen}
-      onClose={onClose}
-      radius="lg"
-      classNames={noPadding}>
-      <ModalContent>
-        <ModalBody>
-          <div>
-            <div className="relative w-auto">
-              <div className="flex gap-3 absolute bottom-3 left-4 z-10">
-                <Image
-                  src={hotelData.img}
-                  alt={hotelData.hotelName}
-                  className="!relative !w-20 !h-20 object-contain"
-                  fill
-                />
-                <div>
-                  <h2 className="heading-2 mb-3 text-white">
-                    {hotelData.hotelName}
-                  </h2>
-                  <Rating
-                    value={hotelData.rating}
-                    className="text-blue-700"
-                    readOnly
-                    icon={<AiFillStar className="text-inherit text-blue-700" />}
-                    emptyIcon={
-                      <AiFillStar className="text-inherit !text-gray-400" />
-                    }
-                  />
-                </div>
-              </div>
-              <Swiper
-                slidesPerView={1}
-                autoplay={{
-                  delay: 3000,
-                  pauseOnMouseEnter: true,
-                  disableOnInteraction: false
-                }}
-                modules={[Autoplay]}>
-                {swiperSlides.map(({id, imgUrl}) => (
-                  <SwiperSlide key={id}>
-                    <div className="relative w-full h-auto">
-                      <Image
-                        src={imgUrl}
-                        alt="Web Application"
-                        fill
-                        className="!relative object-contain"
-                      />
-                      <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-            <div className="bg-white p-4">
-              <div className="flex gap-4">
-                <FaUsers className="w-5 h-5 text-[#2F5597]" />
-                <span className="heading-3 text-xl-2">About Us</span>
-              </div>
-              <p className="body-sm text-black">
-                The Houghton Hotel was founded out of a love for hospitality,
-                distinguished service, and design and architecture, and is
-                powered by our passion for people. Here, casual comfort and
-                unsurpassed luxury become one
-              </p>
-            </div>
-            <div className="bg-white p-4 body-sm text-black">
-              <div className="flex gap-4 items-center mb-2">
-                <LuMail className="w-5 h-5 text-[#2F5597]" />
-                <span className="heading-3 text-xl-2">Contact</span>
-              </div>
-              <div className="mb-4">{hotelData.mail}</div>
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between gap-3">
-                  <span>Phone:</span>
-                  <a
-                    href={`https://wa.me/${hotelData.phone.replaceAll(
-                      " ",
-                      ""
-                    )}`}
-                    className="text-blue-500">
-                    {hotelData.phone}
-                  </a>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <span>Website:</span>
-                  <Link href={hotelData.websiteLink} className="text-blue-500">
-                    View Website
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  )
-}
+// const hotelData = {
+//   img: "/hotel-logo-about.png",
+//   hotelName: "Hotel Name",
+//   rating: 3,
+//   mail: "No 53, 2Nd Avenue, The Houghton Apartments Gate 2, Houghton Estate",
+//   phone: "+97 059 254 6772",
+//   websiteLink: "https://google.com"
+// }
+// const swiperSlides = [
+//   {
+//     id: 1,
+//     imgUrl: "/hotel-galary.jpg"
+//   },
+//   {
+//     id: 2,
+//     imgUrl: "/hotel-galary.jpg"
+//   },
+//   {
+//     id: 3,
+//     imgUrl: "/hotel-galary.jpg"
+//   }
+// ]
 
 const HotelOfferBox = function HotelOfferBox({
   offer,
   openBookedModal,
   clearCurrentBookingOrder,
-  setShow
+  setShow,
+  getOffers
 }: HotelOfferBoxProps) {
   const [reject, setReject] = useState(false)
   const {isOpen, onClose, onOpen} = useDisclosure()
@@ -215,18 +132,18 @@ const HotelOfferBox = function HotelOfferBox({
     setReject(true)
     client(`hotels/bookings/offers/reject/${offer.id}`, {
       method: "GET"
-    })?.then((res) => {
-      console.log(res)
+    })?.then(() => {
+      getOffers()
     })
   }
   return (
     <>
       <div className="bg-white dark:bg-mirage p-2 rounded-lg shadow-base snap-center relative">
-        {/* {isNewOffer ? (
+        {offer.price_after_reject ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
           </div>
-        ) : null} */}
+        ) : null}
         <div className="flex justify-between gap-2 mb-2">
           <div
             className="flex gap-2 cursor-pointer"
@@ -249,16 +166,23 @@ const HotelOfferBox = function HotelOfferBox({
                 size="small"
                 style={{color: "#2F5597"}}
               />
-              <span className="label-gray">Grand</span>
+              {offer.booking.rooms
+                .filter((room) => room.number > 0)
+                .map((room) => (
+                  <span className="label-gray">{room.name_en}</span>
+                ))}
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center">
             <span className="text-red-500 text-xl font-bold">
-              {offer.price}$
+              {offer.price_after_reject
+                ? offer.price_after_reject
+                : offer.price}
+              $
             </span>
-            {/* {isNewOffer && oldPrice ? (
-              <span className="line-through text-gray-400">{oldPrice}$</span>
-            ) : null} */}
+            {offer.price_after_reject ? (
+              <span className="line-through text-gray-400">{offer.price}$</span>
+            ) : null}
           </div>
         </div>
         <div className="flex justify-end gap-2">
@@ -280,25 +204,11 @@ const HotelOfferBox = function HotelOfferBox({
           </MyButton>
         </div>
       </div>
-      <HotelPageModal isOpen={isOpen} onClose={onClose} />
+      <HotelPageModal isOpen={isOpen} onClose={onClose} hotel={offer.hotel} />
     </>
   )
 }
 
-// const offers = [
-//   {
-//     id: 1,
-//     isNewOffer: true,
-//     oldPrice: 150,
-//     logo: "/hotel-logo.png",
-//     name: "Hotel Name",
-//     rating: 4,
-//     price: 130
-//   },
-//   {id: 2, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
-//   {id: 3, logo: "/hotel-logo.png", name: "Hotel Name", rating: 3, price: 150},
-//   {id: 4, logo: "/hotel-logo.png", name: "Hotel Name", rating: 5, price: 150}
-// ]
 const OffersSidebar = function OffersSidebar({
   show,
   setShow
@@ -310,7 +220,7 @@ const OffersSidebar = function OffersSidebar({
   const cancel = useDisclosure()
   const banned = useDisclosure()
   const [offers, setOffers] = useState<IData[]>([])
-  const [filter, serFilter] = useState("Highest Rated")
+  const [filter, serFilter] = useState(1)
   const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
   const [time, setTime] = useState({minutes: 20, seconds: 0})
 
@@ -331,24 +241,35 @@ const OffersSidebar = function OffersSidebar({
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBooking, clearCurrentBookingOrder])
-
+  const getOffers = async () => {
+    const res: IGetOffersRes = await client(
+      "hotels/bookings/offers/guest-index",
+      {
+        method: "GET"
+      }
+    )
+    setOffers(res.result.data)
+  }
   useEffect(() => {
-    const getOffers = async () => {
-      const res: IGetOffersRes = await client(
-        "hotels/bookings/offers/guest-index",
-        {
-          method: "GET"
-        }
-      )
-      setOffers(res.result.data)
-    }
     getOffers()
   }, [time.minutes])
 
+  const sortOffers = (type: number) => {
+    switch (type) {
+      case 1:
+        return offers.sort((a, b) => a.hotel.stars - b.hotel.stars)
+      case 2:
+        return offers.sort((a, b) => a.price - b.price)
+      case 3:
+        return offers.sort((a, b) => b.price - a.price)
+      default:
+        return offers
+    }
+  }
   return (
     <div className="relative h-full">
       <div
-        className={`fixed my-transition z-20 left-0 bottom-0 ${
+        className={`fixed my-transition z-20 left-0 bottom-0 shadow-md ${
           show ? "" : "-translate-x-full"
         } max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
         <div className=" bg-white dark:bg-blue-charcoal flex justify-between  items-center p-2">
@@ -362,8 +283,8 @@ const OffersSidebar = function OffersSidebar({
           </MyButton>
           <span className="flex items-center gap-2">
             <BiTime className="h-5 w-5 text-gray-300" />
-            {String(time.minutes).padStart(2, "0")}:
-            {String(time.seconds).padStart(2, "0")}
+            {String(time.minutes || 20).padStart(2, "0")}:
+            {String(time.seconds || 0).padStart(2, "0")}
           </span>
           <MyButton color="transparent" onClick={cancel.onOpen}>
             Cancel
@@ -375,52 +296,47 @@ const OffersSidebar = function OffersSidebar({
           </p>
           <div className="flex mb-3 gap-2  w-auto">
             <MyButton
-              color={filter === "Highest Rated" ? "primary" : "white"}
+              color={filter === 1 ? "primary" : "white"}
               radius="sm"
               size="sm"
               startContent={
-                filter === "Highest Rated" ? (
-                  <AiOutlineCheck className="h-5 w-5" />
-                ) : null
+                filter === 1 ? <AiOutlineCheck className="h-5 w-5" /> : null
               }
-              onClick={() => serFilter("Highest Rated")}
+              onClick={() => serFilter(1)}
               disableAnimation>
               Highest Rated
             </MyButton>
             <MyButton
-              color={filter === "Lowest Price" ? "primary" : "white"}
+              color={filter === 2 ? "primary" : "white"}
               radius="sm"
               size="sm"
               startContent={
-                filter === "Lowest Price" ? (
-                  <AiOutlineCheck className="h-5 w-5" />
-                ) : null
+                filter === 2 ? <AiOutlineCheck className="h-5 w-5" /> : null
               }
-              onClick={() => serFilter("Lowest Price")}
+              onClick={() => serFilter(2)}
               disableAnimation>
               Lowest Price
             </MyButton>
             <MyButton
-              color={filter === "Highest Price" ? "primary" : "white"}
+              color={filter === 3 ? "primary" : "white"}
               radius="sm"
               size="sm"
               startContent={
-                filter === "Highest Price" ? (
-                  <AiOutlineCheck className="h-5 w-5" />
-                ) : null
+                filter === 3 ? <AiOutlineCheck className="h-5 w-5" /> : null
               }
-              onClick={() => serFilter("Highest Price")}
+              onClick={() => serFilter(3)}
               disableAnimation>
               Highest Price
             </MyButton>
           </div>
           <div className="flex flex-col relative gap-3">
-            {offers.map((offer: any) => (
+            {sortOffers(filter).map((offer: any) => (
               <HotelOfferBox
                 key={offer.id}
                 offer={offer}
                 setShow={setShow}
                 openBookedModal={booked.onOpen}
+                getOffers={getOffers}
                 clearCurrentBookingOrder={clearCurrentBookingOrder}
               />
             ))}
@@ -431,6 +347,7 @@ const OffersSidebar = function OffersSidebar({
       <CancelModal
         isOpen={cancel.isOpen}
         onClose={cancel.onClose}
+        setShow={setShow}
         openBannedModal={banned.onOpen}
       />
       <BannedModal isOpen={banned.isOpen} onClose={banned.onClose} />

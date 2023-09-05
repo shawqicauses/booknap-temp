@@ -14,7 +14,7 @@ const Booking: NextPage = function Booking() {
   }
   return (
     <Protected>
-      <div className="flex">
+      <div className="flex mb-10">
         <Sidebar />
         <div className="my-container">
           <HotelPageContent>

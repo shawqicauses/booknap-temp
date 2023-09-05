@@ -8,28 +8,6 @@ import {LuMail} from "react-icons/lu"
 import client from "../../../helpers/client"
 import {Result, res} from "./index"
 
-const hotelData = {
-  about:
-    "Lorem Ipsum Dolor Sit Amet, Consetetur Sadipscing Elitr, Sed Diam Nonumy Eirmod Tempor Invidunt Ut Labore Et Dolore Magna Aliquyam Erat, Sed Diam Voluptua. At Vero Eos Et Accusam Et Justo Duo Dolores Et Ea Rebum. Stet Clita Kasd Gubergren, No Sea Takimata Sanctus Est Lorem Ipsum Dolor Sit Amet. Lorem Ipsum Dolor Sit Amet, Consetetur Sadipscing",
-  locationOnMap: {lat: 30, lng: 40},
-  mail: "No 53, 2Nd Avenue, The Houghton Apartments Gate 2, Houghton Estate",
-  country: "Saudi Arabia",
-  phone: "+97 059 254 6772",
-  websiteLink: "https://google.com",
-  images: [
-    {id: 1, src: "/hotel-galary.jpg"},
-    {id: 2, src: "/hotel-galary.jpg"},
-    {id: 3, src: "/hotel-galary.jpg"},
-    {id: 4, src: "/hotel-galary.jpg"},
-    {id: 5, src: "/hotel-galary.jpg"},
-    {id: 6, src: "/hotel-galary.jpg"},
-    {id: 7, src: "/hotel-galary.jpg"},
-    {id: 8, src: "/hotel-galary.jpg"},
-    {id: 9, src: "/hotel-galary.jpg"}
-  ],
-  video: "/hotel-galary.jpg"
-}
-
 const About = function About() {
   const router = useRouter()
   const id = Number(router.query.id)
@@ -60,7 +38,7 @@ const About = function About() {
             </span>
           </div>
           <div className="flex justify-between">
-            <span>{result?.hotel.country_id}</span>
+            <span>{result?.hotel.country.en_name}</span>
             <Link
               href={`/?lat=${result?.hotel.lat}&lng=${result?.hotel.lng}`}
               className="text-blue-500">
@@ -73,7 +51,7 @@ const About = function About() {
             <LuMail className="w-5 h-5 text-[#2F5597]" />
             <span className="heading-3 text-xl-2 dark:text-white">Contact</span>
           </div>
-          <div className="mb-4">{result?.hotel.mail}</div>
+          <div className="mb-4">mail@mail.com</div>
           <div className="flex justify-between items-center">
             <div className="flex gap-3">
               <span>Phone:</span>
@@ -103,12 +81,12 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Glairy</span>
         </div>
         <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
-          {result?.hotel.media.map(({id, src}, index) => (
+          {result?.hotel.media.map(({id: imgId, src}, index) => (
             <div
               className={`relative h-full rounded-lg overflow-hidden ${
                 index === 0 ? "row-span-2 col-span-2" : ""
               }`}
-              key={id}>
+              key={imgId}>
               <Image src={src} alt="image" fill className="!relative" />
             </div>
           ))}

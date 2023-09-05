@@ -21,10 +21,10 @@ const BookingSidebar = function BookingSidebar({
     return (
       <div className="relative h-full">
         <div
-          className={`fixed my-transition z-20 left-0 bottom-0 ${
+          className={`fixed my-transition z-20 left-0 bottom-0 bg-white dark:bg-blue-charcoal shadow-md ${
             show ? "" : "-translate-x-full"
           } max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
-          <div className=" bg-white flex justify-between  items-center p-2">
+          <div className="flex justify-between  items-center p-2">
             <MyButton
               startContent={
                 <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
@@ -44,7 +44,7 @@ const BookingSidebar = function BookingSidebar({
               Close
             </MyButton>
           </div>
-          <div className="bg-white py-3 px-5 flex-1">
+          <div className="py-3 px-5 flex-1">
             <div className="flex flex-col relative gap-3">
               {userBookings.map((booking) => (
                 <BookingBox

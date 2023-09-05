@@ -63,7 +63,7 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
   const [userBookings, setUserBookings] = useState<IBooking[] | null>(null)
 
   const [ready, setReady] = useState<boolean>(false)
-  const {token} = useAuth()
+  const {token, ready: tokenReady} = useAuth()
 
   const fetchUserBookings = useCallback(() => {
     client("hotels/bookings", {method: "GET"})?.then(
@@ -81,13 +81,14 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
   }, [])
 
   useEffect(() => {
-    if (!token) {
+    if (!token && tokenReady) {
       setReady(false)
       setCurrentBooking(null)
-    } else {
+    } else if (token && tokenReady) {
       fetchUserBookings()
+      setReady(true)
     }
-  }, [token, fetchUserBookings])
+  }, [token, fetchUserBookings, tokenReady])
 
   const handleCurrentBookingOrder = useCallback((data: Result) => {
     setCurrentBooking(data)

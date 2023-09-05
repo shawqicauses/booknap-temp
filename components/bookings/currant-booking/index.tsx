@@ -35,6 +35,12 @@ export interface Hotel {
   date_start_service: null
   date_end_service: null
   date_stop_service: null
+  country: {
+    id: number
+    name: string
+    en_name: string
+    ar_name: string
+  }
   media: any[]
 }
 
@@ -55,6 +61,28 @@ export interface Offer {
 export interface Room {
   type: number
   number: number
+}
+
+export interface RoomDetails {
+  id: number
+  name_ar: string
+  type: 1
+  bed: 2
+  features: {
+    f1: true
+    f2: false
+    f3: true
+  }
+  number: number
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  amount: number
+  name_en: string
+  details_ar: string
+  details_en: string
 }
 export interface Result {
   id: number
@@ -85,32 +113,14 @@ export interface Result {
   rooms_no: null
   offers: Offer[]
   hotel: Hotel
+  rooms_details: Array<RoomDetails>
 }
+
 export interface res {
   success: boolean
   message: string
   result: Result
 }
-// const swiperSlides = [
-//   {
-//     id: 1,
-//     imgUrl: "/about-slide.png"
-//   },
-//   {
-//     id: 2,
-//     imgUrl: "/about-slide.png"
-//   },
-//   {
-//     id: 3,
-//     imgUrl: "/about-slide.png"
-//   }
-// ]
-
-// const hotelData = {
-//   img: "/hotel-logo-about.png",
-//   hotelName: "Hotel Name",
-//   rating: 3
-// }
 
 const HotelPageContent = function HotelPageContent({
   children
@@ -131,7 +141,7 @@ const HotelPageContent = function HotelPageContent({
 
   if (result) {
     return (
-      <div className="my-10">
+      <div className="mb-10">
         <div className="p-3 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
           <div className="relative mb-2 min-h-[100px]">
             <div className="flex gap-3 absolute bottom-3 left-4 z-10">
@@ -144,7 +154,7 @@ const HotelPageContent = function HotelPageContent({
                 />
               </div>
               <div>
-                <h2 className="heading-2 mb-3 text-white">
+                <h2 className="heading-2 mb-3 dark:text-white">
                   {result.hotel.name}
                 </h2>
                 <Rating

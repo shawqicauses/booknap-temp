@@ -20,9 +20,10 @@ const IconSidebar = function IconSidebar({
           <div>
             <MyButton
               size="navIcon"
-              color="navIcon"
+              color="white"
               radius="sm"
               isIconOnly
+              className="shadow-sm"
               onClick={() => setShowOffersSidebar(true)}>
               <MdLocalOffer className="h-5 w-5 text-[#B9B9B9]" />
             </MyButton>
@@ -31,9 +32,10 @@ const IconSidebar = function IconSidebar({
         <div>
           <MyButton
             size="navIcon"
-            color="navIcon"
+            color="white"
             radius="sm"
             isIconOnly
+            className="shadow-sm"
             onClick={() => setShowBookingsSidebar(true)}>
             <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
           </MyButton>

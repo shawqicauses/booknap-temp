@@ -1,13 +1,33 @@
 import Image from "next/image"
 import React from "react"
+import {useRouter} from "next/router"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
-import {useCart} from "../../../stores/cart"
-import {IItem} from "../../../types"
 import MyButton from "../../uis/button"
 import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
 
+interface product_feature {
+  id: number
+  shopping_product_id: number
+  name_en: string
+  name_ar: string
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  hotel_id: number
+  values: Array<{
+    id: number
+    feature_id: number
+    name_ar: string
+    name_en: string
+    created_at: string
+    updated_at: string
+    product_id: number
+    hotel_id: number
+    deleted_at: null
+  }>
+}
 export interface Product {
   id: number
   shopping_category_id: null
@@ -24,6 +44,7 @@ export interface Product {
   updated_at: string
   deleted_at: null
   image: string
+  product_features: Array<product_feature>
 }
 
 const CardItem = function CardItem({
@@ -32,7 +53,6 @@ const CardItem = function CardItem({
   product,
   price,
   isFavorite,
-  inCart,
   handleClick
 }: {
   id: number
@@ -40,7 +60,6 @@ const CardItem = function CardItem({
   product: string
   price: number
   isFavorite: boolean
-  inCart: boolean
   handleClick: () => void
 }) {
   return (
@@ -61,10 +80,7 @@ const CardItem = function CardItem({
               <MdFavoriteBorder className="w-5 h-5 text-red-500" />
             )}
           </MyButton>
-          <MyButton
-            color={inCart ? "primary" : "default"}
-            isIconOnly
-            onClick={handleClick}>
+          <MyButton color="default" isIconOnly onClick={handleClick}>
             <HiOutlineShoppingCart className="h-5 w-5" />
           </MyButton>
         </div>
@@ -74,28 +90,32 @@ const CardItem = function CardItem({
 }
 
 const Shop = function Shop({tab}: {tab: string}) {
-  const {data: products} = useFetch<Product[]>("shopping/products")
-  const {cart, addItemToCart, deleteItem} = useCart()
+  const {data: products} = useFetch<{data: {data: Product[]}}>(
+    "shopping/products"
+  )
+  const router = useRouter()
+  const id = Number(router.query.id)
 
   if (products) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-5 h-auto mt-5 mb-10">
-        {products.map(({id, image, price, description}) => {
-          const inCart =
-            cart.find((cartItem: IItem) => cartItem.id === id) !== undefined
-          return (
-            <CardItem
-              key={id}
-              id={id}
-              image={image}
-              price={Number(price)}
-              isFavorite
-              product={description}
-              inCart={inCart}
-              handleClick={() => {}}
-            />
-          )
-        })}
+        {products.data.data.map(
+          ({id: productId, image, price, description}) => {
+            return (
+              <CardItem
+                key={productId}
+                id={productId}
+                image={image}
+                price={Number(price)}
+                isFavorite
+                product={description}
+                handleClick={() => {
+                  router.push(`/${id}/shop/${productId}`)
+                }}
+              />
+            )
+          }
+        )}
       </div>
     )
   }
