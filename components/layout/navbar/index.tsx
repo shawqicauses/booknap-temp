@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
+import OutsideClickHandler from "react-outside-click-handler"
 import {
   Badge,
   Dropdown,
@@ -9,9 +10,10 @@ import {
   Spinner,
   useDisclosure
 } from "@nextui-org/react"
+import {useRouter} from "next/router"
 import Image from "next/image"
 import Link from "next/link"
-import React, {ReactElement, useEffect, useState} from "react"
+import React, {ReactElement, useState} from "react"
 import {BiMoon, BiTrash, BiUser} from "react-icons/bi"
 import {GoChecklist} from "react-icons/go"
 import {HiOutlineLogout} from "react-icons/hi"
@@ -73,7 +75,7 @@ const NavbarCloseToggle = function NavbarCloseToggle({
   )
 }
 
-const NotificationsDropDown2 = function NotificationsDropDown2() {
+const NotificationsDropDown = function NotificationsDropDown() {
   const {notifications, ready} = useNotifications()
   const [isOpen, setIsOpen] = useState(false)
   const handleClick = () => {
@@ -87,72 +89,147 @@ const NotificationsDropDown2 = function NotificationsDropDown2() {
     }
   }
 
-  useEffect(() => {
-    document.addEventListener("click", () => {
-      setIsOpen(false)
-    })
-  }, [])
   return (
     <div className="relative h-full">
-      <MyButton isIconOnly size="navIcon" color="navIcon" onClick={handleClick}>
-        <Badge
-          color="danger"
-          content={notifications ? notifications.length : 0}
-          shape="circle"
-          disableOutline>
-          <IoMdNotificationsOutline className="w-6 h-6" />
-        </Badge>
-      </MyButton>
-      <div
-        className={`${
-          isOpen ? "block" : "hidden"
-        } absolute lg:top-14 bottom-14 right-0 w-60  shadow-md z-50`}>
-        <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
-          {ready ? (
-            notifications.length > 0 ? (
-              notifications.map((notfi: any) => (
-                <li
-                  className="flex gap-2 justify-center items-center p-3"
-                  key={notfi.id}>
-                  <div className="relative w-10 h-10 rounded-lg overflow-hidden">
-                    <Image
-                      src="/user-profile.jpg"
-                      alt="logo"
-                      className="relative"
-                      fill
-                    />
-                  </div>
-                  <div>
-                    <h3 className="">{notfi.data.title}</h3>
-                    <span className="body-sm">{notfi.data.details}</span>
-                  </div>
+      <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+        <MyButton
+          isIconOnly
+          size="navIcon"
+          color="white2"
+          onClick={handleClick}>
+          <Badge
+            color="danger"
+            content={notifications ? notifications.length : 0}
+            shape="circle"
+            disableOutline>
+            <IoMdNotificationsOutline className="w-6 h-6 text-[#B9B9B9]" />
+          </Badge>
+        </MyButton>
+        <div
+          className={`${
+            isOpen ? "block" : "hidden"
+          } absolute lg:top-14 bottom-14 right-0 w-60  shadow-md z-50`}>
+          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
+            {ready ? (
+              notifications.length > 0 ? (
+                notifications.map((notfi: any) => (
+                  <li
+                    className="flex gap-2 justify-center items-center p-3"
+                    key={notfi.id}>
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                      <Image
+                        src="/user-profile.jpg"
+                        alt="logo"
+                        className="relative"
+                        fill
+                      />
+                    </div>
+                    <div className="flex-1 text-start">
+                      <h3 className="">{notfi.data.title}</h3>
+                      <span className="body-sm">{notfi.data.details}</span>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="h-[100px] w-full flex justify-center items-center">
+                  <h3>No Notifications</h3>
                 </li>
-              ))
+              )
             ) : (
-              <li className="h-[100px] w-full flex justify-center items-center">
-                <h3>No Notifications</h3>
+              <li className="max-h-[150px] flex justify-center items-center">
+                <Spinner size="md" />
               </li>
-            )
-          ) : (
-            <li className="max-h-[150px] flex justify-center items-center">
-              <Spinner size="md" />
-            </li>
-          )}
-        </ul>
-      </div>
+            )}
+          </ul>
+        </div>
+      </OutsideClickHandler>
     </div>
   )
 }
+const CartDropDown = function CartDropDown() {
+  const {cart, cartReady} = useCart()
+  const [isOpen, setIsOpen] = useState(false)
 
+  return (
+    <div className="relative h-full">
+      <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+        <MyButton
+          size="navIcon"
+          color="white2"
+          onClick={() => {
+            setIsOpen((pre) => !pre)
+          }}
+          isIconOnly>
+          {cart.length > 0 ? (
+            <Badge
+              color="danger"
+              content={cart.length}
+              shape="circle"
+              disableOutline>
+              <AiOutlineShoppingCart className="w-6 h-6 text-[#B9B9B9]" />
+            </Badge>
+          ) : (
+            <AiOutlineShoppingCart className="w-6 h-6 text-[#B9B9B9]" />
+          )}
+        </MyButton>
+        <div
+          className={`${
+            isOpen ? "block" : "hidden"
+          } absolute lg:top-14 bottom-14 right-0 w-60 shadow-md z-50`}>
+          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
+            {cartReady ? (
+              cart.length > 0 ? (
+                <>
+                  {cart.slice(0, 3).map((item) => (
+                    <li className="flex gap-2 items-center p-3" key={item.id}>
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                        {item.product?.image ? (
+                          <Image
+                            src={item.product?.image}
+                            alt="logo"
+                            className="relative"
+                            fill
+                          />
+                        ) : null}
+                      </div>
+                      <div className="flex flex-col flex-1 text-start">
+                        <h3 className="">{item?.product?.name}</h3>
+                        <span className="body-sm line-clamp-1">
+                          {item?.product?.description}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                  <li className="flex justify-center p-2">
+                    <Link href="/cart" className="text-blue-400">
+                      Show More
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li className="h-[100px] w-full flex justify-center items-center">
+                  <h3>No Item in Cart</h3>
+                </li>
+              )
+            ) : (
+              <li className="max-h-[150px] flex justify-center items-center">
+                <Spinner size="md" />
+              </li>
+            )}
+          </ul>
+        </div>
+      </OutsideClickHandler>
+    </div>
+  )
+}
 const Navbar = function Navbar() {
   const {theme, changeTheme} = useTheme()
   const [isOpened, setIsOpened] = useState(false)
   const {token, signOut} = useAuth()
   const signInModel = useDisclosure()
   const deleteAccount = useDisclosure()
-  const {cart} = useCart()
   const {user, ready} = useUser()
-
+  const router = useRouter()
   const handleSignOut = async () => {
     await client("logout", {method: "POST"})
     signOut()
@@ -162,7 +239,7 @@ const Navbar = function Navbar() {
     <>
       <nav className="sticky z-40 top-0 bg-white h-[78px] dark:bg-[rgb(0,8,24)] w-full shadow-base">
         <div className="my-container my-flex md:my-flex-between py-4 !items-end h-full">
-          <div className="flex gap-3 w-full items-center  justify-between md:justify-start">
+          <div className="flex gap-10 w-full items-center  justify-between md:justify-start">
             <Link href="/" className="relative md:w-36 w-40 lg:mt-0">
               <Image
                 src={`/logo/${
@@ -189,7 +266,9 @@ const Navbar = function Navbar() {
                       <li key={id}>
                         <Link
                           href={href}
-                          className="navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89]"
+                          className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89] ${
+                            router.pathname === href ? "!text-[#2F5597]" : ""
+                          }`}
                           onClick={() => {
                             setIsOpened(false)
                             document.body.style.overflowY = "scroll"
@@ -203,20 +282,20 @@ const Navbar = function Navbar() {
                 <li>
                   <ul className="flex flex-col lg:flex-row gap-3 ">
                     <li>
+                      <Lang />
+                    </li>
+                    <li>
                       <MyButton
                         isIconOnly
                         size="navIcon"
-                        color="navIcon"
+                        color="white2"
                         onClick={changeTheme}>
                         {theme === "light" ? (
-                          <BiMoon className="w-6 h-6 " />
+                          <BiMoon className="w-6 h-6 text-[#B9B9B9]" />
                         ) : (
-                          <BsFillSunFill className="w-6 h-6" />
+                          <BsFillSunFill className="w-6 h-6 text-[#B9B9B9]" />
                         )}
                       </MyButton>
-                    </li>
-                    <li>
-                      <Lang />
                     </li>
                     {!token ? (
                       <li>
@@ -224,7 +303,7 @@ const Navbar = function Navbar() {
                           as={Link}
                           href="/"
                           size="navIcon"
-                          color="navIcon"
+                          color="white2"
                           isIconOnly
                           onClick={signInModel.onOpen}>
                           <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
@@ -234,27 +313,10 @@ const Navbar = function Navbar() {
                     {token ? (
                       <>
                         <li>
-                          <MyButton
-                            size="navIcon"
-                            color="navIcon"
-                            as={Link}
-                            href="/cart"
-                            isIconOnly>
-                            {cart.length > 0 ? (
-                              <Badge
-                                color="danger"
-                                content={cart.length}
-                                shape="circle"
-                                disableOutline>
-                                <AiOutlineShoppingCart className="w-6 h-6" />
-                              </Badge>
-                            ) : (
-                              <AiOutlineShoppingCart className="w-6 h-6" />
-                            )}
-                          </MyButton>
+                          <CartDropDown />
                         </li>
                         <li>
-                          <NotificationsDropDown2 />
+                          <NotificationsDropDown />
                         </li>
                         <li>
                           <Dropdown
@@ -265,8 +327,8 @@ const Navbar = function Navbar() {
                             }}>
                             <DropdownTrigger>
                               {ready ? (
-                                <div className="my-flex gap-2 cursor-pointer bg-gray-100 dark:bg-[#12213B] py-1 px-1.5 rounded-lg">
-                                  <div className="relative !w-10 !h-10  rounded-full overflow-hidden">
+                                <div className="my-flex gap-2 cursor-pointer rounded-lg">
+                                  <div className="relative !w-10 !h-10 rounded-full overflow-hidden">
                                     {user?.avatar ? (
                                       <Image
                                         src={user?.avatar}
@@ -276,12 +338,9 @@ const Navbar = function Navbar() {
                                       />
                                     ) : null}
                                   </div>
-                                  <span className="inline-block dark:text-white">
-                                    {user?.name}
-                                  </span>
                                 </div>
                               ) : (
-                                <div className="min-w-[100px] h-full flex justify-center items-center bg-gray-100 dark:bg-[#12213B] rounded-lg">
+                                <div className="min-w-[100px] h-full flex justify-center items-center rounded-lg">
                                   <Spinner />
                                 </div>
                               )}

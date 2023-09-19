@@ -8,8 +8,8 @@ import {
 import "flag-icons/css/flag-icons.min.css"
 
 const languages = [
-  {id: 0, shortname: "en", name: "English", flag: "us"},
-  {id: 1, shortname: "ar", name: "Arabic", flag: "eg"}
+  {id: 0, shortname: "en", name: "EN", flag: "us"},
+  {id: 1, shortname: "ar", name: "AR", flag: "eg"}
 ]
 
 const Lang = function Lang() {
@@ -35,8 +35,7 @@ const Lang = function Lang() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <div className="flex gap-2 items-center bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] h-full dark:text-[#5B6C89] py-2 px-4 rounded-lg cursor-pointer">
-          <span className={`fi fi-${selectedValue.flag} fis h-full`} />
+        <div className="flex gap-2 items-center  text-[#B9B9B9]  h-full dark:text-[#5B6C89] py-2 px-4 rounded-lg cursor-pointer">
           <span className="block">{selectedValue.name}</span>
         </div>
       </DropdownTrigger>
