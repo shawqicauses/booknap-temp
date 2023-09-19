@@ -129,6 +129,7 @@ export interface IHotel {
   date_start_service: null
   date_end_service: null
   date_stop_service: null
+  is_booking: number
   langs: Lang[]
 }
 export interface IRoom {

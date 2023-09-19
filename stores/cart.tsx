@@ -71,16 +71,23 @@ const CartProvider = function CartProvider({
   const [cart, setCart] = useState<CardProduct[]>([])
 
   const getTotal = useCallback(() => {
-    client("shopping/cart/total")?.then((res: {total: string[]}) => {
-      setTotal(res.total[0])
-    })
-  }, [])
+    setTotal(
+      cart
+        .reduce(
+          (pre, cartItem) =>
+            pre + cartItem.quantity * Number(cartItem.product?.price),
+          0
+        )
+        .toFixed(2)
+    )
+  }, [cart])
+
   const getCardItems = useCallback(() => {
     client("shopping/show/carts")?.then((res: {data: Array<CardProduct>}) => {
       setCart(res.data)
-      getTotal()
+      setCartReady(true)
     })
-  }, [getTotal])
+  }, [])
 
   useEffect(() => {
     if (ready && token) {
@@ -94,57 +101,51 @@ const CartProvider = function CartProvider({
         method: "POST",
         body: JSON.stringify({quantity: quantity})
       })?.then(() => {
-        getTotal()
         getCardItems()
       })
     },
-    [getTotal, getCardItems]
+    [getCardItems]
   )
 
-  const updateItemQuantity = useCallback(
-    (id: number, quantity: number) => {
-      client(`shopping/carts/update/${id}`, {
-        method: "POST",
-        body: JSON.stringify({quantity: quantity})
-      })?.then(() => {
-        getTotal()
-        getCardItems()
-      })
-    },
-    [getTotal, getCardItems]
-  )
+  const updateItemQuantity = useCallback((id: number, quantity: number) => {
+    setCart((preCart) => [
+      ...preCart.filter((itemCart) => Number(itemCart.id) !== id),
+      {
+        ...preCart.filter((itemCart) => Number(itemCart.id) === id)[0],
+        quantity: quantity
+      }
+    ])
+  }, [])
 
   const deleteItem = useCallback(
     (id: number) => {
       client(`shopping/carts/delete/${id}`, {
         method: "POST"
       })?.then(() => {
-        getTotal()
         getCardItems()
       })
     },
-    [getTotal, getCardItems]
+    [getCardItems]
   )
   const handleCheckOut = useCallback(() => {
-    client("shopping/cart/create/order", {method: "POST"})?.then(() => {
-      getTotal()
+    client("shopping/cart/create/order", {
+      method: "POST",
+      body: JSON.stringify({
+        carts: cart.map((itemCart) => ({
+          id: itemCart.id,
+          qty: itemCart.quantity
+        }))
+      })
+    })?.then(() => {
       getCardItems()
     })
-  }, [getTotal, getCardItems])
+  }, [getCardItems, cart])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const cartStored = JSON.parse(localStorage.getItem("CART") || "[]")
-      if (cartStored) {
-        setCartReady(true)
-      }
+      getTotal()
     }
-  }, [])
-  useEffect(() => {
-    if (typeof window !== "undefined" && cartReady) {
-      localStorage.setItem("CART", JSON.stringify(cart))
-    }
-  }, [cart, cartReady])
+  }, [cartReady, getTotal])
 
   const exposed = useMemo(
     () => ({
