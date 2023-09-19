@@ -12,6 +12,7 @@ import MyButton from "../uis/button"
 import client from "../../helpers/client"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 import HotelPageModal from "../modal/hotel-page-modal"
+import State from "../state"
 
 export interface Room {
   type: number
@@ -211,10 +212,12 @@ const HotelOfferBox = function HotelOfferBox({
 
 const OffersSidebar = function OffersSidebar({
   show,
-  setShow
+  setShow,
+  setOffersNum
 }: {
   show: boolean
   setShow: React.Dispatch<React.SetStateAction<boolean>>
+  setOffersNum: React.Dispatch<React.SetStateAction<number | null>>
 }) {
   const booked = useDisclosure()
   const cancel = useDisclosure()
@@ -254,6 +257,10 @@ const OffersSidebar = function OffersSidebar({
     getOffers()
   }, [time.minutes])
 
+  useEffect(() => {
+    setOffersNum(offers.length)
+  }, [offers, setOffersNum])
+
   const sortOffers = (type: number) => {
     switch (type) {
       case 1:
@@ -281,66 +288,82 @@ const OffersSidebar = function OffersSidebar({
             onClick={() => setShow(false)}>
             Offers
           </MyButton>
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 font-semi-bold">
             <BiTime className="h-5 w-5 text-gray-300" />
             {String(time.minutes || 20).padStart(2, "0")}:
             {String(time.seconds || 0).padStart(2, "0")}
           </span>
-          <MyButton color="transparent" onClick={cancel.onOpen}>
-            Cancel
-          </MyButton>
+          {currentBooking ? (
+            <MyButton
+              color="transparent"
+              className="text-gray-400"
+              onClick={cancel.onOpen}>
+              Cancel
+            </MyButton>
+          ) : (
+            <span />
+          )}
         </div>
-        <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1">
-          <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white  rounded-lg mb-3">
-            if you Don&apos;t like the offers you can reject The Offers
-          </p>
-          <div className="flex mb-3 gap-2  w-auto">
-            <MyButton
-              color={filter === 1 ? "primary" : "white"}
-              radius="sm"
-              size="sm"
-              startContent={
-                filter === 1 ? <AiOutlineCheck className="h-5 w-5" /> : null
-              }
-              onClick={() => serFilter(1)}
-              disableAnimation>
-              Highest Rated
-            </MyButton>
-            <MyButton
-              color={filter === 2 ? "primary" : "white"}
-              radius="sm"
-              size="sm"
-              startContent={
-                filter === 2 ? <AiOutlineCheck className="h-5 w-5" /> : null
-              }
-              onClick={() => serFilter(2)}
-              disableAnimation>
-              Lowest Price
-            </MyButton>
-            <MyButton
-              color={filter === 3 ? "primary" : "white"}
-              radius="sm"
-              size="sm"
-              startContent={
-                filter === 3 ? <AiOutlineCheck className="h-5 w-5" /> : null
-              }
-              onClick={() => serFilter(3)}
-              disableAnimation>
-              Highest Price
-            </MyButton>
-          </div>
-          <div className="flex flex-col relative gap-3">
-            {sortOffers(filter).map((offer: any) => (
-              <HotelOfferBox
-                key={offer.id}
-                offer={offer}
-                setShow={setShow}
-                openBookedModal={booked.onOpen}
-                getOffers={getOffers}
-                clearCurrentBookingOrder={clearCurrentBookingOrder}
-              />
-            ))}
-          </div>
+        <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1 w-[454px]">
+          {currentBooking ? (
+            <>
+              <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white  rounded-lg mb-3">
+                if you Don&apos;t like the offers you can reject The Offers
+              </p>
+              <div className="flex mb-3 gap-2  w-auto">
+                <MyButton
+                  color={filter === 1 ? "primary" : "white"}
+                  radius="sm"
+                  size="sm"
+                  startContent={
+                    filter === 1 ? <AiOutlineCheck className="h-5 w-5" /> : null
+                  }
+                  onClick={() => serFilter(1)}
+                  disableAnimation>
+                  Highest Rated
+                </MyButton>
+                <MyButton
+                  color={filter === 2 ? "primary" : "white"}
+                  radius="sm"
+                  size="sm"
+                  startContent={
+                    filter === 2 ? <AiOutlineCheck className="h-5 w-5" /> : null
+                  }
+                  onClick={() => serFilter(2)}
+                  disableAnimation>
+                  Lowest Price
+                </MyButton>
+                <MyButton
+                  color={filter === 3 ? "primary" : "white"}
+                  radius="sm"
+                  size="sm"
+                  startContent={
+                    filter === 3 ? <AiOutlineCheck className="h-5 w-5" /> : null
+                  }
+                  onClick={() => serFilter(3)}
+                  disableAnimation>
+                  Highest Price
+                </MyButton>
+              </div>
+              <div className="flex flex-col relative gap-3">
+                {sortOffers(filter).map((offer: any) => (
+                  <HotelOfferBox
+                    key={offer.id}
+                    offer={offer}
+                    setShow={setShow}
+                    openBookedModal={booked.onOpen}
+                    getOffers={getOffers}
+                    clearCurrentBookingOrder={clearCurrentBookingOrder}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <State
+              title="You are not Booking Now"
+              description="You are not booking now, Try to book now"
+            />
+          )}
         </div>
       </div>
       <BookedModal isOpen={booked.isOpen} onClose={booked.onClose} />
