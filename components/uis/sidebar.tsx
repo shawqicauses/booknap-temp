@@ -11,7 +11,7 @@ const Sidebar = function Sidebar() {
 
   const {token} = useAuth()
   const {currentBooking, ready} = useCurrentBookingOrder()
-
+  const [offersNum, setOffersNum] = useState<number | null>(null)
   useEffect(() => {
     if (currentBooking && ready) {
       setShowOffersSidebar(true)
@@ -25,10 +25,12 @@ const Sidebar = function Sidebar() {
           setShowOffersSidebar={setShowOffersSidebar}
           setShowBookingsSidebar={setShowBookingsSidebar}
           isBookingNow={!!currentBooking}
+          offersNum={offersNum || 0}
         />
         <OffersSidebar
           show={showOffersSidebar}
           setShow={setShowOffersSidebar}
+          setOffersNum={setOffersNum}
         />
         <BookingSidebar
           show={showBookingsSidebar}
