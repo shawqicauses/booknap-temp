@@ -66,7 +66,7 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
   const {token, ready: tokenReady} = useAuth()
 
   const fetchUserBookings = useCallback(() => {
-    client("hotels/bookings", {method: "GET"})?.then(
+    client("hotels/bookings?status=1&is_active=1", {method: "GET"})?.then(
       (res: IListBookingHotelRes) => {
         const data = res.result.data.filter((booking) => {
           const today = new Date()

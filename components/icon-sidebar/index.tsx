@@ -37,23 +37,25 @@ const IconSidebar = function IconSidebar({
             </Badge>
           </MyButton>
         </div>
-        <div>
-          <MyButton
-            size="navIcon"
-            color="white"
-            radius="sm"
-            isIconOnly
-            className="shadow-sm"
-            onClick={() => setShowBookingsSidebar(true)}>
-            <Badge
-              color="danger"
-              content={userBookings?.length}
-              shape="circle"
-              disableOutline>
-              <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
-            </Badge>
-          </MyButton>
-        </div>
+        {userBookings && userBookings?.length > 0 ? (
+          <div>
+            <MyButton
+              size="navIcon"
+              color="white"
+              radius="sm"
+              isIconOnly
+              className="shadow-sm"
+              onClick={() => setShowBookingsSidebar(true)}>
+              <Badge
+                color="danger"
+                content={userBookings?.length}
+                shape="circle"
+                disableOutline>
+                <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
+              </Badge>
+            </MyButton>
+          </div>
+        ) : null}
       </div>
     </div>
   )

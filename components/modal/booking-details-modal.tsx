@@ -1,5 +1,6 @@
 import {Rating} from "@mui/material"
 import {Modal, ModalBody, ModalContent} from "@nextui-org/react"
+import {AiFillStar} from "react-icons/ai"
 import Image from "next/image"
 import React from "react"
 import {IBooking} from "../../types"
@@ -55,7 +56,16 @@ const BookingDetailsModal = function BookingDetailsModal({
               </div>
               <div>
                 <h3 className="heading-3">{bookingData.hotelName}</h3>
-                <Rating value={Booking.hotel?.stars} readOnly />
+                <Rating
+                  name="read-only"
+                  value={Booking.hotel?.stars}
+                  className="text-blue-700"
+                  readOnly
+                  style={{color: "#2F5597"}}
+                  size="small"
+                  icon={<AiFillStar className="text-inherit" />}
+                  emptyIcon={<AiFillStar className="text-inherit" />}
+                />
               </div>
             </div>
             <div>

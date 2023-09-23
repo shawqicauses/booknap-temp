@@ -1,11 +1,13 @@
+/* eslint-disable camelcase */
 import Image from "next/image"
-import React from "react"
+import React, {useState} from "react"
 import {useRouter} from "next/router"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
 import MyButton from "../../uis/button"
 import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
+import client from "../../../helpers/client"
 
 interface product_feature {
   id: number
@@ -45,6 +47,8 @@ export interface Product {
   deleted_at: null
   image: string
   product_features: Array<product_feature>
+  hotel_id: number
+  is_favourite: number
 }
 
 const CardItem = function CardItem({
@@ -59,9 +63,18 @@ const CardItem = function CardItem({
   image: string
   product: string
   price: number
-  isFavorite: boolean
+  isFavorite: number
   handleClick: () => void
 }) {
+  const [favorite, setFavorite] = useState(!!isFavorite)
+  const handleClickHere = () => {
+    setFavorite((pre) => !pre)
+    client("shopping/products/add-favorite", {
+      method: "POST",
+      body: JSON.stringify({shopping_product_id: id})
+    })
+  }
+
   return (
     <div className="p-3 h-auto bg-gray-100 dark:bg-mirage rounded-lg" key={id}>
       <div className="relative h-auto rounded-lg overflow-hidden">
@@ -73,8 +86,8 @@ const CardItem = function CardItem({
           ${price}
         </span>
         <div className="flex gap-2">
-          <MyButton isIconOnly>
-            {isFavorite ? (
+          <MyButton isIconOnly onClick={handleClickHere}>
+            {favorite ? (
               <MdFavorite className="w-5 h-5 text-red-500" />
             ) : (
               <MdFavoriteBorder className="w-5 h-5 text-red-500" />
@@ -89,33 +102,40 @@ const CardItem = function CardItem({
   )
 }
 
-const Shop = function Shop({tab}: {tab: string}) {
-  const {data: products} = useFetch<{data: {data: Product[]}}>(
-    "shopping/products"
-  )
+const Shop = function Shop() {
   const router = useRouter()
   const id = Number(router.query.id)
+  const shopTab = Number(router.query.shopTab)
+  const {data: products} = useFetch<{data: {data: Product[]}}>(
+    shopTab === -1
+      ? `shopping/products/get-favorite?hotel_id=${id}`
+      : "shopping/products"
+  )
 
-  if (products) {
+  if (products && router.isReady) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-5 h-auto mt-5 mb-10">
-        {products.data.data.map(
-          ({id: productId, image, price, description}) => {
+        {products.data.data
+          .filter(
+            (product) =>
+              product.hotel_id === id &&
+              (shopTab === -1 || product.shopping_category_id === shopTab)
+          )
+          .map(({id: productId, image, price, description, is_favourite}) => {
             return (
               <CardItem
                 key={productId}
                 id={productId}
                 image={image}
                 price={Number(price)}
-                isFavorite
+                isFavorite={is_favourite}
                 product={description}
                 handleClick={() => {
                   router.push(`/${id}/shop/${productId}`)
                 }}
               />
             )
-          }
-        )}
+          })}
       </div>
     )
   }

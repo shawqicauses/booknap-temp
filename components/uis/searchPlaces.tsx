@@ -9,11 +9,13 @@ import usePlacesAutocomplete, {
 const PlacesSuggestionInput = function PlacesSuggestionInput({
   setPosition,
   setDestination,
-  startValue
+  startValue,
+  setMapCenter
 }: {
   setPosition: Function
   setDestination: Function
   startValue: string
+  setMapCenter: Function
 }) {
   const [openList, setOpenList] = useState(false)
   const {
@@ -45,8 +47,8 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
     clearSuggestions()
     getGeocode({address: e.description}).then((results) => {
       const {lat, lng} = getLatLng(results[0])
-      console.log("📍 Coordinates: ", {lat, lng})
       setPosition({lat: lat, lng: lng})
+      setMapCenter({lat: lat, lng: lng})
     })
   }
   return (

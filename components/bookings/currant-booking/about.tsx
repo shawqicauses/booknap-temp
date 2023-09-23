@@ -81,13 +81,13 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Glairy</span>
         </div>
         <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
-          {result?.hotel.media.map(({id: imgId, src}, index) => (
+          {result?.hotel?.media?.map(({id: imgId, path}, index) => (
             <div
               className={`relative h-full rounded-lg overflow-hidden ${
                 index === 0 ? "row-span-2 col-span-2" : ""
               }`}
               key={imgId}>
-              <Image src={src} alt="image" fill className="!relative" />
+              <Image src={path} alt="image" fill className="!relative" />
             </div>
           ))}
           {/* <div className="relative row-span-2 col-span-2 row-start-3 col-start-3 h-auto  rounded-lg overflow-hidden">

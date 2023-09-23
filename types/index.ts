@@ -106,32 +106,7 @@ export interface Lang {
   updated_at: string
   deleted_at: string | null
 }
-export interface IHotel {
-  id: number
-  name: string
-  about: string
-  features: string
-  logo: string
-  banner: null
-  lat: string
-  lng: string
-  address: string
-  phone: string
-  website: string
-  stars: number
-  country_id: number
-  city_id: number
-  user_id: number
-  created_at: string
-  updated_at: string
-  deleted_at: null
-  bot_service: number
-  date_start_service: null
-  date_end_service: null
-  date_stop_service: null
-  is_booking: number
-  langs: Lang[]
-}
+
 export interface IRoom {
   type: number
   number: number
@@ -148,12 +123,43 @@ export interface User {
   stars: number
   profile_photo_url: string
 }
+interface Option {
+  id: number
+  checked: boolean
+}
+
+interface Feature {
+  id: number
+  options: Option[]
+}
+
+interface Media {
+  id: number
+  name: string
+  file: string
+  type: string
+  extension: string
+  path: string
+  size: number
+  status: number
+  sortable: number
+  likes: number
+  views: number
+  token: string | null
+  title: string | null
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}
 export interface Hotel {
   id: number
   name: string
   about: string
-  features: string
+  features: Feature[]
   logo: string
+  banner: string | null
   lat: string
   lng: string
   address: string
@@ -165,8 +171,14 @@ export interface Hotel {
   user_id: number
   created_at: string
   updated_at: string
+  deleted_at: string | null
   bot_service: number
-  user: User
+  date_start_service: string | null
+  date_end_service: string | null
+  date_stop_service: string | null
+  langs: Lang[]
+  is_booking: number
+  media: Media[]
 }
 export interface IBooking {
   id: number

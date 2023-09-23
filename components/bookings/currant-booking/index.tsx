@@ -130,7 +130,7 @@ const HotelPageContent = function HotelPageContent({
   const router = useRouter()
   const id = Number(router.query.id)
   const [result, setResult] = useState<Result>()
-
+  const {tab} = router.query
   useEffect(() => {
     if (id > -1) {
       client(`hotels/bookings/show/${id}`)?.then((response: res) => {
@@ -139,7 +139,7 @@ const HotelPageContent = function HotelPageContent({
     }
   }, [id])
 
-  if (result) {
+  if (result && router.isReady) {
     return (
       <div className="mb-10">
         <div className="p-3 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
@@ -161,10 +161,9 @@ const HotelPageContent = function HotelPageContent({
                   value={result.hotel.stars}
                   className="text-blue-700"
                   readOnly
-                  icon={<AiFillStar className="text-inherit text-blue-700" />}
-                  emptyIcon={
-                    <AiFillStar className="text-inherit !text-gray-400" />
-                  }
+                  style={{color: "#2F5597"}}
+                  icon={<AiFillStar className="text-inherit" />}
+                  emptyIcon={<AiFillStar className="text-inherit" />}
                 />
               </div>
             </div>
@@ -182,11 +181,11 @@ const HotelPageContent = function HotelPageContent({
               }}
               modules={[Autoplay, Pagination]}
               className=" rounded-lg overflow-x-hidden">
-              {result.hotel.media.map(({id: imgId, imgUrl}) => (
+              {result?.hotel?.media.map(({id: imgId, path}) => (
                 <SwiperSlide key={imgId}>
                   <div className="relative w-full ">
                     <Image
-                      src={imgUrl}
+                      src={path}
                       alt="Web Application"
                       fill
                       className="!relative !inset-auto !rounded-lg w-full object-contain"
@@ -199,7 +198,7 @@ const HotelPageContent = function HotelPageContent({
           </div>
           <div className="bg-gray-300 w-fit rounded-full flex gap-1">
             <MyButton
-              color={router.pathname === `/[id]` ? "primary" : "default"}
+              color={!tab ? "primary" : "default"}
               radius="full"
               onClick={() => {
                 router.push(`/${id}`)
@@ -207,26 +206,26 @@ const HotelPageContent = function HotelPageContent({
               Booking
             </MyButton>
             <MyButton
-              color={router.pathname === `/[id]/rooms` ? "primary" : "default"}
+              color={tab === "1" ? "primary" : "default"}
               radius="full"
               onClick={() => {
-                router.push(`/${id}/rooms`)
+                router.push(`/${id}/?tab=1`)
               }}>
               Rooms
             </MyButton>
             <MyButton
-              color={router.pathname.includes("shop") ? "primary" : "default"}
+              color={tab === "2" ? "primary" : "default"}
               radius="full"
               onClick={() => {
-                router.push(`/${id}/shop`)
+                router.push(`/${id}/?tab=2`)
               }}>
               Shop
             </MyButton>
             <MyButton
-              color={router.pathname === `/[id]/about` ? "primary" : "default"}
+              color={tab === "3" ? "primary" : "default"}
               radius="full"
               onClick={() => {
-                router.push(`/${id}/about`)
+                router.push(`/${id}/?tab=3`)
               }}>
               About
             </MyButton>

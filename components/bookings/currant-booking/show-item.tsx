@@ -83,7 +83,7 @@ const ItemPage = function ItemPage() {
           <div>
             <h3 className="body mb-2">Options</h3>
             <div className="flex gap-2">
-              {product.data.product_features[1].values.map(
+              {product?.data?.product_features[1]?.values?.map(
                 ({id: sizeId, name_en}) => (
                   <MyButton
                     key={sizeId}

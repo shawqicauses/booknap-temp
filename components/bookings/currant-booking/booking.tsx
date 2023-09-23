@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import {Progress} from "@nextui-org/react"
+import {Progress, useDisclosure} from "@nextui-org/react"
 import {HiMiniClipboardDocumentList} from "react-icons/hi2"
 import React, {useEffect, useMemo, useState} from "react"
 import {AiTwotoneCalendar} from "react-icons/ai"
@@ -9,6 +9,7 @@ import MyButton from "../../uis/button"
 import {Result, res} from "./index"
 import LoadingDiv from "../../uis/loading"
 import client from "../../../helpers/client"
+import RenewBookingModal from "../../modal/renew-modal"
 
 export interface Lang {
   id: number
@@ -136,11 +137,16 @@ const Booking = function Booking() {
   const router = useRouter()
   const [result, setResult] = useState<Result>()
   const [orders, setOrders] = useState<Order[]>()
+  const id = Number(router.query.id)
+  const {isOpen, onOpen, onClose} = useDisclosure()
   const totalDays = useMemo(
     () => calc(result?.date_from!, result?.date_to!),
     [result]
   )
-  const id = Number(router.query.id)
+
+  const AllDate = result?.date_to
+    ? new Date(result?.date_to)?.toISOString()?.split("T")
+    : new Date()?.toISOString()?.split("T")
 
   const completedDays = useMemo(
     () => calc2(result?.date_from!, new Date().toISOString()),
@@ -207,7 +213,9 @@ const Booking = function Booking() {
             </p>
           </div>
           <div className="flex flex-1 justify-end">
-            <MyButton disableAnimation>Renewal</MyButton>
+            <MyButton disableAnimation onClick={onOpen}>
+              Renewal
+            </MyButton>
           </div>
         </div>
       </div>
@@ -242,6 +250,13 @@ const Booking = function Booking() {
           </div>
         ))}
       </div>
+      <RenewBookingModal
+        isOpen={isOpen}
+        onClose={onClose}
+        bookingId={id}
+        toDate={AllDate[0]}
+        toTime={AllDate[1]}
+      />
     </>
   )
 }

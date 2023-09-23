@@ -11,6 +11,7 @@ import {FaUsers} from "react-icons/fa"
 import {LuMail} from "react-icons/lu"
 import Link from "next/link"
 import {noPadding} from "../uis/modal-styles"
+import {Hotel} from "../../types"
 
 const HotelPageModal = function HotelPageModal({
   isOpen,
@@ -19,7 +20,7 @@ const HotelPageModal = function HotelPageModal({
 }: {
   isOpen: boolean
   onClose: () => void
-  hotel: any
+  hotel: Hotel
 }) {
   return (
     <Modal
@@ -40,17 +41,16 @@ const HotelPageModal = function HotelPageModal({
                   fill
                 />
                 <div>
-                  <h2 className="heading-2 mb-3 text-white">
-                    {hotel.hotelName}
-                  </h2>
+                  <h2 className="heading-2 mb-3 text-white">{hotel.name}</h2>
                   <Rating
-                    value={hotel.stars}
+                    name="read-only"
+                    value={hotel?.stars}
                     className="text-blue-700"
                     readOnly
-                    icon={<AiFillStar className="text-inherit text-blue-700" />}
-                    emptyIcon={
-                      <AiFillStar className="text-inherit !text-gray-400" />
-                    }
+                    style={{color: "#2F5597"}}
+                    size="small"
+                    icon={<AiFillStar className="text-inherit" />}
+                    emptyIcon={<AiFillStar className="text-inherit" />}
                   />
                 </div>
               </div>
@@ -63,11 +63,11 @@ const HotelPageModal = function HotelPageModal({
                 }}
                 modules={[Autoplay]}>
                 {hotel.media.map(
-                  ({id, imgUrl}) => (
+                  ({id, path}) => (
                     <SwiperSlide key={id}>
                       <div className="relative w-full h-auto">
                         <Image
-                          src={imgUrl}
+                          src={path}
                           alt="Web Application"
                           fill
                           className="!relative object-contain"
@@ -91,7 +91,7 @@ const HotelPageModal = function HotelPageModal({
                 <LuMail className="w-5 h-5 text-[#2F5597]" />
                 <span className="heading-3 text-xl-2">Contact</span>
               </div>
-              <div className="mb-4">{hotel.mail}</div>
+              <div className="mb-4">{hotel?.address}</div>
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between gap-3">
                   <span>Phone:</span>

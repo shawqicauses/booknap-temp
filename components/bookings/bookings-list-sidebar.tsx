@@ -19,31 +19,31 @@ const BookingSidebar = function BookingSidebar({
   }, [fetchUserBookings, show])
   if (userBookings) {
     return (
-      <div className="relative h-full">
-        <div
-          className={`fixed my-transition z-20 left-0 bottom-0 bg-white dark:bg-blue-charcoal shadow-md ${
-            show ? "" : "-translate-x-full"
-          } max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
-          <div className="flex justify-between  items-center p-2">
+      <div
+        className={`fixed my-transition z-20 left-0 bottom-0  shadow-md ${
+          show ? "" : "-translate-x-full"
+        } max-w-min main-hight  h-full`}>
+        <div className="relative">
+          {show ? (
             <MyButton
-              startContent={
-                <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
-              }
-              size="xl"
-              radius="sm"
-              color="offer"
-              onClick={() => setShow(false)}>
-              Bookings
-            </MyButton>
-            <MyButton
-              color="transparent"
+              className="absolute top-1 -right-9 z-10"
+              size="smSquare"
+              radius="none"
+              color="white"
               onClick={() => {
                 setShow(false)
               }}>
               <BiArrowBack className="h-5 w-5" />
-              Close
             </MyButton>
-          </div>
+          ) : null}
+        </div>
+        <div
+          className={` bg-white dark:bg-blue-charcoal max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
+          <h2 className="heading-3 flex dark:text-white px-5 py-3 gap-2">
+            <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
+            Bookings
+          </h2>
+
           <div className="py-3 px-5 flex-1">
             <div className="flex flex-col relative gap-3">
               {userBookings.map((booking) => (

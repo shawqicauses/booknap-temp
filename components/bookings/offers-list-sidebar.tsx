@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
 import {Spinner, useDisclosure} from "@nextui-org/react"
 import {MdLocalOffer} from "react-icons/md"
-import {BiTime} from "react-icons/bi"
+import {BiArrowBack, BiTime} from "react-icons/bi"
 import Image from "next/image"
 import Rating from "@mui/material/Rating"
-import {AiOutlineCheck} from "react-icons/ai"
+import {AiFillStar, AiOutlineCheck} from "react-icons/ai"
 import CancelModal from "../modal/cancel-modal"
 import BookedModal from "../modal/booked-modal"
 import BannedModal from "../modal/banned-modal"
@@ -83,29 +83,6 @@ interface HotelOfferBoxProps {
   getOffers: () => void
 }
 
-// const hotelData = {
-//   img: "/hotel-logo-about.png",
-//   hotelName: "Hotel Name",
-//   rating: 3,
-//   mail: "No 53, 2Nd Avenue, The Houghton Apartments Gate 2, Houghton Estate",
-//   phone: "+97 059 254 6772",
-//   websiteLink: "https://google.com"
-// }
-// const swiperSlides = [
-//   {
-//     id: 1,
-//     imgUrl: "/hotel-galary.jpg"
-//   },
-//   {
-//     id: 2,
-//     imgUrl: "/hotel-galary.jpg"
-//   },
-//   {
-//     id: 3,
-//     imgUrl: "/hotel-galary.jpg"
-//   }
-// ]
-
 const HotelOfferBox = function HotelOfferBox({
   offer,
   openBookedModal,
@@ -113,7 +90,7 @@ const HotelOfferBox = function HotelOfferBox({
   setShow,
   getOffers
 }: HotelOfferBoxProps) {
-  const [reject, setReject] = useState(false)
+  const [reject, setReject] = useState(offer.status === 2)
   const {isOpen, onClose, onOpen} = useDisclosure()
 
   const handleBooked = () => {
@@ -140,7 +117,7 @@ const HotelOfferBox = function HotelOfferBox({
   return (
     <>
       <div className="bg-white dark:bg-mirage p-2 rounded-lg shadow-base snap-center relative">
-        {offer.price_after_reject ? (
+        {offer?.price_after_reject ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
           </div>
@@ -163,39 +140,47 @@ const HotelOfferBox = function HotelOfferBox({
               <Rating
                 name="read-only"
                 value={offer.hotel.stars}
+                className="text-blue-700"
                 readOnly
-                size="small"
                 style={{color: "#2F5597"}}
+                size="small"
+                icon={<AiFillStar className="text-inherit" />}
+                emptyIcon={<AiFillStar className="text-inherit" />}
               />
-              {offer.booking.rooms
-                .filter((room) => room.number > 0)
-                .map((room) => (
-                  <span className="label-gray">{room.name_en}</span>
-                ))}
+              <div className="flex gap-1">
+                <span className="label-gray">
+                  {offer.booking.rooms
+                    .filter((room) => room.number > 0)
+                    .map((room) => room.name_en)
+                    .join(" - ")}
+                </span>
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center">
             <span className="text-red-500 text-xl font-bold">
-              {offer.price_after_reject
+              {offer?.price_after_reject
                 ? offer.price_after_reject
                 : offer.price}
               $
             </span>
-            {offer.price_after_reject ? (
+            {offer?.price_after_reject ? (
               <span className="line-through text-gray-400">{offer.price}$</span>
             ) : null}
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <MyButton
-            size="sm"
-            color="reject"
-            className="!w-[72px]"
-            isLoading={reject}
-            onClick={handleReject}
-            spinner={<Spinner size="md" />}>
-            {!reject ? "reject" : ""}
-          </MyButton>
+          {!offer.price_after_reject ? (
+            <MyButton
+              size="sm"
+              color="reject"
+              className="!w-[72px]"
+              isLoading={reject}
+              onClick={handleReject}
+              spinner={<Spinner size="md" />}>
+              {!reject ? "reject" : ""}
+            </MyButton>
+          ) : null}
           <MyButton
             size="sm"
             color="primary"
@@ -274,11 +259,26 @@ const OffersSidebar = function OffersSidebar({
     }
   }
   return (
-    <div className="relative h-full">
+    <div
+      className={`fixed my-transition z-20 left-0 bottom-0  shadow-md ${
+        show ? "" : "-translate-x-full"
+      } max-w-min main-hight  h-full`}>
+      <div className="relative">
+        {show ? (
+          <MyButton
+            className="absolute top-1 -right-9 z-10"
+            size="smSquare"
+            radius="none"
+            color="white"
+            onClick={() => {
+              setShow(false)
+            }}>
+            <BiArrowBack className="h-5 w-5" />
+          </MyButton>
+        ) : null}
+      </div>
       <div
-        className={`fixed my-transition z-20 left-0 bottom-0 shadow-md ${
-          show ? "" : "-translate-x-full"
-        } max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
+        className={` bg-white dark:bg-blue-charcoal max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
         <div className=" bg-white dark:bg-blue-charcoal flex justify-between  items-center p-2">
           <MyButton
             startContent={<MdLocalOffer className="h-5 w-5 text-gray-600" />}
@@ -288,18 +288,21 @@ const OffersSidebar = function OffersSidebar({
             onClick={() => setShow(false)}>
             Offers
           </MyButton>
-          <span className="flex items-center gap-2 font-semi-bold">
-            <BiTime className="h-5 w-5 text-gray-300" />
-            {String(time.minutes || 20).padStart(2, "0")}:
-            {String(time.seconds || 0).padStart(2, "0")}
-          </span>
           {currentBooking ? (
-            <MyButton
-              color="transparent"
-              className="text-gray-400"
-              onClick={cancel.onOpen}>
-              Cancel
-            </MyButton>
+            <>
+              <span className="flex items-center gap-2 font-semi-bold">
+                <BiTime className="h-5 w-5 text-gray-300" />
+                {String(time.minutes || 20).padStart(2, "0")}:
+                {String(time.seconds || 0).padStart(2, "0")}
+              </span>
+
+              <MyButton
+                color="transparent"
+                className="text-gray-400"
+                onClick={cancel.onOpen}>
+                Cancel
+              </MyButton>
+            </>
           ) : (
             <span />
           )}
@@ -366,6 +369,7 @@ const OffersSidebar = function OffersSidebar({
           )}
         </div>
       </div>
+
       <BookedModal isOpen={booked.isOpen} onClose={booked.onClose} />
       <CancelModal
         isOpen={cancel.isOpen}

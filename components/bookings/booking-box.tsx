@@ -2,6 +2,7 @@
 import Image from "next/image"
 import {useRouter} from "next/router"
 import {useMemo} from "react"
+import {AiFillStar} from "react-icons/ai"
 import {Rating} from "@mui/material"
 import MyButton from "../uis/button"
 import {IBooking} from "../../types"
@@ -55,7 +56,16 @@ const BookingBox = function BookingBox({
       </div>
       <div>
         <h3 className="heading-3 dark:text-white mb-2">{hotel?.name}</h3>
-        <Rating value={hotel?.stars} readOnly />
+        <Rating
+          name="read-only"
+          value={hotel?.stars}
+          className="text-blue-700"
+          readOnly
+          style={{color: "#2F5597"}}
+          size="small"
+          icon={<AiFillStar className="text-inherit" />}
+          emptyIcon={<AiFillStar className="text-inherit" />}
+        />
         {!hideDetails ? (
           <>
             <p className="body-sm">{`${date_from} To ${date_to}`}</p>

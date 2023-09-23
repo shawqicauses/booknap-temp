@@ -4,7 +4,7 @@ import {toast} from "react-toastify"
 import Image from "next/image"
 import React, {useEffect, useState} from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
-import {AiTwotoneStar} from "react-icons/ai"
+import {AiOutlineCheck, AiTwotoneStar} from "react-icons/ai"
 import MyButton from "../uis/button"
 import client from "../../helpers/client"
 import LoadingDiv from "../uis/loading"
@@ -199,7 +199,7 @@ const ProfileContent = function ProfileContent() {
             <div className="sm:px-5 md:px-10 lg:px-20">
               <h1 className="heading-1 mb-5 dark:text-white">EDIT PROFILE</h1>
               <div className="p-3 gap-2 gap-x-3 pb-5">
-                <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-3">
+                <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-5">
                   <div>
                     <Input
                       size="lg"
@@ -277,11 +277,16 @@ const ProfileContent = function ProfileContent() {
                       <MyButton
                         onClick={() => setGender(1)}
                         size="xl2"
-                        color="white"
+                        color={gender === 1 ? "transparent" : "white"}
                         fullWidth
+                        startContent={
+                          gender === 1 ? (
+                            <AiOutlineCheck className="h-5 w-5 text-[#2F5597]" />
+                          ) : null
+                        }
                         className={`${
                           gender === 1
-                            ? "border-2 bg-[#E9EDF4] dark:bg-[#909090] border-blue-500"
+                            ? "border-2 bg-[#2F5597]/5  border-[#2F5597]"
                             : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Male
@@ -289,11 +294,16 @@ const ProfileContent = function ProfileContent() {
                       <MyButton
                         onClick={() => setGender(2)}
                         size="xl2"
-                        color="white"
+                        color={gender === 2 ? "transparent" : "white"}
                         fullWidth
+                        startContent={
+                          gender === 2 ? (
+                            <AiOutlineCheck className="h-5 w-5 text-[#2F5597]" />
+                          ) : null
+                        }
                         className={`${
                           gender === 2
-                            ? "border-2 bg-[#E9EDF4] dark:bg-[#909090] border-blue-500"
+                            ? "border-2 bg-[#2f5597]/5 border-[#2F5597]"
                             : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Female

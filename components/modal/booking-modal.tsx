@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 /* eslint-disable camelcase */
-import React, {useState, useEffect, Dispatch, SetStateAction} from "react"
+import React, {useState, Dispatch, SetStateAction} from "react"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
@@ -14,10 +13,7 @@ import {
   useDisclosure
 } from "@nextui-org/react"
 import {toast} from "react-toastify"
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng
-} from "use-places-autocomplete"
+
 import SignInModal from "./sign-in-modal"
 import MyButton from "../uis/button"
 import {type5} from "../uis/modal-styles"
@@ -62,19 +58,19 @@ export const Counter = function Counter({
   handleClickMinus: React.MouseEventHandler<Element>
 }) {
   return (
-    <div className=" w-fit p-2 flex items-center rounded-xl bg-gray-100 dark:bg-blue-charcoal">
-      <button
-        type="button"
-        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
-        onClick={handleClickPlus}>
-        <FiPlus className="h-5 w-5 text-gray-400" />
-      </button>
-      <span className="text-lg inline-block  w-10 text-center">{value}</span>
+    <div className=" w-fit p-1 flex items-center rounded-xl bg-gray-100 dark:bg-blue-charcoal">
       <button
         type="button"
         className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
         onClick={handleClickMinus}>
         <FiMinus className="h-5 w-5 text-gray-400" />
+      </button>
+      <span className="text-lg inline-block  w-10 text-center">{value}</span>
+      <button
+        type="button"
+        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
+        onClick={handleClickPlus}>
+        <FiPlus className="h-5 w-5 text-gray-400" />
       </button>
     </div>
   )
@@ -85,32 +81,33 @@ const CounterStyled = function CounterStyled({
   value,
   handleClickPlus,
   handleClickMinus,
-  openTab,
-  tabNumber,
-  setOpenTab
+  isOpen,
+  setIsOpen
 }: {
   label: string
   value: number
   handleClickPlus: React.MouseEventHandler<Element>
   handleClickMinus: React.MouseEventHandler<Element>
-  openTab: number | null
-  tabNumber: number
-  setOpenTab: React.Dispatch<React.SetStateAction<number | null>>
+  isOpen: boolean
+  setIsOpen: Function
 }) {
-  const isOpen = openTab === tabNumber
   return (
     <div
       className={`dark:bg-mirage ${
         isOpen ? "rounded-xl pb-3" : "rounded-full "
       }  bg-gray-50 px-4 py-1.5`}>
       <div className="flex justify-between items-center">
-        <h3>
-          {label}{" "}
-          <span className="ml-3">{value > 0 && !isOpen ? value : ""}</span>
-        </h3>
+        <h3>{label}</h3>
         <MyButton
           isIconOnly
-          onClick={() => (isOpen ? setOpenTab(null) : setOpenTab(tabNumber))}>
+          onClick={(e) => {
+            if (isOpen) {
+              handleClickMinus(e)
+            } else {
+              handleClickPlus(e)
+            }
+            setIsOpen((pre: boolean) => !pre)
+          }}>
           {isOpen ? (
             <IoMdClose className="w-5 h-5 text-gray-400" />
           ) : (
@@ -141,19 +138,14 @@ const FormPageTow = function FormPageTow({
   handleClick: Function
   data: BasicFormData
 }) {
-  const [openTab, setOpenTab] = useState<number | null>(1)
+  const [isSingleOpen, setIsSingleOpen] = useState<boolean>(false)
+  const [isDoubleOpen, setIsDoubleOpen] = useState<boolean>(false)
+  const [isSuiteOpen, setIsSuiteOpen] = useState<boolean>(false)
+  const [isPresidentialOpen, setIsPresidentialOpen] = useState<boolean>(false)
 
   return (
-    <div>
-      <MyButton
-        size="sm"
-        radius="full"
-        color="white"
-        isIconOnly
-        onClick={() => setPage(0)}>
-        <AiOutlineDoubleLeft className="h-4 w-4" />
-      </MyButton>
-      <div className="mt-4 flex flex-col gap-3">
+    <div className="mt-10 h-[500px] w-[360px]">
+      <div className=" flex flex-col gap-3 h-full overflow-y-scroll hide-scrollbar">
         <CounterStyled
           label="Single Room"
           value={data.noSingleRoom}
@@ -163,9 +155,8 @@ const FormPageTow = function FormPageTow({
           handleClickMinus={() =>
             handleClick(-1, "noSingleRoom", data.noSingleRoom)
           }
-          openTab={openTab}
-          tabNumber={1}
-          setOpenTab={setOpenTab}
+          isOpen={isSingleOpen}
+          setIsOpen={setIsSingleOpen}
         />
         <CounterStyled
           label="Double Room"
@@ -176,9 +167,8 @@ const FormPageTow = function FormPageTow({
           handleClickMinus={() =>
             handleClick(-1, "noDoubleRoom", data.noDoubleRoom)
           }
-          openTab={openTab}
-          tabNumber={2}
-          setOpenTab={setOpenTab}
+          isOpen={isDoubleOpen}
+          setIsOpen={setIsDoubleOpen}
         />
         <CounterStyled
           label="Suite Rooms"
@@ -189,9 +179,8 @@ const FormPageTow = function FormPageTow({
           handleClickMinus={() =>
             handleClick(-1, "noSuiteRooms", data.noSuiteRooms)
           }
-          openTab={openTab}
-          tabNumber={3}
-          setOpenTab={setOpenTab}
+          isOpen={isSuiteOpen}
+          setIsOpen={setIsSuiteOpen}
         />
         <CounterStyled
           label="Presidential Suite"
@@ -202,91 +191,27 @@ const FormPageTow = function FormPageTow({
           handleClickMinus={() =>
             handleClick(-1, "noPresidentialSuite", data.noPresidentialSuite)
           }
-          openTab={openTab}
-          tabNumber={4}
-          setOpenTab={setOpenTab}
+          isOpen={isPresidentialOpen}
+          setIsOpen={setIsPresidentialOpen}
         />
-        <MyButton type="submit" color="primary" fullWidth>
-          Order
-        </MyButton>
-      </div>
-    </div>
-  )
-}
-
-const PlacesSuggestionInput = function PlacesSuggestionInput({
-  setPosition,
-  setDestination,
-  startValue
-}: {
-  setPosition: Function
-  setDestination: Function
-  startValue: string
-}) {
-  const {
-    ready,
-    value,
-    suggestions: {status, data},
-    setValue,
-    clearSuggestions,
-    init
-  } = usePlacesAutocomplete({
-    callbackName: "YOUR_CALLBACK_NAME",
-    requestOptions: {},
-    debounce: 300
-  })
-  init()
-  const handleInput = (e: any) => {
-    setDestination(e.target.value)
-  }
-  useEffect(() => {
-    setValue(startValue)
-  }, [startValue, setValue])
-
-  const handleSelect = (e: any) => () => {
-    setValue(e.description, false)
-    clearSuggestions()
-    console.log(e)
-    getGeocode({address: e.description}).then((results) => {
-      const {lat, lng} = getLatLng(results[0])
-      console.log("📍 Coordinates: ", {lat, lng})
-      setPosition(lat, lng)
-    })
-  }
-  return (
-    <div>
-      <label htmlFor="destination" className="label-gray">
-        Destination:
-      </label>
-      <div className="relative">
-        <input
-          value={value}
-          onChange={handleInput}
-          disabled={!ready}
-          placeholder="Where are you going?"
-          className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
-        />
-        {status === "OK" && (
-          <ul className="absolute top-[100%] left-0 overflow-y-scroll h-[200px] bg-white z-10 flex flex-col gap-2 w-full shadow-md rounded-base divide-y-1">
-            {data.map((suggestion) => {
-              const {
-                place_id,
-                structured_formatting: {main_text, secondary_text}
-              } = suggestion
-
-              return (
-                <li
-                  key={place_id}
-                  onClick={handleSelect(suggestion)}
-                  aria-hidden="true"
-                  className="p-3 w-full flex justify-between flex-wrap">
-                  <span className="heading-3">{main_text}</span>
-                  <span className="body">{secondary_text}</span>
-                </li>
-              )
-            })}
-          </ul>
-        )}
+        <div className="flex-1 justify-end flex flex-col items-center">
+          <MyButton
+            className=""
+            color="primary"
+            fullWidth
+            onClick={() => {
+              if (
+                data.noSingleRoom ||
+                data.noDoubleRoom ||
+                data.noSuiteRooms ||
+                data.noPresidentialSuite
+              ) {
+                setPage(1)
+              }
+            }}>
+            Next
+          </MyButton>
+        </div>
       </div>
     </div>
   )
@@ -295,26 +220,28 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
 const BookingModal = function BookingModal({
   isOpen,
   onClose,
-  setPos,
-  myZoom
+  myZoom,
+  destination,
+  pos
 }: {
   isOpen: boolean
   onClose: () => void
   setPos: Dispatch<SetStateAction<IPosition | undefined>>
   myZoom: number
+  destination: string
+  pos: {lat: number; lng: number}
 }) {
   const {token} = useAuth()
   const {handleCurrentBookingOrder, currentBooking} = useCurrentBookingOrder()
   const [page, setPage] = useState<number>(0)
-
   const signIn = useDisclosure()
-  const {register, handleSubmit, getValues, watch, setValue, reset} =
+  const {register, handleSubmit, watch, setValue, reset} =
     useForm<BasicFormData>({
       defaultValues: {
         FromDate: "",
-        FromTime: "",
+        FromTime: "12:00",
         ToDate: "",
-        ToTime: "",
+        ToTime: "02:00",
         note: "",
         noAdults: 0,
         noChildren: 0,
@@ -322,8 +249,13 @@ const BookingModal = function BookingModal({
         noPresidentialSuite: 0,
         noSingleRoom: 0,
         noSuiteRooms: 0
-      }
+      },
+      criteriaMode: "all"
     })
+  const closeBookingModal = () => {
+    onClose()
+    reset()
+  }
 
   const handleClick = (
     num: number,
@@ -336,7 +268,7 @@ const BookingModal = function BookingModal({
       | "noPresidentialSuite",
     currantValue: number
   ) => {
-    if (currantValue + num >= 0) {
+    if (currantValue + num >= 1) {
       setValue(filedName, currantValue + num)
     }
   }
@@ -377,8 +309,8 @@ const BookingModal = function BookingModal({
       client("hotels/bookings/create", {
         method: "POST",
         body: JSON.stringify({
-          lat: formData.lat,
-          lng: formData.lng,
+          lat: pos.lat,
+          lng: pos.lng,
           date_from: `${formData.FromDate} ${formData.FromTime}`,
           date_to: `${formData.ToDate} ${formData.ToTime}`,
           adults: formData.noAdults,
@@ -398,13 +330,14 @@ const BookingModal = function BookingModal({
         ?.then((res) => {
           if (res.result) {
             handleCurrentBookingOrder(res.result)
-            onClose()
+            closeBookingModal()
             reset()
             setPage(0)
           }
+          reset()
+          setPage(0)
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
           toast.error("You are Banned", {
             position: "bottom-left",
             autoClose: 5000,
@@ -415,184 +348,212 @@ const BookingModal = function BookingModal({
             progress: undefined,
             theme: "colored"
           })
+          reset()
+          setPage(0)
         })
     }
   }
 
-  const setPosition = (lat: number, lng: number) => {
-    setValue("lat", lat)
-    setValue("lng", lng)
-    setPos({lat: lat, lng: lng})
-  }
-
   const toDayDate = new Date().toISOString().split("T")
-  const [destination, setDestination] = useState("")
   return (
     <>
       <Modal
         size="sm"
-        backdrop="transparent"
+        backdrop="blur"
         isDismissable={false}
         isOpen={isOpen}
-        onClose={onClose}
-        classNames={{...type5, base: "fixed top-5 right-10"}}>
+        onClose={closeBookingModal}
+        classNames={{...type5, base: "fixed top-4 right-10"}}>
         <ModalContent>
-          <ModalBody>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-1 relative justify-start">
-              {page === 0 ? (
-                <div className="pt-10 px-5 w-auto flex gap-2 flex-col">
-                  <PlacesSuggestionInput
-                    setPosition={setPosition}
-                    setDestination={setDestination}
-                    startValue={destination}
-                  />
-                  <div>
-                    <label htmlFor="date" className="label-gray">
-                      Date:
-                    </label>
-                    <div className="flex justify-between !gap-0 items-center mb-2">
-                      <label
-                        htmlFor="date"
-                        className="w-[60px] dark:text-white">
-                        From:
-                      </label>
-                      <div className="my-flex gap-2">
-                        <Input
-                          type="date"
-                          value={watch().FromDate}
-                          {...register("FromDate", {
-                            required: true,
-                            min: toDayDate[0]
-                          })}
-                          variant="flat"
-                          classNames={{
-                            inputWrapper: "shadow-none",
-                            input: "dark:text-white"
-                          }}
-                        />
-                        <Input
-                          type="time"
-                          value={watch().FromTime}
-                          {...register("FromTime", {
-                            required: true,
-                            min: toDayDate[1]
-                          })}
-                          variant="flat"
-                          classNames={{
-                            inputWrapper: "shadow-none",
-                            input: "dark:text-white"
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-between !gap-0 items-center">
-                      <label
-                        htmlFor="date"
-                        className="w-[60px] dark:text-white">
-                        To:
-                      </label>
-                      <div className="my-flex gap-2">
-                        <Input
-                          type="date"
-                          value={watch().ToDate}
-                          {...register("ToDate", {
-                            required: true,
-                            min: toDayDate[0]
-                          })}
-                          variant="flat"
-                          classNames={{
-                            inputWrapper: "shadow-none",
-                            input: "dark:text-white"
-                          }}
-                        />
-                        <Input
-                          type="time"
-                          value={watch().ToTime}
-                          {...register("ToTime", {
-                            required: true,
-                            min: toDayDate[1]
-                          })}
-                          variant="flat"
-                          classNames={{
-                            inputWrapper: "shadow-none",
-                            input: "dark:text-white"
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="numPeople" className="label-gray">
-                      Number Of People:
-                    </label>
-                    <div className="flex justify-between items-center mb-2">
-                      <label htmlFor="noAdults" className="dark:text-white">
-                        Adults
-                      </label>
-                      <Counter
-                        value={watch().noAdults}
-                        handleClickPlus={() =>
-                          handleClick(1, "noAdults", watch().noAdults)
-                        }
-                        handleClickMinus={() =>
-                          handleClick(-1, "noAdults", watch().noAdults)
-                        }
-                      />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <label htmlFor="noAdults" className="dark:text-white">
-                        Children
-                      </label>
-                      <Counter
-                        value={watch().noChildren}
-                        handleClickPlus={() =>
-                          handleClick(1, "noChildren", watch().noChildren)
-                        }
-                        handleClickMinus={() =>
-                          handleClick(-1, "noChildren", watch().noChildren)
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="note" className="label-gray">
-                      Note:
-                    </label>
-                    <textarea
-                      id="note"
-                      value={watch().note}
-                      {...register("note")}
-                      className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
-                    />
-                  </div>
-                  <MyButton
-                    color="primary"
-                    onClick={() => {
-                      if (
-                        getValues().FromDate &&
-                        getValues().FromTime &&
-                        getValues().ToDate &&
-                        getValues().ToTime &&
-                        getValues().lat &&
-                        getValues().lng &&
-                        (getValues().noAdults > 0 || getValues().noChildren > 0)
-                      ) {
-                        setPage(1)
-                      }
-                    }}
-                    fullWidth>
-                    Order
-                  </MyButton>
-                </div>
-              ) : (
+          <ModalBody className="overflow-hidden">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div
+                className={`flex gap-4 w-[756px] my-transition ${
+                  page === 1 ? "-translate-x-[50%]" : ""
+                }`}>
                 <FormPageTow
                   data={watch()}
                   handleClick={handleClick}
                   setPage={setPage}
                 />
-              )}
+                <div className="flex flex-col gap-1 relative justify-start w-[360px]">
+                  <MyButton
+                    size="sm"
+                    radius="full"
+                    color="white"
+                    isIconOnly
+                    onClick={() => setPage(0)}>
+                    <AiOutlineDoubleLeft className="h-4 w-4" />
+                  </MyButton>
+                  <div className="h-[500px] overflow-y-scroll hide-scrollbar mb-5">
+                    <div className="pt-0 px-5 w-auto flex gap-2 flex-col">
+                      <div>
+                        <label htmlFor="date" className="label-gray">
+                          destination:
+                        </label>
+                        <input
+                          value={destination}
+                          disabled
+                          className="input p-3 leading-5 bg-gray-100 rounded-lg"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="date" className="label-gray">
+                          Date:
+                        </label>
+                        <div className="flex justify-between !gap-0 items-center mb-2">
+                          <label
+                            htmlFor="date"
+                            className="w-[60px] dark:text-white">
+                            From:
+                          </label>
+                          <div className="my-flex gap-2">
+                            <Input
+                              type="date"
+                              value={watch().FromDate}
+                              {...register("FromDate", {
+                                required: true,
+                                min: toDayDate[0]
+                              })}
+                              variant="flat"
+                              classNames={{
+                                inputWrapper: "shadow-none",
+                                input: "dark:text-white"
+                              }}
+                            />
+                            <Input
+                              type="time"
+                              value={watch().FromTime}
+                              {...register("FromTime", {
+                                required: true,
+                                min: toDayDate[1]
+                              })}
+                              variant="flat"
+                              classNames={{
+                                inputWrapper: "shadow-none",
+                                input: "dark:text-white"
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-between !gap-0 items-center">
+                          <label
+                            htmlFor="date"
+                            className="w-[60px] dark:text-white">
+                            To:
+                          </label>
+                          <div className="my-flex gap-2">
+                            <Input
+                              type="date"
+                              value={watch().ToDate}
+                              {...register("ToDate", {
+                                required: true,
+                                min: toDayDate[0]
+                              })}
+                              variant="flat"
+                              classNames={{
+                                inputWrapper: "shadow-none",
+                                input: "dark:text-white"
+                              }}
+                            />
+                            <Input
+                              type="time"
+                              value={watch().ToTime}
+                              {...register("ToTime", {
+                                required: true,
+                                min: toDayDate[1]
+                              })}
+                              variant="flat"
+                              classNames={{
+                                inputWrapper: "shadow-none",
+                                input: "dark:text-white"
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="numPeople" className="label-gray">
+                          Number Of People:
+                        </label>
+                        <div className="flex justify-between items-center mb-2">
+                          <label htmlFor="noAdults" className="dark:text-white">
+                            Adults
+                          </label>
+                          <Counter
+                            value={watch().noAdults}
+                            handleClickPlus={() =>
+                              handleClick(1, "noAdults", watch().noAdults)
+                            }
+                            handleClickMinus={() =>
+                              handleClick(-1, "noAdults", watch().noAdults)
+                            }
+                          />
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <label htmlFor="noAdults" className="dark:text-white">
+                            Children
+                          </label>
+                          <Counter
+                            value={watch().noChildren}
+                            handleClickPlus={() =>
+                              handleClick(1, "noChildren", watch().noChildren)
+                            }
+                            handleClickMinus={() =>
+                              handleClick(-1, "noChildren", watch().noChildren)
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="date" className="w-[60px]  label-gray">
+                          Number Of Room:
+                        </label>
+                        <div className="grid grid-cols-2 gap-2 ">
+                          {watch().noSingleRoom ? (
+                            <span className="body-sm !text-black">
+                              {watch().noSingleRoom} Single Room
+                            </span>
+                          ) : null}
+                          {watch().noDoubleRoom ? (
+                            <span className="body-sm !text-black">
+                              {watch().noSingleRoom} Double Room
+                            </span>
+                          ) : null}
+                          {watch().noSuiteRooms ? (
+                            <span className="body-sm !text-black">
+                              {watch().noSuiteRooms} Suite Room
+                            </span>
+                          ) : null}
+                          {watch().noPresidentialSuite ? (
+                            <span className="body-sm !text-black">
+                              {watch().noPresidentialSuite} Single Room
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="mb-1">
+                        <label htmlFor="note" className="label-gray">
+                          Note:
+                        </label>
+                        <textarea
+                          id="note"
+                          value={watch().note}
+                          {...register("note")}
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
+                        />
+                      </div>
+                      <MyButton
+                        className=""
+                        color="primary"
+                        fullWidth
+                        type="submit">
+                        Order
+                      </MyButton>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </form>
           </ModalBody>
         </ModalContent>

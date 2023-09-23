@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalHeader
 } from "@nextui-org/react"
+import {toast} from "react-toastify"
 import {
   GoogleAuthProvider,
   OAuthProvider,
@@ -51,7 +52,7 @@ const SignIn = function SignIn({
 }) {
   const google = async () => {
     const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then((res) => {
         GoogleAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
@@ -65,7 +66,7 @@ const SignIn = function SignIn({
   }
   const apple = async () => {
     const provider = new OAuthProvider("apple.com")
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then((res) => {
         OAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
@@ -241,7 +242,7 @@ const SignInModal = function SignInModal({
 }) {
   const [page, setPage] = useState<number>(0)
 
-  const onSignUp = (mobile: string) => {
+  const onSignUp = async (mobile: string) => {
     if (!window.recaptchaVerifier) {
       const recaptchaParameters: RecaptchaParameters = {
         "size": "invisible",
@@ -258,13 +259,16 @@ const SignInModal = function SignInModal({
         recaptchaParameters
       )
     }
-    const appVerifier = window.recaptchaVerifier
-    signInWithPhoneNumber(auth, mobile, appVerifier)
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, "sign-in-button", {
+      size: "invisible"
+    })
+
+    await signInWithPhoneNumber(auth, mobile, window.recaptchaVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult
       })
-      .catch(() => {
-        window.recaptchaVerifier = null
+      .catch((err) => {
+        console.log(err)
       })
   }
   const {
@@ -293,37 +297,55 @@ const SignInModal = function SignInModal({
         formData.check5,
         formData.check6
       ].join("")
-      window.confirmationResult.confirm(code).then(() => {
-        client("login-mobile", {
-          method: "POST",
-          body: JSON.stringify({
-            name: formData.name,
-            mobile: formData.mobile,
-            type: "1",
-            code: code
+      window.confirmationResult
+        .confirm(code)
+        .then(() => {
+          client("login-mobile", {
+            method: "POST",
+            body: JSON.stringify({
+              name: formData.name,
+              mobile: formData.mobile,
+              type: "1",
+              code: code
+            })
           })
-        })?.then((resSign: ISginIn) => {
-          localStorage.setItem("TOKEN", resSign.token)
-          handleUser(resSign.user)
-          if (resSign.has_booking) {
-            handleCurrentBookingOrder(resSign.booking)
-          }
-          reset()
-          signIn()
-          onClose()
-          setPage(0)
+            ?.then((resSign: ISginIn) => {
+              localStorage.setItem("TOKEN", resSign.token)
+              handleUser(resSign.user)
+              if (resSign.has_booking) {
+                handleCurrentBookingOrder(resSign.booking)
+              }
+              reset()
+              signIn()
+              onClose()
+              setPage(0)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+          setLoading(false)
         })
-        setLoading(false)
-      })
+        .catch(() => {
+          toast.error("Code is not Correct", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+          })
+        })
     }
   }
 
-  const signInByProviders = (data: {
+  const signInByProviders = async (data: {
     name: string
     email: string
     type: "1"
   }) => {
-    client("https://booknap-api.wpgooal.com/api/login-email", {
+    await client("https://booknap-api.wpgooal.com/api/login-email", {
       body: JSON.stringify(data),
       method: "POST"
     })?.then((resSign: ISginIn) => {
@@ -389,6 +411,10 @@ const SignInModal = function SignInModal({
                 }}>
                 Sign in
               </MyButton>
+              {/* // eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button id="sign-in-button" type="button">
+                {" "}
+              </button>
             </form>
           </ModalBody>
         </div>

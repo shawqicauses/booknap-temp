@@ -75,11 +75,18 @@ const NavbarCloseToggle = function NavbarCloseToggle({
   )
 }
 
-const NotificationsDropDown = function NotificationsDropDown() {
+const NotificationsDropDown = function NotificationsDropDown({
+  setIsNotificationsOpen,
+  isNotificationsOpen,
+  handleOpenNotifications
+}: {
+  setIsNotificationsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isNotificationsOpen: boolean
+  handleOpenNotifications: () => void
+}) {
   const {notifications, ready} = useNotifications()
-  const [isOpen, setIsOpen] = useState(false)
   const handleClick = () => {
-    setIsOpen((pre) => !pre)
+    handleOpenNotifications()
     if (ready) {
       notifications.forEach((noti: any) => {
         if (!noti.read_at) {
@@ -91,7 +98,7 @@ const NotificationsDropDown = function NotificationsDropDown() {
 
   return (
     <div className="relative h-full">
-      <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+      <OutsideClickHandler onOutsideClick={() => setIsNotificationsOpen(false)}>
         <MyButton
           isIconOnly
           size="navIcon"
@@ -107,9 +114,9 @@ const NotificationsDropDown = function NotificationsDropDown() {
         </MyButton>
         <div
           className={`${
-            isOpen ? "block" : "hidden"
+            isNotificationsOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-60  shadow-md z-50`}>
-          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
+          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar p-1 overflow-hidden">
             {ready ? (
               notifications.length > 0 ? (
                 notifications.map((notfi: any) => (
@@ -146,19 +153,24 @@ const NotificationsDropDown = function NotificationsDropDown() {
     </div>
   )
 }
-const CartDropDown = function CartDropDown() {
+const CartDropDown = function CartDropDown({
+  isCartDropDownOpen,
+  setIsCartDropDownOpen,
+  handleOpenCartDropDown
+}: {
+  isCartDropDownOpen: boolean
+  setIsCartDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleOpenCartDropDown: () => void
+}) {
   const {cart, cartReady} = useCart()
-  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="relative h-full">
-      <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+      <OutsideClickHandler onOutsideClick={() => setIsCartDropDownOpen(false)}>
         <MyButton
           size="navIcon"
           color="white2"
-          onClick={() => {
-            setIsOpen((pre) => !pre)
-          }}
+          onClick={handleOpenCartDropDown}
           isIconOnly>
           {cart.length > 0 ? (
             <Badge
@@ -174,7 +186,7 @@ const CartDropDown = function CartDropDown() {
         </MyButton>
         <div
           className={`${
-            isOpen ? "block" : "hidden"
+            isCartDropDownOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-60 shadow-md z-50`}>
           <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
             {cartReady ? (
@@ -202,7 +214,7 @@ const CartDropDown = function CartDropDown() {
                   ))}
                   <li className="flex justify-center p-2">
                     <Link href="/cart" className="text-blue-400">
-                      Show More
+                      View Cart
                     </Link>
                   </li>
                 </>
@@ -229,12 +241,22 @@ const Navbar = function Navbar() {
   const signInModel = useDisclosure()
   const deleteAccount = useDisclosure()
   const {user, ready} = useUser()
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [isCartDropDownOpen, setIsCartDropDownOpen] = useState(false)
+
   const router = useRouter()
   const handleSignOut = async () => {
     await client("logout", {method: "POST"})
     signOut()
   }
-
+  const handleOpenNotifications = () => {
+    setIsNotificationsOpen((pre) => !pre)
+    setIsCartDropDownOpen(false)
+  }
+  const handleOpenCartDropDown = () => {
+    setIsNotificationsOpen(false)
+    setIsCartDropDownOpen((pre) => !pre)
+  }
   return (
     <>
       <nav className="sticky z-40 top-0 bg-white h-[78px] dark:bg-[rgb(0,8,24)] w-full shadow-base">
@@ -313,10 +335,18 @@ const Navbar = function Navbar() {
                     {token ? (
                       <>
                         <li>
-                          <CartDropDown />
+                          <CartDropDown
+                            isCartDropDownOpen={isCartDropDownOpen}
+                            setIsCartDropDownOpen={setIsCartDropDownOpen}
+                            handleOpenCartDropDown={handleOpenCartDropDown}
+                          />
                         </li>
                         <li>
-                          <NotificationsDropDown />
+                          <NotificationsDropDown
+                            isNotificationsOpen={isNotificationsOpen}
+                            setIsNotificationsOpen={setIsNotificationsOpen}
+                            handleOpenNotifications={handleOpenNotifications}
+                          />
                         </li>
                         <li>
                           <Dropdown

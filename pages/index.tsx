@@ -2,17 +2,17 @@ import {useDisclosure} from "@nextui-org/react"
 import type {NextPage} from "next"
 import {Libraries, useLoadScript} from "@react-google-maps/api"
 import {useEffect, useMemo, useState} from "react"
-import {FiMinus, FiPlus} from "react-icons/fi"
 import BookingModal from "../components/modal/booking-modal"
 import MyGoogleMap from "../components/uis/map"
 import Sidebar from "../components/uis/sidebar"
 import LoadingDiv from "../components/uis/loading"
 import useFetch from "../hooks/use-fetch"
-import {IHotel} from "../types"
-import MyButton from "../components/uis/button"
+import {Hotel} from "../types"
+import {useCurrentBookingOrder} from "../stores/current-booking-order"
+import "leaflet/dist/leaflet.css"
 
 export interface Result {
-  data: IHotel[]
+  data: Hotel[]
   total: number
 }
 export interface IMapHotelsRes {
@@ -32,6 +32,7 @@ const MyHome: NextPage = function MyHome() {
 
   const {isOpen, onOpen, onClose} = useDisclosure()
   const libraries: Libraries = useMemo(() => ["places", "geocoding"], [])
+  const [destination, setDestination] = useState("")
   const [myZoom, setMyZoom] = useState(1)
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
@@ -40,8 +41,8 @@ const MyHome: NextPage = function MyHome() {
 
   const [userPos, setUserPos] = useState<IPosition>()
   const [pos, setPos] = useState<IPosition | undefined>({lat: 30, lng: 40})
-  const [hotels, setHotels] = useState<Array<IHotel>>([])
-
+  const [hotels, setHotels] = useState<Array<Hotel>>([])
+  const {currentBooking} = useCurrentBookingOrder()
   useEffect(() => {
     if (respond) {
       setHotels(respond.result.data)
@@ -67,48 +68,35 @@ const MyHome: NextPage = function MyHome() {
 
   return (
     <main className="main-hight">
-      <div className="flex main-hight relative">
-        <div className="absolute flex flex-col gap-2 right-3 top-3 z-20">
-          <MyButton
-            color="white"
-            size="navIcon"
-            className="shadow-sm"
-            isIconOnly
-            onClick={() => {
-              setMyZoom((pre) => (pre > 4 ? pre : pre + 1))
-            }}>
-            <FiPlus className="h-5 w-5 text-gray-400" />
-          </MyButton>
-          <MyButton
-            color="white"
-            size="navIcon"
-            className="shadow-sm"
-            isIconOnly
-            onClick={() => {
-              setMyZoom((pre) => (pre < 2 ? pre : pre - 1))
-            }}>
-            <FiMinus className="h-5 w-5 text-gray-400" />
-          </MyButton>
-        </div>
-        <Sidebar />
-        {!isLoaded || !userPos ? (
-          <LoadingDiv />
-        ) : (
-          <MyGoogleMap
+      {!isLoaded || !userPos ? (
+        <LoadingDiv />
+      ) : (
+        <>
+          <div className="flex main-hight relative">
+            <Sidebar />
+            <MyGoogleMap
+              pos={pos!}
+              setPos={setPos}
+              userPos={userPos ?? {lat: 30, lng: 30}}
+              myZoom={myZoom}
+              setMyZoom={setMyZoom}
+              hotels={hotels}
+              setDestination={setDestination}
+              destination={destination}
+              isCurrentBooking={!!currentBooking}
+              openBookingModal={onOpen}
+            />
+          </div>
+          <BookingModal
+            isOpen={isOpen}
+            onClose={onClose}
             pos={pos!}
-            userPos={userPos ?? {lat: 30, lng: 30}}
-            MyZoom={myZoom}
-            hotels={hotels}
-            handleClick={onOpen}
+            setPos={setPos}
+            destination={destination}
+            myZoom={myZoom}
           />
-        )}
-      </div>
-      <BookingModal
-        isOpen={isOpen}
-        onClose={onClose}
-        setPos={setPos}
-        myZoom={myZoom}
-      />
+        </>
+      )}
     </main>
   )
 }
