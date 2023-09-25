@@ -90,7 +90,9 @@ const HotelOfferBox = function HotelOfferBox({
   setShow,
   getOffers
 }: HotelOfferBoxProps) {
-  const [reject, setReject] = useState(offer.status === 2)
+  const [reject, setReject] = useState<boolean>(
+    !!(offer.status === 2 && offer.price_after_reject)
+  )
   const {isOpen, onClose, onOpen} = useDisclosure()
 
   const handleBooked = () => {
@@ -127,7 +129,7 @@ const HotelOfferBox = function HotelOfferBox({
             className="flex gap-2 cursor-pointer"
             onClick={onOpen}
             aria-hidden="true">
-            <div className="!w-20 !h-20 overflow-hidden rounded-md">
+            <div className="!w-20 !h-20 overflow-hidden rounded-lg border-2 border-[#ECECEC]">
               <Image
                 src={offer.hotel.logo}
                 alt={offer.hotel.name}
@@ -185,7 +187,7 @@ const HotelOfferBox = function HotelOfferBox({
             size="sm"
             color="primary"
             onClick={handleBooked}
-            disabled={reject}>
+            isDisabled={reject}>
             Accept
           </MyButton>
         </div>
