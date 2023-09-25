@@ -80,18 +80,18 @@ const RenewBookingModal = function RenewBookingModal({
   //   const toDayDate = new Date().toISOString().split("T")
 
   return (
-    <Modal size="lg" isOpen={isOpen} onClose={onClose} classNames={type3}>
+    <Modal size="sm" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
         <ModalHeader>
-          <h2 className="heading-1">Renew Your Booking</h2>
+          <h2 className="heading-3">Renew Your Booking</h2>
         </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-between !gap-0 items-center pb-5">
-              <label htmlFor="date" className="w-[60px] dark:text-white">
-                To:
-              </label>
+            <div className="flex justify-between flex-col !gap-2 items-center pb-5">
               <div className="my-flex gap-2">
+                <label htmlFor="date" className="w-[100px] dark:text-white">
+                  To Date:
+                </label>
                 <Input
                   type="date"
                   value={watch().to_date}
@@ -105,6 +105,11 @@ const RenewBookingModal = function RenewBookingModal({
                     input: "dark:text-white"
                   }}
                 />
+              </div>
+              <div className="my-flex gap-2">
+                <label htmlFor="date" className="w-[100px] dark:text-white">
+                  To Time:
+                </label>
                 <Input
                   type="time"
                   value={watch().to_time}
