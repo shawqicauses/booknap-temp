@@ -62,7 +62,11 @@ export const Counter = function Counter({
       <button
         type="button"
         className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
-        onClick={handleClickMinus}>
+        onClick={(e) => {
+          if (value > 2) {
+            handleClickMinus(e)
+          }
+        }}>
         <FiMinus className="h-5 w-5 text-gray-400" />
       </button>
       <span className="text-lg inline-block  w-10 text-center">{value}</span>
@@ -144,7 +148,7 @@ const FormPageTow = function FormPageTow({
   const [isPresidentialOpen, setIsPresidentialOpen] = useState<boolean>(false)
 
   return (
-    <div className="mt-10 h-[500px] w-[360px]">
+    <div className="mt-10 w-[360px]">
       <div className=" flex flex-col gap-3 h-full overflow-y-scroll hide-scrollbar">
         <CounterStyled
           label="Single Room"
@@ -253,6 +257,7 @@ const BookingModal = function BookingModal({
       criteriaMode: "all"
     })
   const closeBookingModal = () => {
+    setPage(0)
     onClose()
     reset()
   }
@@ -268,7 +273,7 @@ const BookingModal = function BookingModal({
       | "noPresidentialSuite",
     currantValue: number
   ) => {
-    if (currantValue + num >= 1) {
+    if (currantValue + num >= 0) {
       setValue(filedName, currantValue + num)
     }
   }
@@ -318,7 +323,7 @@ const BookingModal = function BookingModal({
           notes: formData.note,
           country_id: 1,
           city_id: 2,
-          distance: 1000 * myZoom,
+          distance: 1000 * myZoom + 1000,
           rooms: [
             {type: 1, number: formData.noSingleRoom},
             {type: 2, number: formData.noDoubleRoom},
@@ -359,16 +364,16 @@ const BookingModal = function BookingModal({
     <>
       <Modal
         size="sm"
-        backdrop="blur"
+        backdrop="opaque"
         isDismissable={false}
         isOpen={isOpen}
         onClose={closeBookingModal}
-        classNames={{...type5, base: "fixed top-4 right-10"}}>
+        classNames={{...type5, base: "fixed top-2 right-8"}}>
         <ModalContent>
           <ModalBody className="overflow-hidden">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div
-                className={`flex gap-4 w-[756px] my-transition ${
+                className={`flex gap-4 w-[756px] my-transition h-[550px] ${
                   page === 1 ? "-translate-x-[50%]" : ""
                 }`}>
                 <FormPageTow
@@ -385,7 +390,7 @@ const BookingModal = function BookingModal({
                     onClick={() => setPage(0)}>
                     <AiOutlineDoubleLeft className="h-4 w-4" />
                   </MyButton>
-                  <div className="h-[500px] overflow-y-scroll hide-scrollbar mb-5">
+                  <div className="overflow-y-scroll hide-scrollbar mb-5">
                     <div className="pt-0 px-5 w-auto flex gap-2 flex-col">
                       <div>
                         <label htmlFor="date" className="label-gray">
