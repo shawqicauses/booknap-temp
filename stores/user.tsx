@@ -7,7 +7,7 @@ import {
   useMemo,
   useState
 } from "react"
-import {IProfileRes, IUser} from "../types"
+import {HotelRating, IProfileRes, IUser} from "../types"
 import client from "../helpers/client"
 import {useAuth} from "./auth"
 import {useCurrentBookingOrder} from "./current-booking-order"
@@ -17,13 +17,17 @@ interface IUserContext {
   ready: boolean
   handleUser: Function
   getData: () => void
+  hotelRating: HotelRating | null
+  setHotelRating: Function
 }
 
 const User = createContext({
   user: null,
   ready: false,
   handleUser: () => {},
-  getData: () => {}
+  getData: () => {},
+  hotelRating: null,
+  setHotelRating: () => {}
 } as IUserContext)
 
 interface IAuthProvider {
@@ -34,6 +38,8 @@ const UserProvider = function UserProvider({
   children
 }: IAuthProvider): ReactElement {
   const [user, setUser] = useState<IUser | null>(null)
+  const [hotelRating, setHotelRating] = useState<any>()
+
   const [ready, setReady] = useState<boolean>(false)
   const {token} = useAuth()
   const {handleCurrentBookingOrder} = useCurrentBookingOrder()
@@ -44,6 +50,7 @@ const UserProvider = function UserProvider({
         if (res.has_booking && res.booking.status === 0) {
           handleCurrentBookingOrder(res.booking)
         }
+        setHotelRating(res.hotel_rating)
       }
       setReady(true)
     })
@@ -71,8 +78,16 @@ const UserProvider = function UserProvider({
   )
 
   const value = useMemo(
-    () => ({user, ready, handleUser, getData} as IUserContext),
-    [user, ready, handleUser, getData]
+    () =>
+      ({
+        user,
+        ready,
+        handleUser,
+        getData,
+        hotelRating,
+        setHotelRating
+      } as IUserContext),
+    [user, ready, handleUser, getData, hotelRating, setHotelRating]
   )
   return <User.Provider value={value}>{children}</User.Provider>
 }
