@@ -80,20 +80,6 @@ export interface Booking {
   rooms_no: number
 }
 
-export interface ISginIn {
-  user: IUser
-  success: boolean
-  token: string
-  booking: Booking
-  has_booking: number
-}
-export interface IProfileRes {
-  success: string
-  user: IUser
-  booking: Booking
-  has_booking: number
-  massage: string | null
-}
 export interface Lang {
   id: number
   name: string
@@ -189,4 +175,52 @@ export interface IBooking {
   rooms: IRoom[]
   rooms_no: number | null
   hotel: Hotel | null
+}
+
+export interface HotelRating {
+  id: number
+  date_from: string
+  date_to: string
+  children: number
+  adults: number
+  rooms: Room[]
+  notes: string
+  cancel: number
+  canceled_at: null
+  cancel_reason: number
+  cancel_reason_other: null
+  status: number
+  country_id: number
+  city_id: number
+  offer_id: number
+  hotel_id: number
+  user_id: number
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  ignore: number
+  date_ignore: null
+  lat: string
+  lng: string
+  distance: number
+  rooms_no: number
+  is_renew: number
+  is_rated: number
+  hotel: Hotel
+}
+export interface IProfileRes {
+  success: string
+  user: IUser
+  booking: Booking
+  has_booking: number
+  massage: string | null
+  hotel_rating: HotelRating
+}
+export interface ISginIn {
+  user: IUser
+  success: boolean
+  token: string
+  booking: Booking
+  has_booking: number
+  hotel_rating: HotelRating
 }
