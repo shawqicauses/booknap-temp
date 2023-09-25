@@ -10,6 +10,9 @@ import useFetch from "../hooks/use-fetch"
 import {Hotel} from "../types"
 import {useCurrentBookingOrder} from "../stores/current-booking-order"
 import "leaflet/dist/leaflet.css"
+import RatingModal from "../components/modal/rating-modal"
+import {useAuth} from "../stores/auth"
+import {useUser} from "../stores/user"
 
 export interface Result {
   data: Hotel[]
@@ -31,23 +34,31 @@ const MyHome: NextPage = function MyHome() {
   )
 
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const ratingModal = useDisclosure()
+
   const libraries: Libraries = useMemo(() => ["places", "geocoding"], [])
   const [destination, setDestination] = useState("")
-  const [myZoom, setMyZoom] = useState(1)
+  const [myZoom, setMyZoom] = useState(0)
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     libraries
   })
-
+  const {token, ready: tokenReady} = useAuth()
   const [userPos, setUserPos] = useState<IPosition>()
   const [pos, setPos] = useState<IPosition | undefined>({lat: 30, lng: 40})
   const [hotels, setHotels] = useState<Array<Hotel>>([])
   const {currentBooking} = useCurrentBookingOrder()
+  const {hotelRating, ready} = useUser()
   useEffect(() => {
     if (respond) {
       setHotels(respond.result.data)
     }
   }, [respond])
+  useEffect(() => {
+    if (ready && tokenReady && hotelRating) {
+      ratingModal.onOpen()
+    }
+  }, [ratingModal, hotelRating, ready, tokenReady])
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -95,6 +106,14 @@ const MyHome: NextPage = function MyHome() {
             destination={destination}
             myZoom={myZoom}
           />
+          {token && hotelRating ? (
+            <RatingModal
+              hotelId={hotelRating.hotel_id}
+              hotelName={hotelRating.hotel.name}
+              isOpen={ratingModal.isOpen}
+              onClose={ratingModal.onClose}
+            />
+          ) : null}
         </>
       )}
     </main>
