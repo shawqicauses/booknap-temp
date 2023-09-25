@@ -5,6 +5,7 @@ import {GrInstagram} from "react-icons/gr"
 import {TfiYoutube} from "react-icons/tfi"
 import {BsTwitter} from "react-icons/bs"
 import React from "react"
+import {useTheme} from "../../stores/theme"
 
 const companyLinks = [
   {id: 1, label: "LOREM IPSUM", link: "/"},
@@ -46,6 +47,7 @@ const socialMedia = [
 ]
 
 const Footer = function Footer() {
+  const {theme} = useTheme()
   return (
     <footer>
       <div className="bg-[#F5F5F5] dark:bg-mirage">
@@ -53,7 +55,9 @@ const Footer = function Footer() {
           <div className="pt-2">
             <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
               <Image
-                src="/logo/blue-logo.png"
+                src={`/logo/${
+                  theme === "light" ? "blue-logo" : "white-logo"
+                }.png `}
                 alt="Logo"
                 fill
                 className="!relative  object-contain !w-52 !h-fit"
