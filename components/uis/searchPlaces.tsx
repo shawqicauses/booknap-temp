@@ -74,7 +74,7 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
                   key={place_id}
                   onClick={handleSelect(suggestion)}
                   aria-hidden="true"
-                  className="p-3 w-full flex justify-between flex-wrap">
+                  className="p-3 w-full flex justify-between flex-wrap cursor-pointer">
                   <span className="heading-3">{main_text}</span>
                   <span className="body">{secondary_text}</span>
                 </li>
