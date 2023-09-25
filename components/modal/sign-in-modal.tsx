@@ -52,7 +52,7 @@ const SignIn = function SignIn({
 }) {
   const google = async () => {
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(auth, provider)
+    signInWithPopup(auth, provider)
       .then((res) => {
         GoogleAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
@@ -60,13 +60,11 @@ const SignIn = function SignIn({
           signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch(() => {})
   }
   const apple = async () => {
     const provider = new OAuthProvider("apple.com")
-    await signInWithPopup(auth, provider)
+    signInWithPopup(auth, provider)
       .then((res) => {
         OAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
@@ -74,9 +72,7 @@ const SignIn = function SignIn({
           signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch(() => {})
   }
 
   return (
@@ -241,7 +237,7 @@ const SignInModal = function SignInModal({
   onClose: () => void
 }) {
   const [page, setPage] = useState<number>(0)
-
+  const {setHotelRating} = useUser()
   const onSignUp = async (mobile: string) => {
     if (!window.recaptchaVerifier) {
       const recaptchaParameters: RecaptchaParameters = {
@@ -263,13 +259,11 @@ const SignInModal = function SignInModal({
       size: "invisible"
     })
 
-    await signInWithPhoneNumber(auth, mobile, window.recaptchaVerifier)
+    signInWithPhoneNumber(auth, mobile, window.recaptchaVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch(() => {})
   }
   const {
     register,
@@ -315,14 +309,13 @@ const SignInModal = function SignInModal({
               if (resSign.has_booking) {
                 handleCurrentBookingOrder(resSign.booking)
               }
+              setHotelRating(resSign.hotel_rating)
               reset()
               signIn()
               onClose()
               setPage(0)
             })
-            .catch((err) => {
-              console.log(err)
-            })
+            .catch(() => {})
           setLoading(false)
         })
         .catch(() => {
@@ -354,6 +347,7 @@ const SignInModal = function SignInModal({
       if (resSign.has_booking) {
         handleCurrentBookingOrder(resSign.booking)
       }
+      setHotelRating(resSign.hotel_rating)
       signIn()
       onClose()
       setPage(0)

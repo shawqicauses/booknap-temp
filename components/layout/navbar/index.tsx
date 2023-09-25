@@ -121,7 +121,7 @@ const NotificationsDropDown = function NotificationsDropDown({
               notifications.length > 0 ? (
                 notifications.map((notfi: any) => (
                   <li
-                    className="flex gap-2 justify-center items-center p-3"
+                    className="flex gap-2 justify-center items-center p-3 cursor-pointer"
                     key={notfi.id}>
                     <div className="relative w-10 h-10 rounded-lg overflow-hidden">
                       <Image
@@ -193,7 +193,9 @@ const CartDropDown = function CartDropDown({
               cart.length > 0 ? (
                 <>
                   {cart.slice(0, 3).map((item) => (
-                    <li className="flex gap-2 items-center p-3" key={item.id}>
+                    <li
+                      className="flex gap-2 items-center p-3 cursor-pointer"
+                      key={item.id}>
                       <div className="relative w-10 h-10 rounded-lg overflow-hidden">
                         {item.product?.image ? (
                           <Image
@@ -257,6 +259,10 @@ const Navbar = function Navbar() {
     setIsNotificationsOpen(false)
     setIsCartDropDownOpen((pre) => !pre)
   }
+  const closeBoth = () => {
+    setIsNotificationsOpen(false)
+    setIsCartDropDownOpen(false)
+  }
   return (
     <>
       <nav className="sticky z-40 top-0 bg-white h-[78px] dark:bg-[rgb(0,8,24)] w-full shadow-base">
@@ -302,7 +308,7 @@ const Navbar = function Navbar() {
                   </ul>
                 </li>
                 <li>
-                  <ul className="flex flex-col lg:flex-row gap-3 ">
+                  <ul className="flex flex-row gap-3 ">
                     <li>
                       <Lang />
                     </li>
@@ -357,7 +363,10 @@ const Navbar = function Navbar() {
                             }}>
                             <DropdownTrigger>
                               {ready ? (
-                                <div className="my-flex gap-2 cursor-pointer rounded-lg">
+                                <button
+                                  type="button"
+                                  className="my-flex gap-2 cursor-pointer rounded-lg"
+                                  onClick={closeBoth}>
                                   <div className="relative !w-10 !h-10 rounded-full overflow-hidden">
                                     {user?.avatar ? (
                                       <Image
@@ -368,7 +377,7 @@ const Navbar = function Navbar() {
                                       />
                                     ) : null}
                                   </div>
-                                </div>
+                                </button>
                               ) : (
                                 <div className="min-w-[100px] h-full flex justify-center items-center rounded-lg">
                                   <Spinner />
