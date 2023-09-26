@@ -522,7 +522,7 @@ const BookingModal = function BookingModal({
                           ) : null}
                           {watch().noDoubleRoom ? (
                             <span className="body-sm text-black dark:text-white">
-                              {watch().noSingleRoom} Double Room
+                              {watch().noDoubleRoom} Double Room
                             </span>
                           ) : null}
                           {watch().noSuiteRooms ? (
@@ -532,7 +532,7 @@ const BookingModal = function BookingModal({
                           ) : null}
                           {watch().noPresidentialSuite ? (
                             <span className="body-sm text-black dark:text-white">
-                              {watch().noPresidentialSuite} Single Room
+                              {watch().noPresidentialSuite} Presidential Suite
                             </span>
                           ) : null}
                         </div>
