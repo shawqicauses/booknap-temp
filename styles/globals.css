@@ -120,7 +120,7 @@
   }
 
   .navbar-link {
-    @apply label-uppercase my-transition my-flex !w-max gap-2 hover:text-blue-700 focus:outline-none focus:ring-0;
+    @apply label-uppercase my-transition my-flex !w-max gap-2 focus:outline-none focus:ring-0;
   }
 
   .navbar-menu {
@@ -184,7 +184,6 @@ input[type="number"] {
 }
 .main-hight {
   height: calc(100vh - 78px);
-
 }
 .test-h {
   height: calc(100vh - 360px);
