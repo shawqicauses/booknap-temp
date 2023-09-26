@@ -29,7 +29,8 @@ const MyButton = extendVariants(Button, {
   },
   defaultVariants: {
     color: "default",
-    size: "md"
+    size: "md",
+    disableAnimation: "true"
   }
 })
 
