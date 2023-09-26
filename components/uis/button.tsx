@@ -14,7 +14,7 @@ const MyButton = extendVariants(Button, {
       success: "bg-green-500 text-white",
       white: "bg-white text-black dark:bg-mirage dark:text-white",
       white2: "bg-transparent",
-      primary: "text-white bg-[#2F5597]",
+      primary: "text-white bg-[#2F5597] hover:bg-[#254478]",
       primary2: "text-[#2F5597] bg-[#E9EDF4]",
       secondary: "text-blue-300 bg-gray-200",
       gray: "",
@@ -24,7 +24,7 @@ const MyButton = extendVariants(Button, {
       transparent: "bg-transparent",
       danger: "bg-red-600 text-white",
       navIcon:
-        "bg-[#F7F7F7] text-[#B9B9B9] dark:bg-[#12213B] dark:text-[#5B6C89]"
+        "bg-white dark:bg-[rgb(0,8,24)] hover:bg-gray-100 dark:hover:bg-ebony-clay"
     }
   },
   defaultVariants: {
