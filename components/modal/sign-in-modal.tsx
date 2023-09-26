@@ -48,16 +48,21 @@ const SignIn = function SignIn({
   register: any
   errors: any
   watch: any
-  signInByProviders: Function
+  // eslint-disable-next-line no-unused-vars
+  signInByProviders: (data: {
+    name: string
+    email: string
+    type: "1"
+  }) => Promise<void>
 }) {
   const google = async () => {
     const provider = new GoogleAuthProvider()
     signInWithPopup(auth, provider)
-      .then((res) => {
+      .then(async (res) => {
         GoogleAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
         if (email && displayName) {
-          signInByProviders({name: displayName, email: email, type: "1"})
+          await signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
       .catch(() => {})
@@ -65,11 +70,11 @@ const SignIn = function SignIn({
   const apple = async () => {
     const provider = new OAuthProvider("apple.com")
     signInWithPopup(auth, provider)
-      .then((res) => {
+      .then(async (res) => {
         OAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
         if (email && displayName) {
-          signInByProviders({name: displayName, email: email, type: "1"})
+          await signInByProviders({name: displayName, email: email, type: "1"})
         }
       })
       .catch(() => {})
@@ -338,20 +343,22 @@ const SignInModal = function SignInModal({
     email: string
     type: "1"
   }) => {
-    await client("https://booknap-api.wpgooal.com/api/login-email", {
-      body: JSON.stringify(data),
-      method: "POST"
-    })?.then((resSign: ISginIn) => {
-      localStorage.setItem("TOKEN", resSign.token)
-      handleUser(resSign.user)
-      if (resSign.has_booking) {
-        handleCurrentBookingOrder(resSign.booking)
+    const resSign: ISginIn = await client(
+      "https://booknap-api.wpgooal.com/api/login-email",
+      {
+        body: JSON.stringify(data),
+        method: "POST"
       }
-      setHotelRating(resSign.hotel_rating)
-      signIn()
-      onClose()
-      setPage(0)
-    })
+    )
+    localStorage.setItem("TOKEN", resSign.token)
+    handleUser(resSign.user)
+    if (resSign.has_booking) {
+      handleCurrentBookingOrder(resSign.booking)
+    }
+    setHotelRating(resSign.hotel_rating)
+    signIn()
+    onClose()
+    setPage(0)
   }
 
   const handleResend = () => {
@@ -405,10 +412,7 @@ const SignInModal = function SignInModal({
                 }}>
                 Sign in
               </MyButton>
-              {/* // eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <button id="sign-in-button" type="button">
-                {" "}
-              </button>
+              <button id="sign-in-button" type="button" aria-label=" " />
             </form>
           </ModalBody>
         </div>
