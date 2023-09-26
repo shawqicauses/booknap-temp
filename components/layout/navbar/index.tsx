@@ -102,7 +102,7 @@ const NotificationsDropDown = function NotificationsDropDown({
         <MyButton
           isIconOnly
           size="navIcon"
-          color="white2"
+          color="navIcon"
           onClick={handleClick}>
           <Badge
             color="danger"
@@ -169,7 +169,7 @@ const CartDropDown = function CartDropDown({
       <OutsideClickHandler onOutsideClick={() => setIsCartDropDownOpen(false)}>
         <MyButton
           size="navIcon"
-          color="white2"
+          color="navIcon"
           onClick={handleOpenCartDropDown}
           isIconOnly>
           {cart.length > 0 ? (
@@ -245,7 +245,6 @@ const Navbar = function Navbar() {
   const {user, ready} = useUser()
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const [isCartDropDownOpen, setIsCartDropDownOpen] = useState(false)
-
   const router = useRouter()
   const handleSignOut = async () => {
     await client("logout", {method: "POST"})
@@ -316,7 +315,7 @@ const Navbar = function Navbar() {
                       <MyButton
                         isIconOnly
                         size="navIcon"
-                        color="white2"
+                        color="navIcon"
                         onClick={changeTheme}>
                         {theme === "light" ? (
                           <BiMoon className="w-6 h-6 text-[#B9B9B9]" />
@@ -331,7 +330,7 @@ const Navbar = function Navbar() {
                           as={Link}
                           href="/"
                           size="navIcon"
-                          color="white2"
+                          color="navIcon"
                           isIconOnly
                           onClick={signInModel.onOpen}>
                           <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
@@ -367,15 +366,18 @@ const Navbar = function Navbar() {
                                   type="button"
                                   className="my-flex gap-2 cursor-pointer rounded-lg"
                                   onClick={closeBoth}>
-                                  <div className="relative !w-10 !h-10 rounded-full overflow-hidden">
-                                    {user?.avatar ? (
-                                      <Image
-                                        src={user?.avatar}
-                                        alt="user profile"
-                                        className="!relative"
-                                        fill
-                                      />
-                                    ) : null}
+                                  <div className="relative !w-9 !h-9 rounded-md overflow-hidden">
+                                    <Image
+                                      src={
+                                        user?.avatar ||
+                                        `/user/${
+                                          theme === "light" ? "light" : "dark"
+                                        }.png`
+                                      }
+                                      alt="user profile"
+                                      className="!relative"
+                                      fill
+                                    />
                                   </div>
                                 </button>
                               ) : (

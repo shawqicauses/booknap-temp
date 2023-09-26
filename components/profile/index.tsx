@@ -13,6 +13,7 @@ import {useAuth} from "../../stores/auth"
 import {useNotifications} from "../../stores/notifications"
 import "react-toastify/dist/ReactToastify.css"
 import {IProfileRes} from "../../types"
+import {useTheme} from "../../stores/theme"
 
 interface IProfile {
   first_name: string
@@ -32,6 +33,7 @@ const inputStyle = {
 const ProfileContent = function ProfileContent() {
   const {token} = useAuth()
   const {user, handleUser} = useUser()
+  const {theme} = useTheme()
   const {
     register,
     handleSubmit,
@@ -148,7 +150,10 @@ const ProfileContent = function ProfileContent() {
               <div className="w-40 h-40 overflow-hidden rounded-full mx-auto relative">
                 {user.avatar ? (
                   <Image
-                    src={user.avatar}
+                    src={
+                      user.avatar ||
+                      `/user/${theme === "light" ? "light" : "dark"}.png`
+                    }
                     alt="user"
                     className="!relative"
                     fill
