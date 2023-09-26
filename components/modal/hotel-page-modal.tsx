@@ -9,7 +9,6 @@ import "swiper/css"
 import "swiper/css/pagination"
 import {FaUsers} from "react-icons/fa"
 import {LuMail} from "react-icons/lu"
-import Link from "next/link"
 import {noPadding} from "../uis/modal-styles"
 import {Hotel} from "../../types"
 
@@ -24,7 +23,7 @@ const HotelPageModal = function HotelPageModal({
 }) {
   return (
     <Modal
-      backdrop="opaque"
+      backdrop="transparent"
       isOpen={isOpen}
       onClose={onClose}
       radius="lg"
@@ -97,15 +96,21 @@ const HotelPageModal = function HotelPageModal({
                   <span>Phone:</span>
                   <a
                     href={`https://wa.me/${hotel.phone.replaceAll(" ", "")}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="text-blue-500">
                     {hotel.phone}
                   </a>
                 </div>
                 <div className="flex justify-between gap-3">
                   <span>Website:</span>
-                  <Link href={hotel.website} className="text-blue-500">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`http://${hotel.website}`}
+                    className="text-blue-500">
                     View Website
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
