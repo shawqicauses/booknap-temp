@@ -132,31 +132,45 @@ const SignIn = function SignIn({
           ) : null}
         </div>
       </div>
-      <MyButton
-        color="primary"
-        type="button"
-        fullWidth
-        onClick={() => {
-          if (getValues().name && getValues().mobile) {
-            onSignUp(getValues().mobile)
-            setPage(1)
-          }
-        }}>
-        Sign in
-      </MyButton>
-      <div className="flex items-center">
+      <div className="w-[70%] mx-auto">
+        <MyButton
+          color="primary"
+          type="button"
+          fullWidth
+          onClick={() => {
+            if (getValues().name && getValues().mobile) {
+              onSignUp(getValues().mobile)
+              setPage(1)
+            }
+          }}>
+          Sign in
+        </MyButton>
+      </div>
+      <div className="flex items-center w-[50%] mx-auto">
         <span className="inline-block h-0.5 w-full bg-gray-200" />
-        <span className="px-2 font-semi-bold">OR</span>
+        <span className="px-2 font-semi-bold label">or</span>
         <span className="inline-block h-0.5 w-full bg-gray-200" />
       </div>
-      <MyButton fullWidth onClick={google}>
-        <BsGoogle className="h-5 w-5 text-gray-400" />
-        Google
-      </MyButton>
-      <MyButton fullWidth onClick={apple}>
-        <BsApple className="h-5 w-5 text-gray-400" />
-        Apple
-      </MyButton>
+      <div className="flex gap-4">
+        <MyButton
+          color="transparent"
+          variant="bordered"
+          radius="full"
+          fullWidth
+          onClick={google}>
+          <BsGoogle className="h-5 w-5 text-gray-400" />
+          Google
+        </MyButton>
+        <MyButton
+          variant="bordered"
+          color="transparent"
+          radius="full"
+          fullWidth
+          onClick={apple}>
+          <BsApple className="h-5 w-5 text-gray-400" />
+          Apple
+        </MyButton>
+      </div>
     </>
   )
 }
@@ -412,7 +426,7 @@ const SignInModal = function SignInModal({
         <div className="p-5">
           <div id="recaptcha-container" />
           <ModalHeader>
-            <h1 className="heading-2 mb-10">Sign In Account</h1>
+            <h1 className="heading-2">Sign In</h1>
           </ModalHeader>
           <ModalBody>
             <form

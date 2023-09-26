@@ -58,10 +58,10 @@ export const Counter = function Counter({
   handleClickMinus: React.MouseEventHandler<Element>
 }) {
   return (
-    <div className=" w-fit p-1 flex items-center rounded-xl bg-gray-100 dark:bg-blue-charcoal">
+    <div className=" w-fit p-1 flex items-center rounded-xl bg-gray-100 dark:bg-mirage">
       <button
         type="button"
-        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
+        className="button-gray inline-block p-1 rounded-xl dark:bg-ebony-clay"
         onClick={(e) => {
           if (value > 1) {
             handleClickMinus(e)
@@ -72,7 +72,7 @@ export const Counter = function Counter({
       <span className="text-lg inline-block  w-10 text-center">{value}</span>
       <button
         type="button"
-        className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
+        className="button-gray inline-block p-1 rounded-xl dark:bg-ebony-clay"
         onClick={handleClickPlus}>
         <FiPlus className="h-5 w-5 text-gray-400" />
       </button>
@@ -385,7 +385,7 @@ const BookingModal = function BookingModal({
                   <MyButton
                     size="sm"
                     radius="full"
-                    color="white"
+                    color="transparent"
                     isIconOnly
                     onClick={() => setPage(0)}>
                     <AiOutlineDoubleLeft className="h-4 w-4" />
@@ -399,7 +399,7 @@ const BookingModal = function BookingModal({
                         <input
                           value={destination}
                           disabled
-                          className="input p-3 leading-5 bg-gray-100 rounded-lg"
+                          className="input p-3 leading-5 bg-gray-100 rounded-lg dark:text-white dark:bg-mirage dark:border-mirage"
                         />
                       </div>
                       <div>
@@ -422,7 +422,7 @@ const BookingModal = function BookingModal({
                               })}
                               variant="flat"
                               classNames={{
-                                inputWrapper: "shadow-none",
+                                inputWrapper: "shadow-none dark:bg-mirage",
                                 input: "dark:text-white"
                               }}
                             />
@@ -435,7 +435,7 @@ const BookingModal = function BookingModal({
                               })}
                               variant="flat"
                               classNames={{
-                                inputWrapper: "shadow-none",
+                                inputWrapper: "shadow-none dark:bg-mirage",
                                 input: "dark:text-white"
                               }}
                             />
@@ -457,7 +457,7 @@ const BookingModal = function BookingModal({
                               })}
                               variant="flat"
                               classNames={{
-                                inputWrapper: "shadow-none",
+                                inputWrapper: "shadow-none dark:bg-mirage",
                                 input: "dark:text-white"
                               }}
                             />
@@ -470,7 +470,7 @@ const BookingModal = function BookingModal({
                               })}
                               variant="flat"
                               classNames={{
-                                inputWrapper: "shadow-none",
+                                inputWrapper: "shadow-none dark:bg-mirage",
                                 input: "dark:text-white"
                               }}
                             />
@@ -516,22 +516,22 @@ const BookingModal = function BookingModal({
                         </label>
                         <div className="grid grid-cols-2 gap-2 ">
                           {watch().noSingleRoom ? (
-                            <span className="body-sm !text-black">
+                            <span className="body-sm text-black dark:text-white">
                               {watch().noSingleRoom} Single Room
                             </span>
                           ) : null}
                           {watch().noDoubleRoom ? (
-                            <span className="body-sm !text-black">
+                            <span className="body-sm text-black dark:text-white">
                               {watch().noSingleRoom} Double Room
                             </span>
                           ) : null}
                           {watch().noSuiteRooms ? (
-                            <span className="body-sm !text-black">
+                            <span className="body-sm text-black dark:text-white">
                               {watch().noSuiteRooms} Suite Room
                             </span>
                           ) : null}
                           {watch().noPresidentialSuite ? (
-                            <span className="body-sm !text-black">
+                            <span className="body-sm text-black dark:text-white">
                               {watch().noPresidentialSuite} Single Room
                             </span>
                           ) : null}
@@ -545,7 +545,7 @@ const BookingModal = function BookingModal({
                           id="note"
                           value={watch().note}
                           {...register("note")}
-                          className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
+                          className="input p-3 leading-5 bg-gray-100 rounded-xl dark:text-white resize-none dark:bg-mirage dark:border-mirage"
                         />
                       </div>
                       <MyButton
