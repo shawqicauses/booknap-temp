@@ -14,6 +14,7 @@ import React, {
 } from "react"
 import {getGeocode, getDetails} from "use-places-autocomplete"
 import {useRouter} from "next/router"
+import {MdLocalOffer} from "react-icons/md"
 import {BiCurrentLocation, BiSolidUserCircle} from "react-icons/bi"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {useDisclosure} from "@nextui-org/react"
@@ -161,8 +162,9 @@ const SearchBar = function SearchBar({
         <MyButton
           color="primary"
           isDisabled={isCurrentBooking}
-          className="!text-md"
+          className="!text-sm label-uppercase"
           size="xl"
+          startContent={<MdLocalOffer className="h-4 w-4 text-white" />}
           onClick={() => {
             openBookingModal()
             getGeocode({
@@ -371,7 +373,7 @@ const MyGoogleMap = function MyGoogleMap({
           size="navIcon"
           className="shadow-sm"
           isIconOnly
-          isDisabled={!!directionsResponse}
+          isDisabled={!!directionsResponse || myZoom === 4}
           onClick={() => {
             setMyZoom((pre: number) => (pre > 4 ? pre : pre + 1))
           }}>
@@ -382,7 +384,7 @@ const MyGoogleMap = function MyGoogleMap({
           size="navIcon"
           className="shadow-sm"
           isIconOnly
-          isDisabled={!!directionsResponse}
+          isDisabled={!!directionsResponse || myZoom === 0}
           onClick={() => {
             setMyZoom((pre: number) => (pre < 1 ? pre : pre - 1))
           }}>
