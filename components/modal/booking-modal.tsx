@@ -63,7 +63,7 @@ export const Counter = function Counter({
         type="button"
         className="button-gray inline-block p-1 rounded-xl dark:bg-mirage"
         onClick={(e) => {
-          if (value > 2) {
+          if (value > 1) {
             handleClickMinus(e)
           }
         }}>
