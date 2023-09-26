@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import {SubmitHandler, useForm} from "react-hook-form"
+import {SubmitHandler, UseFormGetValues, useForm} from "react-hook-form"
 import {BsApple, BsGoogle} from "react-icons/bs"
 import {
   Input,
@@ -43,7 +43,10 @@ const SignIn = function SignIn({
   register,
   errors,
   watch,
-  signInByProviders
+  signInByProviders,
+  getValues,
+  onSignUp,
+  setPage
 }: {
   register: any
   errors: any
@@ -54,6 +57,9 @@ const SignIn = function SignIn({
     email: string
     type: "1"
   }) => Promise<void>
+  getValues: UseFormGetValues<IConfigCode & ISignIn>
+  onSignUp: Function
+  setPage: Function
 }) {
   const google = async () => {
     const provider = new GoogleAuthProvider()
@@ -126,6 +132,23 @@ const SignIn = function SignIn({
           ) : null}
         </div>
       </div>
+      <MyButton
+        color="primary"
+        type="button"
+        fullWidth
+        onClick={() => {
+          if (getValues().name && getValues().mobile) {
+            onSignUp(getValues().mobile)
+            setPage(1)
+          }
+        }}>
+        Sign in
+      </MyButton>
+      <div className="flex items-center">
+        <span className="inline-block h-0.5 w-full bg-gray-200" />
+        <span className="px-2 font-semi-bold">OR</span>
+        <span className="inline-block h-0.5 w-full bg-gray-200" />
+      </div>
       <MyButton fullWidth onClick={google}>
         <BsGoogle className="h-5 w-5 text-gray-400" />
         Google
@@ -150,12 +173,16 @@ const init: IConfigCode = {
 const ConfigCode = function ConfigCode({
   watch,
   register,
-  handleResend
+  handleResend,
+  loading,
+  isSubmitting
 }: {
   watch: any
   register: any
   errors: any
   handleResend: Function
+  loading: boolean
+  isSubmitting: boolean
 }) {
   useEffect(() => {
     const checks = document.querySelectorAll("input.check")
@@ -230,6 +257,13 @@ const ConfigCode = function ConfigCode({
           )
         })}
       </div>
+      <MyButton
+        color="primary"
+        type="submit"
+        fullWidth
+        isLoading={loading || isSubmitting}>
+        Sign in
+      </MyButton>
     </>
   )
 }
@@ -390,6 +424,9 @@ const SignInModal = function SignInModal({
                   watch={watch}
                   register={register}
                   signInByProviders={signInByProviders}
+                  getValues={getValues}
+                  onSignUp={onSignUp}
+                  setPage={setPage}
                 />
               ) : (
                 <ConfigCode
@@ -397,21 +434,10 @@ const SignInModal = function SignInModal({
                   register={register}
                   errors={errors}
                   handleResend={handleResend}
+                  loading={loading}
+                  isSubmitting={isSubmitting}
                 />
               )}
-              <MyButton
-                color="primary"
-                type={page === 1 ? "submit" : "button"}
-                fullWidth
-                isLoading={loading || isSubmitting}
-                onClick={() => {
-                  if (getValues().name && getValues().mobile) {
-                    onSignUp(getValues().mobile)
-                    setPage(1)
-                  }
-                }}>
-                Sign in
-              </MyButton>
               <button id="sign-in-button" type="button" aria-label=" " />
             </form>
           </ModalBody>
