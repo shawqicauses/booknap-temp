@@ -101,7 +101,7 @@ const SignIn = function SignIn({
             placeholder="userName"
             classNames={{
               inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full"
+                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none"
             }}
           />
           {errors.mobile?.types?.required ? (
@@ -124,7 +124,7 @@ const SignIn = function SignIn({
             placeholder="+000000000000"
             classNames={{
               inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full"
+                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none"
             }}
           />
           {errors.name?.types?.required ? (
