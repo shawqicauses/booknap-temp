@@ -71,15 +71,12 @@ const MyHome: NextPage = function MyHome() {
       )
     }
   }, [])
+  console.log(isLoaded, userPos)
 
   return (
     <main className="main-hight">
       {!isLoaded || !userPos ? (
-        <>
-          <LoadingDiv />
-          <span>{!isLoaded ? "Not loaded" : ""}</span>
-          <span>{!userPos ? "Not user place" : ""}</span>
-        </>
+        <LoadingDiv />
       ) : (
         <>
           <MyGoogleMap
