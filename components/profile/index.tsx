@@ -286,12 +286,12 @@ const ProfileContent = function ProfileContent() {
                         fullWidth
                         startContent={
                           gender === 1 ? (
-                            <AiOutlineCheck className="h-5 w-5 text-[#2F5597]" />
+                            <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
                         className={`${
                           gender === 1
-                            ? "border-2 bg-[#2F5597]/5  border-[#2F5597]"
+                            ? "border-2 bg-my-primary/5  border-my-primary"
                             : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Male
@@ -303,12 +303,12 @@ const ProfileContent = function ProfileContent() {
                         fullWidth
                         startContent={
                           gender === 2 ? (
-                            <AiOutlineCheck className="h-5 w-5 text-[#2F5597]" />
+                            <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
                         className={`${
                           gender === 2
-                            ? "border-2 bg-[#2f5597]/5 border-[#2F5597]"
+                            ? "border-2 bg-my-primary/5 border-my-primary"
                             : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Female

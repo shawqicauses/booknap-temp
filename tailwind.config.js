@@ -89,6 +89,7 @@ module.exports = {
     blur: {md: "0.75rem"},
     extend: {
       colors: {
+        "my-primary": "#2f5597",
         "blue-charcoal": "#010919",
         "mirage": "#1a2230",
         "ebony-clay": "#242e3f",

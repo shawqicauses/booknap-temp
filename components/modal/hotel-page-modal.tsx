@@ -80,14 +80,14 @@ const HotelPageModal = function HotelPageModal({
             </div>
             <div className="bg-white p-4">
               <div className="flex gap-4">
-                <FaUsers className="w-5 h-5 text-[#2F5597]" />
+                <FaUsers className="w-5 h-5 text-my-primary" />
                 <span className="heading-3 text-xl-2">About Us</span>
               </div>
               <p className="body-sm text-black">{hotel.about}</p>
             </div>
             <div className="bg-white p-4 body-sm text-black">
               <div className="flex gap-4 items-center mb-2">
-                <LuMail className="w-5 h-5 text-[#2F5597]" />
+                <LuMail className="w-5 h-5 text-my-primary" />
                 <span className="heading-3 text-xl-2">Contact</span>
               </div>
               <div className="mb-4">{hotel?.address}</div>

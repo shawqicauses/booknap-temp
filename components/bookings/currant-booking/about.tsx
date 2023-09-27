@@ -24,7 +24,7 @@ const About = function About() {
     <div className="flex flex-col gap-4 mb-10">
       <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4">
         <div className="flex gap-4 mb-3">
-          <FaUsers className="w-5 h-5 text-[#2F5597]" />
+          <FaUsers className="w-5 h-5 text-my-primary" />
           <span className="heading-3 text-xl-2 dark:text-white">About Us</span>
         </div>
         <p className="body text-black dark:text-white">{result?.hotel.about}</p>
@@ -32,7 +32,7 @@ const About = function About() {
       <div className="flex gap-4">
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[2]">
           <div className="flex gap-4 items-center mb-3">
-            <FaLocationDot className="w-5 h-5 text-[#2F5597]" />
+            <FaLocationDot className="w-5 h-5 text-my-primary" />
             <span className="heading-3 text-xl-2 dark:text-white">
               Location
             </span>
@@ -48,7 +48,7 @@ const About = function About() {
         </div>
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[3]">
           <div className="flex gap-4 items-center mb-3">
-            <LuMail className="w-5 h-5 text-[#2F5597]" />
+            <LuMail className="w-5 h-5 text-my-primary" />
             <span className="heading-3 text-xl-2 dark:text-white">Contact</span>
           </div>
           <div className="mb-4">mail@mail.com</div>
@@ -77,7 +77,7 @@ const About = function About() {
       </div>
       <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 h-auto">
         <div className="flex gap-4 mb-4">
-          <FaRegImage className="w-5 h-5 text-[#2F5597]" />
+          <FaRegImage className="w-5 h-5 text-my-primary" />
           <span className="heading-3 text-xl-2 dark:text-white">Glairy</span>
         </div>
         <div className="grid grid-cols-4 grid-row-4 h-full gap-4">

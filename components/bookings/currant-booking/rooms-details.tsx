@@ -27,7 +27,7 @@ const RoomsDetails = function RoomsDetails() {
             className="rounded-lg p-4 bg-[#F5F5F5] dark:bg-mirage"
             key={roomId}>
             <div className="flex gap-5 mb-4">
-              <div className="bg-gray-200 dark:bg-[#242E3F] p-3 rounded-lg text-[#2F5597]">
+              <div className="bg-gray-200 dark:bg-[#242E3F] p-3 rounded-lg text-my-primary">
                 <BiDoorOpen className="h-7 w-7" />
               </div>
               <div>
@@ -44,7 +44,7 @@ const RoomsDetails = function RoomsDetails() {
               <ul className="flex gap-10">
                 {features.f1 ? (
                   <li className="flex gap-3 items-center">
-                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-[#2F5597]">
+                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbWifi className="h-6 w-6" />
                     </div>
                     <span>Free Wifi</span>
@@ -52,7 +52,7 @@ const RoomsDetails = function RoomsDetails() {
                 ) : null}
                 {features.f2 ? (
                   <li className="flex gap-3 items-center">
-                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-[#2F5597]">
+                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbAirConditioningDisabled className="h-6 w-6" />
                     </div>
                     <span>Conditioning</span>
@@ -60,7 +60,7 @@ const RoomsDetails = function RoomsDetails() {
                 ) : null}
                 {features.f3 ? (
                   <li className="flex gap-3 items-center">
-                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-[#2F5597]">
+                    <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbSmoking className="h-6 w-6" />
                     </div>
                     <span>Free Wifi</span>

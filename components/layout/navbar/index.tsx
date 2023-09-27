@@ -294,7 +294,7 @@ const Navbar = function Navbar() {
                         <Link
                           href={href}
                           className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89] ${
-                            router.pathname === href ? "!text-[#2F5597]" : ""
+                            router.pathname === href ? "!text-my-primary" : ""
                           }`}
                           onClick={() => {
                             setIsOpened(false)
