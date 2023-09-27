@@ -146,7 +146,7 @@ const ProfileContent = function ProfileContent() {
       <form onSubmit={handleSubmit(onSubmit)} className="my-container">
         <div className="flex flex-col lg:flex-row  gap-5 my-14">
           <div className="px-10 py-10 bg-gray-100 dark:bg-mirage  rounded-lg flex flex-col justify-center gap-3">
-            <div className="relative w-fit m-auto">
+            <div className="relative w-fit mx-auto">
               <div className="w-40 h-40 overflow-hidden rounded-full mx-auto relative">
                 {user.avatar ? (
                   <Image
@@ -161,16 +161,16 @@ const ProfileContent = function ProfileContent() {
                 ) : null}
               </div>
             </div>
-            <div>
+            <div className="mb-2">
               <h2 className="text-xl-2 font-semi-bold whitespace-nowrap text-center">
-                JONATHAN HOLMES
+                {user.first_name} {user.last_name}
               </h2>
               <div className="flex justify-center">
                 <Rating
                   name="read-only"
                   value={user.stars}
                   readOnly
-                  size="medium"
+                  size="large"
                   icon={<AiTwotoneStar />}
                   emptyIcon={<AiTwotoneStar className="text-gray-300" />}
                 />
@@ -179,10 +179,9 @@ const ProfileContent = function ProfileContent() {
             <div className="flex justify-center">
               <MyButton
                 color="primary"
-                size="lg"
-                radius="sm"
-                className="relative">
-                Upload New Photo
+                size="xl"
+                className="relative text-base">
+                Upload Photo
                 <input
                   type="file"
                   onChange={handleImage}
@@ -208,8 +207,8 @@ const ProfileContent = function ProfileContent() {
               <h1 className="heading-1 mb-5 dark:text-white mt-5">
                 EDIT PROFILE
               </h1>
-              <div className="p-3 gap-2 gap-x-3 pb-5">
-                <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-5">
+              <div className="p-3 gap-2 gap-x-3 pb-1">
+                <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-8">
                   <div>
                     <Input
                       size="lg"
@@ -311,10 +310,10 @@ const ProfileContent = function ProfileContent() {
                             <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
-                        className={`!text-lg ${
+                        className={`!text-lg border-2 ${
                           gender === 2
-                            ? "border-2 bg-my-primary/5 border-my-primary"
-                            : "dark:bg-blue-charcoal dark:text-white"
+                            ? "bg-my-primary/5 border-my-primary"
+                            : "dark:bg-blue-charcoal dark:text-white border-white"
                         }`}>
                         Female
                       </MyButton>
@@ -323,6 +322,7 @@ const ProfileContent = function ProfileContent() {
                   <div>
                     <Input
                       size="lg"
+                      radius="sm"
                       label="Date Of Birth"
                       labelPlacement="outside"
                       {...register("dob", {required: true})}
@@ -341,7 +341,7 @@ const ProfileContent = function ProfileContent() {
                     size="xl"
                     color="primary"
                     type="submit"
-                    className="px-10">
+                    className="px-10 text-lg">
                     Save
                   </MyButton>
                 </div>
