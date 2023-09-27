@@ -162,7 +162,7 @@ const SearchBar = function SearchBar({
         <MyButton
           color="primary"
           isDisabled={isCurrentBooking}
-          className="!text-sm label-uppercase"
+          className="!text-sm label-uppercase flex-1"
           size="xl"
           startContent={<MdLocalOffer className="h-4 w-4 text-white" />}
           onClick={() => {
