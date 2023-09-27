@@ -145,7 +145,7 @@ const SearchBar = function SearchBar({
   const map = useGoogleMap()
 
   return (
-    <div className="absolute bottom-5 left-[50%] -translate-x-[50%] w-full flex justify-center gap-2 flex-wrap">
+    <div className="absolute bottom-5 left-[50%] -translate-x-[50%] w-full flex justify-center gap-2">
       <PlacesSuggestionInput
         setPosition={setPos}
         startValue={destination}
@@ -162,7 +162,7 @@ const SearchBar = function SearchBar({
         <MyButton
           color="primary"
           isDisabled={isCurrentBooking}
-          className="!text-sm label-uppercase flex-1"
+          className="!text-sm"
           size="xl"
           startContent={<MdLocalOffer className="h-4 w-4 text-white" />}
           onClick={() => {

@@ -249,7 +249,7 @@ const ConfigCode = function ConfigCode({
           Resend
         </MyButton>
       </div>
-      <div className="flex gap-3 flex-col md:flex-row justify-evenly mb-4">
+      <div className="flex gap-0.5 md:gap-3 flex-row justify-evenly mb-4">
         {Object.keys(init).map((check: any) => {
           const check2:
             | "check1"

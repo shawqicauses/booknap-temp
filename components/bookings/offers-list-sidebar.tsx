@@ -213,7 +213,7 @@ const OffersSidebar = function OffersSidebar({
   const [filter, serFilter] = useState(1)
   const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
   const [time, setTime] = useState({minutes: 20, seconds: 0})
-
+  const [windowWidth, setWindowWidth] = useState<number>(300)
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime()
@@ -248,6 +248,11 @@ const OffersSidebar = function OffersSidebar({
     setOffersNum(offers.length)
   }, [offers, setOffersNum])
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.screen.availWidth)
+    }
+  }, [])
   const sortOffers = (type: number) => {
     switch (type) {
       case 1:
@@ -264,7 +269,7 @@ const OffersSidebar = function OffersSidebar({
     <div
       className={`fixed my-transition z-20 left-0 bottom-0  shadow-md ${
         show ? "" : "-translate-x-full"
-      } max-w-min main-hight  h-full`}>
+      }  sm:max-w-min main-hight  h-full w-full`}>
       <div className="relative">
         {show ? (
           <MyButton
@@ -280,8 +285,8 @@ const OffersSidebar = function OffersSidebar({
         ) : null}
       </div>
       <div
-        className={` bg-white dark:bg-blue-charcoal max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
-        <div className=" bg-white dark:bg-blue-charcoal flex justify-between  items-center p-2">
+        className={` bg-white dark:bg-blue-charcoal w-full sm:max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
+        <div className=" bg-white dark:bg-blue-charcoal w-full flex justify-between  items-center p-2 overflow-x-scroll scrollbar-hide">
           <MyButton
             startContent={<MdLocalOffer className="h-5 w-5 text-gray-600" />}
             size="xl"
@@ -309,7 +314,7 @@ const OffersSidebar = function OffersSidebar({
             <span />
           )}
         </div>
-        <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1 w-[454px]">
+        <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1 w-full sm:w-[454px]">
           {currentBooking ? (
             <>
               <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white  rounded-lg mb-3">

@@ -374,7 +374,7 @@ const BookingModal = function BookingModal({
         isDismissable={false}
         isOpen={isOpen}
         onClose={closeBookingModal}
-        classNames={{...type5, base: "fixed top-2 right-8"}}>
+        classNames={{...type5, base: "md:fixed md:top-2 md:right-8"}}>
         <ModalContent>
           <ModalBody className="overflow-hidden">
             <form onSubmit={handleSubmit(onSubmit)}>

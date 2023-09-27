@@ -71,7 +71,6 @@ const MyHome: NextPage = function MyHome() {
       )
     }
   }, [])
-  console.log(isLoaded, userPos)
 
   return (
     <main className="main-hight">

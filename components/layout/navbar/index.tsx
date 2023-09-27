@@ -285,7 +285,7 @@ const Navbar = function Navbar() {
                   isOpened
                     ? "translate-x-0 opacity-100"
                     : "translate-x-full opacity-0",
-                  "my-flex my-transition  !items-center lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
+                  "my-flex my-transition  !items-center lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white dark:bg-[rgb(0,8,24)] lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
                 ].join(" ")}>
                 <NavbarCloseToggle setIsOpened={setIsOpened} />
                 <li>
@@ -317,7 +317,10 @@ const Navbar = function Navbar() {
                         isIconOnly
                         size="navIcon"
                         color="navIcon"
-                        onClick={changeTheme}>
+                        onClick={() => {
+                          changeTheme()
+                          setIsOpened(false)
+                        }}>
                         {theme === "light" ? (
                           <BiMoon className="w-6 h-6 text-[#B9B9B9]" />
                         ) : (
@@ -333,7 +336,10 @@ const Navbar = function Navbar() {
                           size="navIcon"
                           color="navIcon"
                           isIconOnly
-                          onClick={signInModel.onOpen}>
+                          onClick={() => {
+                            signInModel.onOpen()
+                            setIsOpened(false)
+                          }}>
                           <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                         </MyButton>
                       </li>
@@ -387,7 +393,10 @@ const Navbar = function Navbar() {
                                 className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                                }>
+                                }
+                                onClick={() => {
+                                  setIsOpened(false)
+                                }}>
                                 <Link
                                   href="/profile"
                                   className="inline-block w-full h-full dark:text-white ">
@@ -398,7 +407,10 @@ const Navbar = function Navbar() {
                                 className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
-                                }>
+                                }
+                                onClick={() => {
+                                  setIsOpened(false)
+                                }}>
                                 <Link
                                   href="/bookings"
                                   className="inline-block w-full h-full dark:text-white">
@@ -410,7 +422,10 @@ const Navbar = function Navbar() {
                                 startContent={
                                   <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
-                                onClick={deleteAccount.onOpen}>
+                                onClick={() => {
+                                  deleteAccount.onOpen()
+                                  setIsOpened(false)
+                                }}>
                                 <span className="dark:text-white">
                                   Delete Account
                                 </span>
@@ -420,7 +435,10 @@ const Navbar = function Navbar() {
                                 startContent={
                                   <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
-                                onClick={handleSignOut}>
+                                onClick={() => {
+                                  handleSignOut()
+                                  setIsOpened(false)
+                                }}>
                                 <span className="dark:text-white">Logout</span>
                               </DropdownItem>
                             </DropdownMenu>

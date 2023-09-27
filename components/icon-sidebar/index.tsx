@@ -19,7 +19,7 @@ const IconSidebar = function IconSidebar({
   const {userBookings} = useCurrentBookingOrder()
   return (
     <div className="relative">
-      <div className="fixed main-hight p-2 flex flex-col z-10 bg-white/20 dark:bg-black/20 gap-3">
+      <div className="fixed main-hight p-2 flex flex-col z-10 sm:bg-white/20 sm:dark:bg-black/20 gap-3">
         <div>
           <MyButton
             size="navIcon"
