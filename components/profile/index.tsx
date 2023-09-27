@@ -161,18 +161,20 @@ const ProfileContent = function ProfileContent() {
                 ) : null}
               </div>
             </div>
-            <h2 className="text-xl-2 font-semi-bold whitespace-nowrap text-center">
-              JONATHAN HOLMES
-            </h2>
-            <div className="flex justify-center">
-              <Rating
-                name="read-only"
-                value={user.stars}
-                readOnly
-                size="medium"
-                icon={<AiTwotoneStar />}
-                emptyIcon={<AiTwotoneStar className="text-gray-300" />}
-              />
+            <div>
+              <h2 className="text-xl-2 font-semi-bold whitespace-nowrap text-center">
+                JONATHAN HOLMES
+              </h2>
+              <div className="flex justify-center">
+                <Rating
+                  name="read-only"
+                  value={user.stars}
+                  readOnly
+                  size="medium"
+                  icon={<AiTwotoneStar />}
+                  emptyIcon={<AiTwotoneStar className="text-gray-300" />}
+                />
+              </div>
             </div>
             <div className="flex justify-center">
               <MyButton
@@ -188,21 +190,24 @@ const ProfileContent = function ProfileContent() {
                 />
               </MyButton>
             </div>
-            <div className="bg-[#E9EDF4] dark:bg-blue-charcoal p-3 text-center rounded-md">
-              <p className="mb-3 text-sm ">
-                Upload A New Avatar.
-                <br />
-                Larger Image Will Be Resized Automatically
-              </p>
-              <p className="text-sm">
-                Maximum Upload Size Is
-                <span className="font-semi-bold"> 1 MB</span>
-              </p>
+            <div className="bg-[#E9EDF4] dark:bg-blue-charcoal rounded-md">
+              <div className="p-5 text-center max-w-xs mx-auto">
+                <p className="mb-3 text-sm text-black/70 ">
+                  Upload A New Avatar. Larger Image Will Be Resized
+                  Automatically
+                </p>
+                <p className="text-sm">
+                  Maximum Upload Size Is
+                  <span className="font-semi-bold"> 1 MB</span>
+                </p>
+              </div>
             </div>
           </div>
-          <div className="py-10 bg-gray-100 dark:bg-mirage rounded-lg ">
+          <div className="py-10 bg-gray-100 dark:bg-mirage rounded-lg flex-1">
             <div className="sm:px-5 md:px-10 lg:px-20">
-              <h1 className="heading-1 mb-5 dark:text-white">EDIT PROFILE</h1>
+              <h1 className="heading-1 mb-5 dark:text-white mt-5">
+                EDIT PROFILE
+              </h1>
               <div className="p-3 gap-2 gap-x-3 pb-5">
                 <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-5">
                   <div>
@@ -289,7 +294,7 @@ const ProfileContent = function ProfileContent() {
                             <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
-                        className={`${
+                        className={`!text-lg ${
                           gender === 1
                             ? "border-2 bg-my-primary/5  border-my-primary"
                             : "dark:bg-blue-charcoal dark:text-white"
@@ -306,7 +311,7 @@ const ProfileContent = function ProfileContent() {
                             <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
-                        className={`${
+                        className={`!text-lg ${
                           gender === 2
                             ? "border-2 bg-my-primary/5 border-my-primary"
                             : "dark:bg-blue-charcoal dark:text-white"
