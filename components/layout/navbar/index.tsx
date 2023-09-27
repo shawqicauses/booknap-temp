@@ -115,15 +115,16 @@ const NotificationsDropDown = function NotificationsDropDown({
         <div
           className={`${
             isNotificationsOpen ? "block" : "hidden"
-          } absolute lg:top-14 bottom-14 right-0 w-60  shadow-md z-50`}>
-          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar p-1 overflow-hidden">
+          } absolute lg:top-14 bottom-14 right-0 w-60  shadow-lg z-50`}>
+          {/* <div className="absolute h-5 w-5 rotate-45 -top-[11px] right-0 -translate-x-[50%] bg-white -z-10 drop-shadow-2xl" /> */}
+          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 divide-gray-100 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
             {ready ? (
               notifications.length > 0 ? (
                 notifications.map((notfi: any) => (
                   <li
                     className="flex gap-2 justify-center items-center p-3 cursor-pointer"
                     key={notfi.id}>
-                    <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border-gray-100">
                       <Image
                         src="/user-profile.jpg"
                         alt="logo"
@@ -131,7 +132,7 @@ const NotificationsDropDown = function NotificationsDropDown({
                         fill
                       />
                     </div>
-                    <div className="flex-1 text-start">
+                    <div className="flex-1 text-start flex flex-col gap-0">
                       <h3 className="">{notfi.data.title}</h3>
                       <span className="body-sm">{notfi.data.details}</span>
                     </div>
@@ -267,7 +268,7 @@ const Navbar = function Navbar() {
       <nav className="sticky z-40 top-0 bg-white h-[78px] dark:bg-[rgb(0,8,24)] w-full shadow-base">
         <div className="my-container my-flex md:my-flex-between py-4 !items-end h-full">
           <div className="flex gap-10 w-full items-center  justify-between md:justify-start">
-            <Link href="/" className="relative md:w-36 w-40 lg:mt-0">
+            <Link href="/" className="relative w-40 lg:mt-0">
               <Image
                 src={`/logo/${
                   theme === "light" ? "blue-logo" : "white-logo"

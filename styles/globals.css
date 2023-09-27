@@ -3,7 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
-
+:root {
+  --toastify-color-success: #13deb9;
+  --toastify-color-error: #f87171;
+}
 @layer components {
   input,
   select,

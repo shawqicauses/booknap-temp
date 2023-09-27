@@ -110,7 +110,7 @@ const BookingsContent = function BookingsContent() {
           loading={loading}
           setLoading={setLoading}
         />
-        {numberOfPages > 0 ? (
+        {numberOfPages > 0 && data.result.data.length > 0 ? (
           <div className="my-container flex justify-center p-2">
             <Pagination
               total={numberOfPages || 1}

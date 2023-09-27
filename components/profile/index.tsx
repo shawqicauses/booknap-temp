@@ -60,6 +60,7 @@ const ProfileContent = function ProfileContent() {
       theme: "colored"
     })
   }
+
   const onSubmit: SubmitHandler<IProfile> = async (formData: IProfile) => {
     await client("update-profile", {
       body: JSON.stringify({
@@ -181,7 +182,7 @@ const ProfileContent = function ProfileContent() {
                 color="primary"
                 size="xl"
                 className="relative text-base">
-                Upload Photo
+                Upload New Photo
                 <input
                   type="file"
                   onChange={handleImage}

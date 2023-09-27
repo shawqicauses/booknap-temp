@@ -37,11 +37,11 @@ const DeleteAccountModal = function DeleteAccountModal({
           <p className="mb-20">Are You Sure You Want To Delete Your Account</p>
 
           <div className="my-flex gap-3">
-            <MyButton onClick={onClose} radius="sm" fullWidth>
+            <MyButton onClick={onClose} size="xl" radius="sm" fullWidth>
               Cancel
             </MyButton>
             <MyButton
-              size="lg"
+              size="xl"
               color="danger"
               radius="sm"
               fullWidth

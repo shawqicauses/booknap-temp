@@ -1,4 +1,5 @@
 import type {AppProps} from "next/app"
+import "react-toastify/dist/ReactToastify.css"
 import "../styles/globals.css"
 import {NextUIProvider} from "@nextui-org/react"
 import {ToastContainer} from "react-toastify"
@@ -10,9 +11,7 @@ import {UserProvider} from "../stores/user"
 import {NotificationProvider} from "../stores/notifications"
 import {CurrentBookingOrderProvider} from "../stores/current-booking-order"
 
-import "react-toastify/dist/ReactToastify.css"
 import {ThemeProvider} from "../stores/theme"
-import Sidebar from "../components/uis/sidebar"
 
 const queryClient = new QueryClient()
 
@@ -28,7 +27,6 @@ const MyApp = function MyApp({Component, pageProps}: AppProps) {
                   <NextUIProvider>
                     <div className="min-h-screen">
                       <Navbar />
-                      <Sidebar />
                       <Component {...pageProps} />
                       <ToastContainer
                         position="bottom-left"
@@ -41,7 +39,7 @@ const MyApp = function MyApp({Component, pageProps}: AppProps) {
                         pauseOnFocusLoss
                         draggable
                         pauseOnHover={false}
-                        theme="light"
+                        theme="colored"
                       />
                     </div>
                   </NextUIProvider>
