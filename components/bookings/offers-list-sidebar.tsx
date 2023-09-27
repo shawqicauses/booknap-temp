@@ -268,7 +268,7 @@ const OffersSidebar = function OffersSidebar({
       <div className="relative">
         {show ? (
           <MyButton
-            className="absolute top-1 -right-9 z-10"
+            className="absolute top-1 -right-9 z-10 shadow-sm"
             size="smSquare"
             radius="none"
             color="white"

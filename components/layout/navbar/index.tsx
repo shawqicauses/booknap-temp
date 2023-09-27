@@ -354,12 +354,7 @@ const Navbar = function Navbar() {
                           />
                         </li>
                         <li>
-                          <Dropdown
-                            showArrow
-                            classNames={{
-                              base: "py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black",
-                              arrow: "bg-default-200"
-                            }}>
+                          <Dropdown className="px-0" radius="sm">
                             <DropdownTrigger>
                               {ready ? (
                                 <button
@@ -386,20 +381,20 @@ const Navbar = function Navbar() {
                                 </div>
                               )}
                             </DropdownTrigger>
-                            <DropdownMenu
-                              variant="faded"
-                              aria-label="Dropdown menu">
+                            <DropdownMenu className="p-0">
                               <DropdownItem
+                                className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }>
                                 <Link
                                   href="/profile"
-                                  className="inline-block w-full h-full dark:text-white">
+                                  className="inline-block w-full h-full dark:text-white ">
                                   Profile
                                 </Link>
                               </DropdownItem>
                               <DropdownItem
+                                className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }>
@@ -410,6 +405,7 @@ const Navbar = function Navbar() {
                                 </Link>
                               </DropdownItem>
                               <DropdownItem
+                                className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }
@@ -419,6 +415,7 @@ const Navbar = function Navbar() {
                                 </span>
                               </DropdownItem>
                               <DropdownItem
+                                className="hover:bg-gray-100 !rounded-none"
                                 startContent={
                                   <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
                                 }

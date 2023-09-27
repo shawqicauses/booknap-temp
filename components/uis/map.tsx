@@ -348,12 +348,12 @@ const MyGoogleMap = function MyGoogleMap({
         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         zIndex={1000}>
         <div className="relative flex justify-center items-center">
-          <div className="absolute w-5 h-5 flex items-center justify-center bg-blue-900 rounded-full">
+          <div className="absolute w-5 h-5 flex items-center justify-center bg-my-primary rounded-full">
             <div className="relative">
-              <div className="absolute -top-12 left-[50%] -translate-x-[50%] bg-blue-900 text-white px-3 py-2 rounded-lg z-10">
+              <div className="absolute -top-14 left-[50%] -translate-x-[50%] bg-my-primary text-white font-semi-bold px-4 py-1 text-medium rounded-lg shadow-lg z-10">
                 ME
               </div>
-              <div className="absolute -top-6 left-[50%] w-0 h-0 -translate-x-[50%] border-transparent border-t-blue-900  border-[15px]" />
+              <div className="absolute -top-6 left-[50%] w-0 h-0 -translate-x-[50%] border-transparent border-t-my-primary  border-[15px] shadow-bas" />
             </div>
           </div>
         </div>

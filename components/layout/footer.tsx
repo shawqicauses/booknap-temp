@@ -97,7 +97,7 @@ const Footer = function Footer() {
                 <li key={id}>
                   <a
                     href={link}
-                    className="inline-block p-3 bg-white dark:bg-blue-charcoal hover:bg-blue-900 hover:text-white rounded-lg">
+                    className="inline-block p-3 bg-white dark:bg-blue-charcoal hover:bg-my-primary hover:text-white rounded-lg">
                     {icon}
                   </a>
                 </li>
