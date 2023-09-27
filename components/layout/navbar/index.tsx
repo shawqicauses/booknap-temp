@@ -189,7 +189,7 @@ const CartDropDown = function CartDropDown({
           className={`${
             isCartDropDownOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-60 shadow-md z-50`}>
-          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 border border-gray-300 dark:border-gray-600 overflow-y-scroll max-h-64 hide-scrollbar">
+          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-gray-100 shadow-base divide-y-1 overflow-y-scroll max-h-64 hide-scrollbar">
             {cartReady ? (
               cart.length > 0 ? (
                 <>
