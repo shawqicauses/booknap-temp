@@ -3,7 +3,6 @@ import {useState, useEffect} from "react"
 import {useRouter} from "next/router"
 import HotelPageContent from "../../components/bookings/currant-booking"
 import Footer from "../../components/layout/footer"
-import Sidebar from "../../components/uis/sidebar"
 import Booking from "../../components/bookings/currant-booking/booking"
 import Protected from "../../components/uis/protected"
 import About from "../../components/bookings/currant-booking/about"
@@ -51,46 +50,39 @@ const BookingData: NextPage = function BookingData() {
 
   return (
     <Protected>
-      <div className="flex mb-10">
-        <Sidebar />
-        <div className="my-container">
-          <HotelPageContent>
-            {tab === "2" ? (
-              <div className="mt-5">
-                <div className="flex border-b-2 border-b-gray-200">
-                  {categories?.map(({name, id: tabId}) => (
-                    <div
-                      key={tabId}
-                      className={`cursor-pointer px-5 py-1 ${
-                        Number(shopTab) === tabId
-                          ? "border-b-2 border-b-blue-700"
-                          : ""
-                      }`}
-                      onClick={() =>
-                        router.push(`${id}/?tab=2&shopTab=${tabId}`)
-                      }
-                      aria-hidden="true">
-                      {name}
-                    </div>
-                  ))}
+      <div className="my-container mb-10">
+        <HotelPageContent>
+          {tab === "2" ? (
+            <div className="mt-5">
+              <div className="flex border-b-2 border-b-gray-200">
+                {categories?.map(({name, id: tabId}) => (
                   <div
+                    key={tabId}
                     className={`cursor-pointer px-5 py-1 ${
-                      Number(shopTab) === -1
+                      Number(shopTab) === tabId
                         ? "border-b-2 border-b-blue-700"
                         : ""
                     }`}
-                    onClick={() => {
-                      router.push(`${id}/?tab=2&shopTab=${-1}`)
-                    }}
+                    onClick={() => router.push(`${id}/?tab=2&shopTab=${tabId}`)}
                     aria-hidden="true">
-                    Favorites
+                    {name}
                   </div>
+                ))}
+                <div
+                  className={`cursor-pointer px-5 py-1 ${
+                    Number(shopTab) === -1 ? "border-b-2 border-b-blue-700" : ""
+                  }`}
+                  onClick={() => {
+                    router.push(`${id}/?tab=2&shopTab=${-1}`)
+                  }}
+                  aria-hidden="true">
+                  Favorites
                 </div>
               </div>
-            ) : null}
-          </HotelPageContent>
-          {router.isReady ? tabs[Number(tab) || 0] : <LoadingDiv />}
-        </div>
+            </div>
+          ) : null}
+        </HotelPageContent>
+        {router.isReady ? tabs[Number(tab) || 0] : <LoadingDiv />}
       </div>
       <Footer />
     </Protected>

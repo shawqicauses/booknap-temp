@@ -4,7 +4,6 @@ import {Libraries, useLoadScript} from "@react-google-maps/api"
 import {useEffect, useMemo, useState} from "react"
 import BookingModal from "../components/modal/booking-modal"
 import MyGoogleMap from "../components/uis/map"
-import Sidebar from "../components/uis/sidebar"
 import LoadingDiv from "../components/uis/loading"
 import useFetch from "../hooks/use-fetch"
 import {Hotel} from "../types"
@@ -83,21 +82,18 @@ const MyHome: NextPage = function MyHome() {
         <LoadingDiv />
       ) : (
         <>
-          <div className="flex main-hight relative">
-            <Sidebar />
-            <MyGoogleMap
-              pos={pos!}
-              setPos={setPos}
-              userPos={userPos ?? {lat: 30, lng: 30}}
-              myZoom={myZoom}
-              setMyZoom={setMyZoom}
-              hotels={hotels}
-              setDestination={setDestination}
-              destination={destination}
-              isCurrentBooking={!!currentBooking}
-              openBookingModal={onOpen}
-            />
-          </div>
+          <MyGoogleMap
+            pos={pos!}
+            setPos={setPos}
+            userPos={userPos ?? {lat: 30, lng: 30}}
+            myZoom={myZoom}
+            setMyZoom={setMyZoom}
+            hotels={hotels}
+            setDestination={setDestination}
+            destination={destination}
+            isCurrentBooking={!!currentBooking}
+            openBookingModal={onOpen}
+          />
           <BookingModal
             isOpen={isOpen}
             onClose={onClose}

@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react"
 import {NextPage} from "next"
 import {useRouter} from "next/router"
-import Sidebar from "../../../components/uis/sidebar"
 import HotelPageContent from "../../../components/bookings/currant-booking"
 import Footer from "../../../components/layout/footer"
 import ItemPage from "../../../components/bookings/currant-booking/show-item"
@@ -29,36 +28,33 @@ const Booking: NextPage = function Booking() {
   }
   return (
     <Protected>
-      <div className="flex mb-10">
-        <Sidebar />
-        <div className="my-container">
-          <HotelPageContent>
-            <div className="mt-5">
-              <div className="flex border-b-2 border-b-gray-200">
-                {categories?.map(({name, id: tabId}) => (
-                  <div
-                    key={tabId}
-                    className={`cursor-pointer px-5 py-1 ${
-                      activeTab === tabId ? "border-b-2 border-b-blue-700" : ""
-                    }`}
-                    onClick={() => handleTabClick(tabId)}
-                    aria-hidden="true">
-                    {name}
-                  </div>
-                ))}
+      <div className="my-container mb-10">
+        <HotelPageContent>
+          <div className="mt-5">
+            <div className="flex border-b-2 border-b-gray-200">
+              {categories?.map(({name, id: tabId}) => (
                 <div
+                  key={tabId}
                   className={`cursor-pointer px-5 py-1 ${
-                    activeTab === -1 ? "border-b-2 border-b-blue-700" : ""
+                    activeTab === tabId ? "border-b-2 border-b-blue-700" : ""
                   }`}
-                  onClick={() => handleTabClick(-1)}
+                  onClick={() => handleTabClick(tabId)}
                   aria-hidden="true">
-                  Favorites
+                  {name}
                 </div>
+              ))}
+              <div
+                className={`cursor-pointer px-5 py-1 ${
+                  activeTab === -1 ? "border-b-2 border-b-blue-700" : ""
+                }`}
+                onClick={() => handleTabClick(-1)}
+                aria-hidden="true">
+                Favorites
               </div>
             </div>
-          </HotelPageContent>
-          <ItemPage />
-        </div>
+          </div>
+        </HotelPageContent>
+        <ItemPage />
       </div>
       <Footer />
     </Protected>

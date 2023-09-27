@@ -12,6 +12,7 @@ import {CurrentBookingOrderProvider} from "../stores/current-booking-order"
 
 import "react-toastify/dist/ReactToastify.css"
 import {ThemeProvider} from "../stores/theme"
+import Sidebar from "../components/uis/sidebar"
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ const MyApp = function MyApp({Component, pageProps}: AppProps) {
                   <NextUIProvider>
                     <div className="min-h-screen">
                       <Navbar />
+                      <Sidebar />
                       <Component {...pageProps} />
                       <ToastContainer
                         position="bottom-left"
