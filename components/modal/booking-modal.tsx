@@ -98,7 +98,7 @@ const CounterStyled = function CounterStyled({
   return (
     <div
       className={`dark:bg-mirage ${
-        isOpen ? "rounded-xl pb-3" : "rounded-full "
+        isOpen ? "rounded-xl-3 pb-3" : "rounded-full"
       }  bg-gray-100 px-4 py-1.5`}>
       <div className="flex justify-between items-center">
         <h3>{label}</h3>
@@ -150,7 +150,7 @@ const FormPageTow = function FormPageTow({
 
   return (
     <div className="mt-10 w-[360px]">
-      <div className=" flex flex-col gap-3 h-full overflow-y-scroll hide-scrollbar">
+      <div className=" flex flex-col gap-3 h-full overflow-y-scroll hide-scrollbar px-5">
         <CounterStyled
           label="Single Room"
           value={data.noSingleRoom}
@@ -203,10 +203,11 @@ const FormPageTow = function FormPageTow({
           isOpen={isPresidentialOpen}
           setIsOpen={setIsPresidentialOpen}
         />
-        <div className="flex-1 justify-end flex flex-col items-center">
+        <div className="flex-1 justify-end flex flex-col items-center mb-5">
           <MyButton
             className=""
             color="primary"
+            radius="sm"
             fullWidth
             onClick={() => {
               if (
@@ -413,10 +414,10 @@ const BookingModal = function BookingModal({
                         <label htmlFor="date" className="label-gray text-sm">
                           Date:
                         </label>
-                        <div className="flex justify-between !gap-0 items-center mb-2">
+                        <div className="flex justify-between items-center mb-2">
                           <label
                             htmlFor="date"
-                            className="w-[60px] dark:text-white">
+                            className="w-[60px] dark:text-white inline-block">
                             From:
                           </label>
                           <div className="my-flex gap-2">
@@ -448,10 +449,10 @@ const BookingModal = function BookingModal({
                             />
                           </div>
                         </div>
-                        <div className="flex justify-between !gap-0 items-center">
+                        <div className="flex justify-between items-center">
                           <label
                             htmlFor="date"
-                            className="w-[60px] dark:text-white">
+                            className="w-[60px] dark:text-white inline-block">
                             To:
                           </label>
                           <div className="my-flex gap-2">
@@ -561,6 +562,7 @@ const BookingModal = function BookingModal({
                       </div>
                       <MyButton
                         className=""
+                        radius="sm"
                         color="primary"
                         fullWidth
                         type="submit">
