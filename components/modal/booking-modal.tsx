@@ -99,11 +99,12 @@ const CounterStyled = function CounterStyled({
     <div
       className={`dark:bg-mirage ${
         isOpen ? "rounded-xl pb-3" : "rounded-full "
-      }  bg-gray-50 px-4 py-1.5`}>
+      }  bg-gray-100 px-4 py-1.5`}>
       <div className="flex justify-between items-center">
         <h3>{label}</h3>
         <MyButton
           isIconOnly
+          color="transparent"
           onClick={(e) => {
             if (isOpen) {
               handleClickMinus(e)
@@ -113,15 +114,15 @@ const CounterStyled = function CounterStyled({
             setIsOpen((pre: boolean) => !pre)
           }}>
           {isOpen ? (
-            <IoMdClose className="w-5 h-5 text-gray-400" />
+            <IoMdClose className="w-6 h-6 text-[#B9B9B9]" />
           ) : (
-            <HiOutlinePlus className="h-5 w-5 text-gray-400" />
+            <HiOutlinePlus className="h-6 w-6 text-[#B9B9B9]" />
           )}
         </MyButton>
       </div>
       {isOpen ? (
         <>
-          <h4 className="label-gray mb-2">Quantity</h4>
+          <h4 className="label-gray mb-2 text-sm text-[#909090]">Quantity</h4>
           <Counter
             handleClickMinus={handleClickMinus}
             handleClickPlus={handleClickPlus}
@@ -157,7 +158,7 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noSingleRoom", data.noSingleRoom)
           }
           handleClickMinus={() =>
-            handleClick(-1, "noSingleRoom", data.noSingleRoom)
+            handleClick(-data.noSingleRoom, "noSingleRoom", data.noSingleRoom)
           }
           isOpen={isSingleOpen}
           setIsOpen={setIsSingleOpen}
@@ -169,7 +170,7 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noDoubleRoom", data.noDoubleRoom)
           }
           handleClickMinus={() =>
-            handleClick(-1, "noDoubleRoom", data.noDoubleRoom)
+            handleClick(-data.noDoubleRoom, "noDoubleRoom", data.noDoubleRoom)
           }
           isOpen={isDoubleOpen}
           setIsOpen={setIsDoubleOpen}
@@ -181,7 +182,7 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noSuiteRooms", data.noSuiteRooms)
           }
           handleClickMinus={() =>
-            handleClick(-1, "noSuiteRooms", data.noSuiteRooms)
+            handleClick(-data.noSuiteRooms, "noSuiteRooms", data.noSuiteRooms)
           }
           isOpen={isSuiteOpen}
           setIsOpen={setIsSuiteOpen}
@@ -193,7 +194,11 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noPresidentialSuite", data.noPresidentialSuite)
           }
           handleClickMinus={() =>
-            handleClick(-1, "noPresidentialSuite", data.noPresidentialSuite)
+            handleClick(
+              -data.noPresidentialSuite,
+              "noPresidentialSuite",
+              data.noPresidentialSuite
+            )
           }
           isOpen={isPresidentialOpen}
           setIsOpen={setIsPresidentialOpen}
@@ -384,17 +389,19 @@ const BookingModal = function BookingModal({
                 <div className="flex flex-col gap-1 relative justify-start w-[360px]">
                   <MyButton
                     size="sm"
-                    radius="full"
+                    radius="md"
+                    variant="bordered"
                     color="transparent"
+                    className="border-gray-100 border-1 mt-1"
                     isIconOnly
                     onClick={() => setPage(0)}>
-                    <AiOutlineDoubleLeft className="h-4 w-4" />
+                    <AiOutlineDoubleLeft className="h-5 w-5 text-gray-100" />
                   </MyButton>
                   <div className="overflow-y-scroll hide-scrollbar mb-5">
                     <div className="pt-0 px-5 w-auto flex gap-2 flex-col">
                       <div>
-                        <label htmlFor="date" className="label-gray">
-                          destination:
+                        <label htmlFor="date" className="label-gray text-sm">
+                          Destination:
                         </label>
                         <input
                           value={destination}
@@ -403,7 +410,7 @@ const BookingModal = function BookingModal({
                         />
                       </div>
                       <div>
-                        <label htmlFor="date" className="label-gray">
+                        <label htmlFor="date" className="label-gray text-sm">
                           Date:
                         </label>
                         <div className="flex justify-between !gap-0 items-center mb-2">
@@ -478,7 +485,9 @@ const BookingModal = function BookingModal({
                         </div>
                       </div>
                       <div>
-                        <label htmlFor="numPeople" className="label-gray">
+                        <label
+                          htmlFor="numPeople"
+                          className="label-gray text-sm">
                           Number Of People:
                         </label>
                         <div className="flex justify-between items-center mb-2">
@@ -511,7 +520,9 @@ const BookingModal = function BookingModal({
                         </div>
                       </div>
                       <div>
-                        <label htmlFor="date" className="w-[60px]  label-gray">
+                        <label
+                          htmlFor="date"
+                          className="w-[60px]  label-gray text-sm">
                           Number Of Room:
                         </label>
                         <div className="grid grid-cols-2 gap-2 ">
@@ -538,7 +549,7 @@ const BookingModal = function BookingModal({
                         </div>
                       </div>
                       <div className="mb-1">
-                        <label htmlFor="note" className="label-gray">
+                        <label htmlFor="note" className="label-gray text-sm">
                           Note:
                         </label>
                         <textarea
