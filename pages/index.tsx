@@ -13,14 +13,10 @@ import RatingModal from "../components/modal/rating-modal"
 import {useAuth} from "../stores/auth"
 import {useUser} from "../stores/user"
 
-export interface Result {
-  data: Hotel[]
-  total: number
-}
 export interface IMapHotelsRes {
   success: boolean
   message: string
-  result: Result
+  result: Hotel[]
 }
 
 interface IPosition {
@@ -50,7 +46,7 @@ const MyHome: NextPage = function MyHome() {
   const {hotelRating, ready} = useUser()
   useEffect(() => {
     if (respond) {
-      setHotels(respond.result.data)
+      setHotels(respond.result)
     }
   }, [respond])
   useEffect(() => {
@@ -79,7 +75,11 @@ const MyHome: NextPage = function MyHome() {
   return (
     <main className="main-hight">
       {!isLoaded || !userPos ? (
-        <LoadingDiv />
+        <>
+          <LoadingDiv />
+          <span>{!isLoaded ? "Not loaded" : ""}</span>
+          <span>{!userPos ? "Not user place" : ""}</span>
+        </>
       ) : (
         <>
           <MyGoogleMap

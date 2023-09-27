@@ -80,7 +80,7 @@ const RenewBookingModal = function RenewBookingModal({
   //   const toDayDate = new Date().toISOString().split("T")
 
   return (
-    <Modal size="sm" isOpen={isOpen} onClose={onClose} classNames={type3}>
+    <Modal size="xs" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
         <ModalHeader>
           <h2 className="heading-3">Renew Your Booking</h2>
