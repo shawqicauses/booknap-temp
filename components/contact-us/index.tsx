@@ -105,7 +105,8 @@ const ContactUsForm = function ContactUsForm() {
               placeholder="message"
               radius="sm"
               classNames={{
-                inputWrapper: "shadow-none bg-white"
+                inputWrapper: "shadow-none bg-white p-0",
+                input: "p-4 resize-y"
               }}
               disabled={isSubmitting}
             />
