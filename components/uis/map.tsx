@@ -120,6 +120,9 @@ const ResetButton = function ResetButton({
       onClick={() => {
         setPos(userPos)
         moveTo(map, userPos)
+        if (directionsResponse) {
+          router.push("/")
+        }
         setZoom(0)
         setDirectionsResponse(null)
       }}>
