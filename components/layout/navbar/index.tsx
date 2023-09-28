@@ -118,16 +118,19 @@ const NotificationsDropDown = function NotificationsDropDown({
             isNotificationsOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-60  shadow-lg z-50`}>
           {/* <div className="absolute h-5 w-5 rotate-45 -top-[11px] right-0 -translate-x-[50%] bg-white -z-10 drop-shadow-2xl" /> */}
-          <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-y-1 divide-gray-100 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
+          <h2 className="heading-3 bg-white dark:bg-blue-charcoal dark:text-white w-full text-start rounded-t-md p-2 z-10">
+            Notifications
+          </h2>
+          <ul className="bg-white dark:bg-blue-charcoal rounded-b-md divide-y-1 divide-gray-100 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
             {ready ? (
               notifications.length > 0 ? (
                 notifications.map((notfi: any) => (
                   <li
                     className="flex gap-2 justify-center items-center p-3 cursor-pointer"
                     key={notfi.id}>
-                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border-gray-100">
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
                       <Image
-                        src="/user-profile.jpg"
+                        src="/notifications.png"
                         alt="logo"
                         className="relative"
                         fill
