@@ -190,7 +190,7 @@ const Booking = function Booking() {
                 key={Math.random()}
                 aria-label="Loading..."
                 value={calcStyle(index, completedDays)}
-                className="max-w-md"
+                className="w-full"
               />
             )
           })}

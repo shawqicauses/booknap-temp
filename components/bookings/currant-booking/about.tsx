@@ -7,6 +7,7 @@ import {FaLocationDot} from "react-icons/fa6"
 import {LuMail} from "react-icons/lu"
 import client from "../../../helpers/client"
 import {Result, res} from "./index"
+import FancyBox from "../../uis/fancy-box"
 
 const About = function About() {
   const router = useRouter()
@@ -27,7 +28,9 @@ const About = function About() {
           <FaUsers className="w-5 h-5 text-my-primary" />
           <span className="heading-3 text-xl-2 dark:text-white">About Us</span>
         </div>
-        <p className="body text-black dark:text-white">{result?.hotel.about}</p>
+        <p className="body text-black dark:text-white">
+          {result?.hotel?.about}
+        </p>
       </div>
       <div className="flex gap-4 flex-col sm:flex-row">
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[2]">
@@ -38,9 +41,9 @@ const About = function About() {
             </span>
           </div>
           <div className="flex justify-between">
-            <span>{result?.hotel.country.en_name}</span>
+            <span>{result?.hotel?.country?.en_name}</span>
             <Link
-              href={`/?lat=${result?.hotel.lat}&lng=${result?.hotel.lng}`}
+              href={`/?lat=${result?.hotel?.lat}&lng=${result?.hotel?.lng}`}
               className="text-blue-500">
               Open Map
             </Link>
@@ -56,18 +59,18 @@ const About = function About() {
             <div className="flex gap-3">
               <span>Phone:</span>
               <a
-                href={`https://wa.me/${result?.hotel.phone.replaceAll(
+                href={`https://wa.me/${result?.hotel?.phone?.replaceAll(
                   " ",
                   ""
                 )}`}
                 className="text-blue-500">
-                {result?.hotel.phone}
+                {result?.hotel?.phone}
               </a>
             </div>
             <div className="flex gap-3">
               <span>Website:</span>
               <Link
-                href={result?.hotel.website || ""}
+                href={result?.hotel?.website || ""}
                 className="text-blue-500">
                 View Website
               </Link>
@@ -78,27 +81,25 @@ const About = function About() {
       <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 h-auto">
         <div className="flex gap-4 mb-4">
           <FaRegImage className="w-5 h-5 text-my-primary" />
-          <span className="heading-3 text-xl-2 dark:text-white">Glairy</span>
+          <span className="heading-3 text-xl-2 dark:text-white">Gallery</span>
         </div>
-        <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
-          {result?.hotel?.media?.map(({id: imgId, file}, index) => (
-            <div
-              className={`relative h-full rounded-lg overflow-hidden ${
-                index === 0 ? "row-span-2 col-span-2" : ""
-              }`}
-              key={imgId}>
-              <Image
-                src={`https://booknap-api.wpgooal.com/${file}`}
-                alt="image"
-                fill
-                className="!relative"
-              />
-            </div>
-          ))}
-          {/* <div className="relative row-span-2 col-span-2 row-start-3 col-start-3 h-auto  rounded-lg overflow-hidden">
-            <Image src={hotelData.video} alt="video" fill />
-          </div> */}
-        </div>
+        <FancyBox>
+          <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
+            {result?.hotel?.media?.map(({id: imgId, file}) => (
+              <div
+                className="relative h-full w-full rounded-lg overflow-hidden"
+                key={imgId}>
+                <Image
+                  data-fancybox="gallery"
+                  src={`https://booknap-api.wpgooal.com/${file}`}
+                  alt="image"
+                  fill
+                  className="!relative"
+                />
+              </div>
+            ))}
+          </div>
+        </FancyBox>
       </div>
     </div>
   )

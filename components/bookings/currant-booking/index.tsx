@@ -149,7 +149,7 @@ const HotelPageContent = function HotelPageContent({
                 <Image
                   src={result.hotel.logo}
                   alt={result.hotel.name}
-                  className="!relative !w-20 object-contain"
+                  className="!relative !w-20 !h-20 object-contain"
                   fill
                 />
               </div>
@@ -181,11 +181,11 @@ const HotelPageContent = function HotelPageContent({
               }}
               modules={[Autoplay, Pagination]}
               className=" rounded-lg overflow-x-hidden">
-              {result?.hotel?.media.map(({id: imgId, file}) => (
-                <SwiperSlide key={imgId}>
-                  <div className="relative w-full max-h-[200px]">
+              {result?.hotel?.banner ? (
+                <SwiperSlide>
+                  <div className="relative w-full max-h-[400px]">
                     <Image
-                      src={`https://booknap-api.wpgooal.com/${file}`}
+                      src={`https://booknap-api.wpgooal.com/${result?.hotel?.banner}`}
                       alt="Web Application"
                       fill
                       className="!relative !inset-auto !rounded-lg w-full object-cover"
@@ -193,7 +193,7 @@ const HotelPageContent = function HotelPageContent({
                     <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                   </div>
                 </SwiperSlide>
-              ))}
+              ) : null}
             </Swiper>
           </div>
           <div className="bg-gray-300 w-fit rounded-full flex gap-1">

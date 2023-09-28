@@ -87,7 +87,7 @@ const RenewBookingModal = function RenewBookingModal({
         </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-between flex-col !gap-2 items-center pb-5">
+            <div className="flex justify-between flex-col !gap-2 items-center pb-5  w-full">
               <div className="my-flex gap-2">
                 <label htmlFor="date" className="w-[100px] dark:text-white">
                   To Date:

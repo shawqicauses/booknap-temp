@@ -1,3 +1,4 @@
+import Decimal from "decimal.js"
 import {
   GoogleMap,
   OverlayView,
@@ -235,6 +236,31 @@ const HotelMarker = function HotelMarker({
     </OverlayViewF>
   )
 }
+const zoomLevelArray = [
+  "156543.6375535059",
+  "78271.81877675295",
+  "39135.9093883765",
+  "19567.95469418825",
+  "9783.977347094125",
+  "4891.988673547063",
+  "2445.99433677353125",
+  "1222.9971683867656",
+  "611.4985841933828",
+  "305.7492920966914",
+  "152.8746460483457",
+  "76.43732302417285",
+  "38.21866151208643",
+  "19.10933075604321",
+  "9.554665378021605",
+  "4.777332689010803",
+  "2.3886663445054014",
+  "1.1943331722527007",
+  "0.5971665861263504",
+  "0.2985832930631752",
+  "0.1492916465315876",
+  "0.0746458232657938",
+  "0.0373229116328969"
+]
 
 const MyGoogleMap = function MyGoogleMap({
   pos,
@@ -301,14 +327,20 @@ const MyGoogleMap = function MyGoogleMap({
     },
     [hotel, myZoom]
   )
-  const d =
-    (Number(checkSittings?.result.max_area) -
-      Number(checkSittings?.result.min_area)) /
-    5
+
+  const maxArea = new Decimal(checkSittings?.result.max_area || 1)
+  const minArea = new Decimal(checkSittings?.result.min_area || 1)
+
+  // Calculate d using Decimal
+  const d = maxArea.minus(minArea).dividedBy(5)
+  const r = new Decimal(zoomLevelArray[16 - myZoom])
+
+  // Calculate size using Decimal
+  const size = d.dividedBy(r)
 
   return (
     <GoogleMap
-      zoom={18 - myZoom}
+      zoom={16 - myZoom}
       center={userPos}
       mapContainerClassName="w-full h-full"
       options={{
@@ -410,18 +442,48 @@ const MyGoogleMap = function MyGoogleMap({
       <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-[1]">
         <div className="w-[0] h-[0] flex items-center relative justify-center">
           <div className=" absolute w-[10px] h-[10px] bg-black/40 rounded-full" />
-          <div className=" absolute w-[80px] h-[80px] bg-black/10 rounded-full" />
+          <div
+            className=" absolute bg-black/10 rounded-full"
+            style={{
+              width: `${size.toString()}px`,
+              height: `${size.toString()}px`
+            }}
+          />
           {myZoom > 0 ? (
-            <div className=" absolute w-[120px] h-[120px] bg-black/10 rounded-full" />
+            <div
+              className=" absolute bg-black/10 rounded-full"
+              style={{
+                width: `${size.mul(2)}px`,
+                height: `${size.mul(2)}px`
+              }}
+            />
           ) : null}
           {myZoom > 1 ? (
-            <div className=" absolute w-[160px] h-[160px] bg-black/5 rounded-full" />
+            <div
+              className=" absolute bg-black/5 rounded-full"
+              style={{
+                width: `${size.mul(3)}px`,
+                height: `${size.mul(3)}px`
+              }}
+            />
           ) : null}
           {myZoom > 2 ? (
-            <div className=" absolute w-[200px] h-[200px] bg-black/5 rounded-full" />
+            <div
+              className=" absolute bg-black/5 rounded-full"
+              style={{
+                width: `${size.mul(4)}px`,
+                height: `${size.mul(4)}px`
+              }}
+            />
           ) : null}
           {myZoom > 3 ? (
-            <div className=" absolute w-[240px] h-[240px] bg-black/5 rounded-full" />
+            <div
+              className=" absolute bg-black/5 rounded-full"
+              style={{
+                width: `${size.mul(5)}px`,
+                height: `${size.mul(5)}px`
+              }}
+            />
           ) : null}
         </div>
       </div>

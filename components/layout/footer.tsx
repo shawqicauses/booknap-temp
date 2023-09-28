@@ -61,7 +61,7 @@ const Footer = function Footer() {
             </p>
           </div>
           <div>
-            <h2 className="text-xl-3 ppb-3 mb-4">Pages</h2>
+            <h2 className="text-xl ppb-3 mb-4">Pages</h2>
             <div className="grid grid-cols-2">
               <div>
                 <ul className="flex flex-col gap-2 text-sm">
@@ -87,7 +87,7 @@ const Footer = function Footer() {
             </div>
           </div>
           <div>
-            <h2 className="text-xl-3 mb-4">SOCIAL MEDIA</h2>
+            <h2 className="text-xl mb-4">SOCIAL MEDIA</h2>
             <ul className="flex  gap-2 ">
               {socialMedia.map(({id, link, icon}) => (
                 <li key={id}>
