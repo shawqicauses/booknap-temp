@@ -42,7 +42,7 @@ const RoomsDetails = function RoomsDetails() {
             <div>
               <h3 className="heading-3 mb-4 dark:text-white">Features</h3>
               <ul className="flex gap-10">
-                {features.f1 ? (
+                {features?.f1 ? (
                   <li className="flex gap-3 items-center">
                     <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbWifi className="h-6 w-6" />
@@ -50,7 +50,7 @@ const RoomsDetails = function RoomsDetails() {
                     <span>Free Wifi</span>
                   </li>
                 ) : null}
-                {features.f2 ? (
+                {features?.f2 ? (
                   <li className="flex gap-3 items-center">
                     <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbAirConditioningDisabled className="h-6 w-6" />
@@ -58,7 +58,7 @@ const RoomsDetails = function RoomsDetails() {
                     <span>Conditioning</span>
                   </li>
                 ) : null}
-                {features.f3 ? (
+                {features?.f3 ? (
                   <li className="flex gap-3 items-center">
                     <div className="p-2 bg-[#DCE2ED] rounded-lg text-my-primary">
                       <TbSmoking className="h-6 w-6" />

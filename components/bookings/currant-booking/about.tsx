@@ -29,7 +29,7 @@ const About = function About() {
         </div>
         <p className="body text-black dark:text-white">{result?.hotel.about}</p>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-col sm:flex-row">
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[2]">
           <div className="flex gap-4 items-center mb-3">
             <FaLocationDot className="w-5 h-5 text-my-primary" />
@@ -81,13 +81,18 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Glairy</span>
         </div>
         <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
-          {result?.hotel?.media?.map(({id: imgId, path}, index) => (
+          {result?.hotel?.media?.map(({id: imgId, file}, index) => (
             <div
               className={`relative h-full rounded-lg overflow-hidden ${
                 index === 0 ? "row-span-2 col-span-2" : ""
               }`}
               key={imgId}>
-              <Image src={path} alt="image" fill className="!relative" />
+              <Image
+                src={`https://booknap-api.wpgooal.com/${file}`}
+                alt="image"
+                fill
+                className="!relative"
+              />
             </div>
           ))}
           {/* <div className="relative row-span-2 col-span-2 row-start-3 col-start-3 h-auto  rounded-lg overflow-hidden">

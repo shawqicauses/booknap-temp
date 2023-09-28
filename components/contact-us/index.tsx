@@ -148,7 +148,7 @@ const ContactUsContent = function ContactUsContent() {
           <div className="bg-gray-100 dark:bg-mirage p-10 rounded-lg w-full lg:w-auto">
             <h2 className="heading-2 mb-4 dark:text-white">HEAD OFFICE</h2>
             <ul className="flex flex-col gap-4">
-              <li className="whitespace-nowrap flex gap-2">
+              <li className="sm:whitespace-nowrap flex gap-2">
                 <HiOutlineMap className="h-7 w-7" />
                 <span>684 West College St. Sun City, United States.</span>
               </li>

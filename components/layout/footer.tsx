@@ -109,7 +109,7 @@ const Footer = function Footer() {
 
       <div className="bg-white dark:bg-blue-charcoal py-5">
         <div className="my-flex-between  my-container flex-wrap gap-2">
-          <p className="whitespace-nowrap flex-1">
+          <p className="sm:whitespace-nowrap flex-1 text-center sm:text-start">
             © COPYRIGHTED & DESIGNED BY{" "}
             <Link href="/" className="text-blue-500 hover:text-blue-900">
               BOOKNAP
