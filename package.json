@@ -14,6 +14,7 @@
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
+    "@fancyapps/ui": "5.0.23",
     "@mui/material": "5.14.1",
     "@mui/x-date-pickers": "^6.15.0",
     "@nextui-org/react": "2.0.0",
@@ -24,6 +25,7 @@
     "@tanstack/react-query": "4.32.6",
     "axios": "1.4.0",
     "compression-webpack-plugin": "10.0.0",
+    "decimal.js": "10.4.3",
     "firebase": "10.2.0",
     "flag-icons": "6.9.3",
     "formik": "2.4.2",
