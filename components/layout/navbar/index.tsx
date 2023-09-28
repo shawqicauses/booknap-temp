@@ -84,7 +84,8 @@ const NotificationsDropDown = function NotificationsDropDown({
   isNotificationsOpen: boolean
   handleOpenNotifications: () => void
 }) {
-  const {notifications, ready} = useNotifications()
+  const {notifications, unReadMassages, ready} = useNotifications()
+
   const handleClick = () => {
     handleOpenNotifications()
     if (ready) {
@@ -106,7 +107,7 @@ const NotificationsDropDown = function NotificationsDropDown({
           onClick={handleClick}>
           <Badge
             color="danger"
-            content={notifications ? notifications.length : 0}
+            content={unReadMassages}
             shape="circle"
             disableOutline>
             <IoMdNotificationsOutline className="w-6 h-6 text-[#B9B9B9]" />
@@ -308,7 +309,7 @@ const Navbar = function Navbar() {
                   </ul>
                 </li>
                 <li>
-                  <ul className="flex flex-row gap-3 ">
+                  <ul className="flex flex-row gap-3 items-center">
                     <li>
                       <Lang />
                     </li>

@@ -19,13 +19,15 @@ interface INotifications {
   reFetch: () => {}
   ready: boolean
   clearNotifications: () => void
+  unReadMassages: number
 }
 
 const Notifications = createContext({
   notifications: [{}],
   reFetch: () => {},
   ready: false,
-  clearNotifications: () => {}
+  clearNotifications: () => {},
+  unReadMassages: 0
 } as INotifications)
 
 interface INotificationsProvider {
@@ -36,12 +38,14 @@ const NotificationProvider = function NotificationProvider({
   children
 }: INotificationsProvider): ReactElement {
   const [notifications, setNotifications] = useState<Array<INotification>>([])
+  const [unReadMassages, setUnReadMassages] = useState<number>(0)
   const [ready, setReady] = useState<boolean>(false)
   const {token} = useAuth()
   const reFetch = useCallback(async () => {
     setReady(false)
     client("notifications")?.then((res) => {
       setNotifications(res.result.data)
+      setUnReadMassages(res.unread)
       setReady(true)
     })
   }, [])
@@ -60,8 +64,14 @@ const NotificationProvider = function NotificationProvider({
 
   const value = useMemo(
     () =>
-      ({notifications, reFetch, ready, clearNotifications} as INotifications),
-    [notifications, reFetch, ready, clearNotifications]
+      ({
+        notifications,
+        reFetch,
+        ready,
+        clearNotifications,
+        unReadMassages
+      } as INotifications),
+    [notifications, reFetch, ready, clearNotifications, unReadMassages]
   )
   return (
     <Notifications.Provider value={value}>{children}</Notifications.Provider>

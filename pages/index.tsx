@@ -25,7 +25,7 @@ interface IPosition {
 }
 const MyHome: NextPage = function MyHome() {
   const {data: respond} = useFetch<IMapHotelsRes>(
-    "hotels/front/map-list/31.522816/34.4489984/1000"
+    "hotels/front/map-list/31.522816/34.4489984/100000"
   )
 
   const {isOpen, onOpen, onClose} = useDisclosure()
