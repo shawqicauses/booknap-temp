@@ -6,7 +6,7 @@ import BookingModal from "../components/modal/booking-modal"
 import MyGoogleMap from "../components/uis/map"
 import LoadingDiv from "../components/uis/loading"
 import useFetch from "../hooks/use-fetch"
-import {Hotel} from "../types"
+import {Hotel, ICheckSitting} from "../types"
 import {useCurrentBookingOrder} from "../stores/current-booking-order"
 import "leaflet/dist/leaflet.css"
 import RatingModal from "../components/modal/rating-modal"
@@ -27,6 +27,7 @@ const MyHome: NextPage = function MyHome() {
   const {data: respond} = useFetch<IMapHotelsRes>(
     "hotels/front/map-list/31.522816/34.4489984/100000"
   )
+  const {data: checkSittings} = useFetch<ICheckSitting>("check-setting")
 
   const {isOpen, onOpen, onClose} = useDisclosure()
   const ratingModal = useDisclosure()
@@ -89,6 +90,7 @@ const MyHome: NextPage = function MyHome() {
             destination={destination}
             isCurrentBooking={!!currentBooking}
             openBookingModal={onOpen}
+            checkSittings={checkSittings}
           />
           <BookingModal
             isOpen={isOpen}
@@ -97,6 +99,7 @@ const MyHome: NextPage = function MyHome() {
             setPos={setPos}
             destination={destination}
             myZoom={myZoom}
+            checkSittings={checkSittings}
           />
           {token && hotelRating ? (
             <RatingModal

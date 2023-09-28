@@ -8,21 +8,11 @@ import React from "react"
 import {useTheme} from "../../stores/theme"
 
 const companyLinks = [
-  {id: 1, label: "LOREM IPSUM", link: "/"},
-  {id: 2, label: "LOREM IPSUM", link: "/"},
-  {id: 3, label: "LOREM IPSUM", link: "/"},
-  {id: 4, label: "LOREM IPSUM", link: "/"},
-  {id: 5, label: "LOREM IPSUM", link: "/"},
-  {id: 6, label: "LOREM IPSUM", link: "/"}
+  {id: 1, label: "Home", link: "/"},
+  {id: 2, label: "About US", link: "/about-us"},
+  {id: 3, label: "Contact Us", link: "/contact"}
 ]
-const services = [
-  {id: 1, label: "LOREM IPSUM"},
-  {id: 2, label: "LOREM IPSUM"},
-  {id: 3, label: "LOREM IPSUM"},
-  {id: 4, label: "LOREM IPSUM"},
-  {id: 5, label: "LOREM IPSUM"},
-  {id: 6, label: "LOREM IPSUM"}
-]
+
 const socialMedia = [
   {
     id: 1,
@@ -50,8 +40,8 @@ const Footer = function Footer() {
   const {theme} = useTheme()
   return (
     <footer>
-      <div className="bg-[#F5F5F5] dark:bg-mirage">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 my-container py-5 gap-4">
+      <div className="bg-[#F5F5F5] dark:bg-mirage pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-container py-5 gap-6">
           <div className="pt-2">
             <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
               <Image
@@ -63,7 +53,7 @@ const Footer = function Footer() {
                 className="!relative  object-contain !w-52 !h-fit"
               />
             </Link>
-            <p className="body text-sm">
+            <p className="body text-sm font-light">
               lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
               nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
               erat, sed diam voluptua. at vero eos et accusam et justo duo
@@ -71,33 +61,39 @@ const Footer = function Footer() {
             </p>
           </div>
           <div>
-            <h2 className="heading-2 text-blue-700">COMPANY LINKS</h2>
-            <ul className="flex flex-col gap-2">
-              {companyLinks.map(({id, label, link}) => (
-                <li key={id} className="hover:text-blue-500">
-                  <Link href={link}>{label}</Link>
-                </li>
-              ))}
-            </ul>
+            <h2 className="text-xl-3 ppb-3 mb-4">Pages</h2>
+            <div className="grid grid-cols-2">
+              <div>
+                <ul className="flex flex-col gap-2 text-sm">
+                  {companyLinks.map(({id, label, link}) => (
+                    <li key={id} className="hover:text-my-primary">
+                      <Link href={link} className="font-light uppercase">
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <ul className="flex flex-col gap-2 h-full text-sm">
+                  <Link href="/" className="whitespace-nowrap">
+                    TERMS AND CONDITIONS
+                  </Link>
+                  <Link href="/" className="whitespace-nowrap">
+                    PRIVACY POLICY
+                  </Link>
+                </ul>
+              </div>
+            </div>
           </div>
           <div>
-            <h2 className="heading-2 text-blue-700">SERVICES</h2>
-            <ul className="flex flex-col gap-2">
-              {services.map(({id, label}) => (
-                <li key={id}>
-                  <h3>{label}</h3>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2 className="heading-2 text-blue-700">SOCIAL MEDIA</h2>
-            <ul className="flex  gap-2">
+            <h2 className="text-xl-3 mb-4">SOCIAL MEDIA</h2>
+            <ul className="flex  gap-2 ">
               {socialMedia.map(({id, link, icon}) => (
                 <li key={id}>
                   <a
                     href={link}
-                    className="inline-block p-3 bg-white dark:bg-blue-charcoal hover:bg-my-primary hover:text-white rounded-lg">
+                    className="inline-block p-2 bg-white dark:bg-blue-charcoal hover:bg-my-primary hover:text-white rounded-lg">
                     {icon}
                   </a>
                 </li>
@@ -108,22 +104,12 @@ const Footer = function Footer() {
       </div>
 
       <div className="bg-white dark:bg-blue-charcoal py-5">
-        <div className="my-flex-between  my-container flex-wrap gap-2">
-          <p className="sm:whitespace-nowrap flex-1 text-center sm:text-start">
-            © COPYRIGHTED & DESIGNED BY{" "}
-            <Link href="/" className="text-blue-500 hover:text-blue-900">
-              BOOKNAP
-            </Link>
-          </p>
-          <div className="my-flex gap-10 flex-1  flex-wrap">
-            <Link href="/" className="whitespace-nowrap">
-              PRIVACY POLICY
-            </Link>
-            <Link href="/" className="whitespace-nowrap">
-              TERMS AND CONDITIONS
-            </Link>
-          </div>
-        </div>
+        <p className="sm:whitespace-nowrap flex-1 text-center font-light uppercase body text-[#909090]">
+          © COPYRIGHTED & DESIGNED BY{" "}
+          <Link href="/" className="text-blue-500 hover:text-my-primary">
+            BOOKNAP
+          </Link>
+        </p>
       </div>
     </footer>
   )

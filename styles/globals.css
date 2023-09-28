@@ -123,7 +123,7 @@
   }
 
   .navbar-link {
-    @apply label-uppercase my-transition my-flex !w-max gap-2 focus:outline-none focus:ring-0;
+    @apply label-uppercase my-transition my-flex !w-max gap-2;
   }
 
   .navbar-menu {

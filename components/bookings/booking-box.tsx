@@ -46,7 +46,7 @@ const BookingBox = function BookingBox({
     <div
       key={id}
       className="flex bg-gray-100 p-3 gap-3 rounded-lg items-center dark:bg-mirage">
-      <div className="relative !h-20 !w-20 rounded-lg overflow-hidden">
+      <div className="relative !h-20 !w-20 rounded-lg overflow-hidden ">
         <Image
           src={hotel?.logo || ""}
           alt={hotel?.name || "Hotel"}

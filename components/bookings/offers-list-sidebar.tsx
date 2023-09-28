@@ -129,7 +129,7 @@ const HotelOfferBox = function HotelOfferBox({
             className="flex gap-2 cursor-pointer"
             onClick={onOpen}
             aria-hidden="true">
-            <div className="!w-20 !h-20 overflow-hidden rounded-lg border-2 border-[#ECECEC]">
+            <div className="!w-20 !h-20 overflow-hidden rounded-lg border-2 border-gray-100">
               <Image
                 src={offer.hotel.logo}
                 alt={offer.hotel.name}

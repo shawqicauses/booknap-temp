@@ -201,7 +201,7 @@ const CartDropDown = function CartDropDown({
                     <li
                       className="flex gap-2 items-center p-3 cursor-pointer"
                       key={item.id}>
-                      <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
                         {item.product?.image ? (
                           <Image
                             src={item.product?.image}
@@ -372,7 +372,7 @@ const Navbar = function Navbar() {
                                   type="button"
                                   className="my-flex gap-2 cursor-pointer rounded-lg"
                                   onClick={closeBoth}>
-                                  <div className="relative !w-9 !h-9 rounded-md overflow-hidden">
+                                  <div className="relative !w-9 !h-9 rounded-full overflow-hidden">
                                     <Image
                                       src={
                                         user?.avatar ||

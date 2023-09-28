@@ -224,3 +224,11 @@ export interface ISginIn {
   has_booking: number
   hotel_rating: HotelRating
 }
+export interface ICheckSitting {
+  result: {
+    check_in: string
+    check_out: string
+    min_area: string
+    max_area: string
+  }
+}

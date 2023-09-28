@@ -13,12 +13,11 @@ import {
   useDisclosure
 } from "@nextui-org/react"
 import {toast} from "react-toastify"
-
 import SignInModal from "./sign-in-modal"
 import MyButton from "../uis/button"
 import {type5} from "../uis/modal-styles"
 import client from "../../helpers/client"
-import {IBookingReq} from "../../types"
+import {IBookingReq, ICheckSitting} from "../../types"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 import {useAuth} from "../../stores/auth"
 
@@ -232,7 +231,8 @@ const BookingModal = function BookingModal({
   onClose,
   myZoom,
   destination,
-  pos
+  pos,
+  checkSittings
 }: {
   isOpen: boolean
   onClose: () => void
@@ -240,6 +240,7 @@ const BookingModal = function BookingModal({
   myZoom: number
   destination: string
   pos: {lat: number; lng: number}
+  checkSittings: ICheckSitting | undefined
 }) {
   const {token} = useAuth()
   const {handleCurrentBookingOrder, currentBooking} = useCurrentBookingOrder()
@@ -249,9 +250,9 @@ const BookingModal = function BookingModal({
     useForm<BasicFormData>({
       defaultValues: {
         FromDate: "",
-        FromTime: "12:00",
+        FromTime: checkSittings?.result?.check_in,
         ToDate: "",
-        ToTime: "02:00",
+        ToTime: checkSittings?.result?.check_out,
         note: "",
         noAdults: 0,
         noChildren: 0,
@@ -393,10 +394,10 @@ const BookingModal = function BookingModal({
                     radius="md"
                     variant="bordered"
                     color="transparent"
-                    className="border-gray-100 border-1 mt-1"
+                    className="border-[#B9B9B9] border-1.5 mt-1"
                     isIconOnly
                     onClick={() => setPage(0)}>
-                    <AiOutlineDoubleLeft className="h-5 w-5 text-gray-100" />
+                    <AiOutlineDoubleLeft className="h-5 w-5 text-[#B9B9B9]" />
                   </MyButton>
                   <div className="overflow-y-scroll hide-scrollbar mb-5">
                     <div className="pt-0 px-5 w-auto flex gap-2 flex-col">

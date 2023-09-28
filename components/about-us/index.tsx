@@ -4,10 +4,10 @@ import {AiFillCheckCircle} from "react-icons/ai"
 
 const AboutUsContent = function AboutUsContent() {
   return (
-    <div className="py-4 w-full">
+    <div className="pt-4 pb-10 w-full">
       <div className="my-container">
         <div className="text-center rounded-lg bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6">
-          <h1 className="heading-1 text-blue-600 mb-4">ABOUT US</h1>
+          <h1 className="heading-1 text-my-primary mb-4">ABOUT US</h1>
           <p className="body dark:text-[#5B6C89]">
             our company was founded in 2020. we work daily to become better and
             we are ready to share best practices.`

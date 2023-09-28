@@ -19,7 +19,7 @@ import {BiCurrentLocation, BiSolidUserCircle} from "react-icons/bi"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {useDisclosure} from "@nextui-org/react"
 import {FaHotel} from "react-icons/fa"
-import {Hotel} from "../../types"
+import {Hotel, ICheckSitting} from "../../types"
 import MyButton from "./button"
 import PlacesSuggestionInput from "./searchPlaces"
 import HotelPageModal from "../modal/hotel-page-modal"
@@ -246,7 +246,8 @@ const MyGoogleMap = function MyGoogleMap({
   setMyZoom,
   destination,
   isCurrentBooking,
-  openBookingModal
+  openBookingModal,
+  checkSittings
 }: {
   pos: IPosition
   setPos: Dispatch<SetStateAction<IPosition | undefined>>
@@ -258,6 +259,7 @@ const MyGoogleMap = function MyGoogleMap({
   destination: string
   isCurrentBooking: boolean
   openBookingModal: Function
+  checkSittings: ICheckSitting | undefined
 }) {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [hotel, setHotel] = useState<Hotel | null>(null)
@@ -299,6 +301,10 @@ const MyGoogleMap = function MyGoogleMap({
     },
     [hotel, myZoom]
   )
+  const d =
+    (Number(checkSittings?.result.max_area) -
+      Number(checkSittings?.result.min_area)) /
+    5
 
   return (
     <GoogleMap

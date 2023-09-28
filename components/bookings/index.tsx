@@ -72,7 +72,11 @@ const BookingsList = function BookingsList({
             ))}
         </div>
       ) : (
-        <State title="No Bookings" description="You have no Booking" />
+        <State
+          image="/no-booking.svg"
+          title="No Bookings"
+          description="You have no Booking"
+        />
       )}
       <span />
     </>

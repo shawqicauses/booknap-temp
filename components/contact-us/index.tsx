@@ -136,10 +136,10 @@ const ContactUsForm = function ContactUsForm() {
 
 const ContactUsContent = function ContactUsContent() {
   return (
-    <div className="py-4 mx-auto">
+    <div className="pt-4 pb-10 mx-auto">
       <div className="my-container">
         <div className="text-center rounded-lg bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6 ">
-          <h1 className="heading-1 text-blue-600 mb-4">CONTACT US</h1>
+          <h1 className="heading-1 text-my-primary mb-4">CONTACT US</h1>
           <p className="body max-w-xl mx-auto">
             please feel free to contact with us for any kinds of inquiries and
             information. our support team always available to help the clients.
