@@ -267,10 +267,10 @@ const OffersSidebar = function OffersSidebar({
   }
   return (
     <div
-      className={`fixed my-transition z-20 left-0 bottom-0  shadow-md ${
+      className={`fixed my-transition z-30 left-0 bottom-0  shadow-md ${
         show ? "" : "-translate-x-full"
-      }  sm:max-w-min main-hight  h-full w-full`}
-      style={{width: `min(454px, calc(${windowWidth} - 40))`}}>
+      }  sm:max-w-min main-hight  h-full`}
+      style={{width: `min(454px, calc(${windowWidth} - 40px))`}}>
       <div className="relative">
         {show ? (
           <MyButton

@@ -116,7 +116,7 @@ const NotificationsDropDown = function NotificationsDropDown({
         <div
           className={`${
             isNotificationsOpen ? "block" : "hidden"
-          } absolute lg:top-14 bottom-14 right-0 w-60  shadow-lg z-50`}>
+          } absolute lg:top-14 bottom-14 right-0 w-72  shadow-lg z-50`}>
           {/* <div className="absolute h-5 w-5 rotate-45 -top-[11px] right-0 -translate-x-[50%] bg-white -z-10 drop-shadow-2xl" /> */}
           <h2 className="heading-3 bg-white dark:bg-blue-charcoal dark:text-white w-full text-start rounded-t-md p-2 z-10">
             Notifications
@@ -192,7 +192,7 @@ const CartDropDown = function CartDropDown({
         <div
           className={`${
             isCartDropDownOpen ? "block" : "hidden"
-          } absolute lg:top-14 bottom-14 right-0 w-60 shadow-md z-50`}>
+          } absolute lg:top-14 bottom-14 right-0 w-72 shadow-md z-50`}>
           <ul className="bg-white dark:bg-blue-charcoal rounded-md divide-gray-100 shadow-base divide-y-1 overflow-y-scroll max-h-64 hide-scrollbar">
             {cartReady ? (
               cart.length > 0 ? (

@@ -19,7 +19,7 @@ const BookingSidebar = function BookingSidebar({
 
   return userBookings ? (
     <div
-      className={`fixed my-transition z-20 left-0 bottom-0  shadow-md ${
+      className={`fixed my-transition z-30 left-0 bottom-0  shadow-md ${
         show ? "" : "-translate-x-full"
       } max-w-min main-hight  h-full`}>
       <div className="relative">

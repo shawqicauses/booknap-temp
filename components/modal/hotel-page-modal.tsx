@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import {Modal, ModalBody, ModalContent} from "@nextui-org/react"
-// import {Swiper, SwiperSlide} from "swiper/react"
-// import {Autoplay} from "swiper/modules"
+import {Swiper, SwiperSlide} from "swiper/react"
+import {Autoplay} from "swiper/modules"
 import {Rating} from "@mui/material"
 import {AiFillStar} from "react-icons/ai"
 import Image from "next/image"
@@ -53,7 +53,7 @@ const HotelPageModal = function HotelPageModal({
                   />
                 </div>
               </div>
-              {/* <Swiper
+              <Swiper
                 slidesPerView={1}
                 autoplay={{
                   delay: 3000,
@@ -61,29 +61,27 @@ const HotelPageModal = function HotelPageModal({
                   disableOnInteraction: false
                 }}
                 modules={[Autoplay]}>
-                {hotel.media.map(
-                  ({id, path}) => (
-                    <SwiperSlide key={id}>
-                      <div className="relative w-full h-auto">
-                        <Image
-                          src={path}
-                          alt="Web Application"
-                          fill
-                          className="!relative object-contain"
-                        />
-                        <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
-                      </div>
-                    </SwiperSlide>
-                  )
-                )}
-              </Swiper> */}
+                {hotel?.banner ? (
+                  <SwiperSlide>
+                    <div className="relative w-full max-h-[200px]">
+                      <Image
+                        src={`https://booknap-api.wpgooal.com/${hotel?.banner}`}
+                        alt="Web Application"
+                        fill
+                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
+                    </div>
+                  </SwiperSlide>
+                ) : null}
+              </Swiper>
             </div>
             <div className="bg-white p-4">
               <div className="flex gap-4">
                 <FaUsers className="w-5 h-5 text-my-primary" />
                 <span className="heading-3 text-xl-2">About Us</span>
               </div>
-              <p className="body-sm text-black">{hotel.about}</p>
+              <p className="body-sm text-black">{hotel?.about}</p>
             </div>
             <div className="bg-white p-4 body-sm text-black">
               <div className="flex gap-4 items-center mb-2">
@@ -99,7 +97,7 @@ const HotelPageModal = function HotelPageModal({
                     target="_blank"
                     rel="noreferrer"
                     className="text-blue-500">
-                    {hotel.phone}
+                    {hotel?.phone}
                   </a>
                 </div>
                 <div className="flex justify-between gap-3">
@@ -107,7 +105,7 @@ const HotelPageModal = function HotelPageModal({
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={`http://${hotel.website}`}
+                    href={`http://${hotel?.website}`}
                     className="text-blue-500">
                     View Website
                   </a>
