@@ -287,6 +287,7 @@ const MyGoogleMap = function MyGoogleMap({
   openBookingModal: Function
   checkSittings: ICheckSitting | undefined
 }) {
+  const router = useRouter()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [hotel, setHotel] = useState<Hotel | null>(null)
   const [directionsResponse, setDirectionsResponse] =
@@ -301,17 +302,19 @@ const MyGoogleMap = function MyGoogleMap({
     onOpen()
     setDirectionsResponse(null)
   }
-
+  const {lat, lng} = router.query
   const calculateRoute = async () => {
     // eslint-disable-next-line no-undef
-    const directionsService = new google.maps.DirectionsService()
-    const results = await directionsService.route({
-      origin: userPos,
-      destination: {lat: 31.522816, lng: 34.4489984},
-      // eslint-disable-next-line no-undef
-      travelMode: google.maps.TravelMode.DRIVING
-    })
-    setDirectionsResponse(results)
+    if (lat && lng) {
+      const directionsService = new google.maps.DirectionsService()
+      const results = await directionsService.route({
+        origin: userPos,
+        destination: {lat: Number(lat), lng: Number(lng)},
+        // eslint-disable-next-line no-undef
+        travelMode: google.maps.TravelMode.DRIVING
+      })
+      setDirectionsResponse(results)
+    }
   }
 
   const moveTo = useCallback(
