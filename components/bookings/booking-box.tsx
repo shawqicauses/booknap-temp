@@ -26,8 +26,13 @@ const BookingBox = function BookingBox({
   children,
   rooms_no,
   onOpen,
-  hideDetails
-}: IBooking & {onOpen: () => void; hideDetails?: boolean}) {
+  hideDetails,
+  closeSideBar
+}: IBooking & {
+  onOpen: () => void
+  hideDetails?: boolean
+  closeSideBar?: () => void
+}) {
   const rout = useRouter()
   const status: "inProgress" | "coming" | "done" = useMemo(() => {
     const today = new Date()
@@ -81,6 +86,7 @@ const BookingBox = function BookingBox({
               onOpen()
             } else {
               rout.push(`/${id}`)
+              if (closeSideBar) closeSideBar()
             }
           }}>
           #{id}
@@ -90,7 +96,8 @@ const BookingBox = function BookingBox({
   )
 }
 BookingBox.defaultProps = {
-  hideDetails: false
+  hideDetails: false,
+  closeSideBar: () => {}
 }
 
 export default BookingBox

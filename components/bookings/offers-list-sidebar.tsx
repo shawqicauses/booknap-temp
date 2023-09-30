@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Spinner, useDisclosure} from "@nextui-org/react"
 import {MdLocalOffer} from "react-icons/md"
-import {BiArrowBack, BiTime} from "react-icons/bi"
+import {BiTime} from "react-icons/bi"
 import Image from "next/image"
 import Rating from "@mui/material/Rating"
 import {AiFillStar, AiOutlineCheck} from "react-icons/ai"
@@ -13,6 +13,7 @@ import client from "../../helpers/client"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 import HotelPageModal from "../modal/hotel-page-modal"
 import State from "../state"
+import ListSidebar from "../uis/list-sidebar"
 
 export interface Room {
   type: number
@@ -213,7 +214,6 @@ const OffersSidebar = function OffersSidebar({
   const [filter, serFilter] = useState(1)
   const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
   const [time, setTime] = useState({minutes: 20, seconds: 0})
-  const [windowWidth, setWindowWidth] = useState<number>(300)
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime()
@@ -248,11 +248,6 @@ const OffersSidebar = function OffersSidebar({
     setOffersNum(offers.length)
   }, [offers, setOffersNum])
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setWindowWidth(window.screen.availWidth)
-    }
-  }, [])
   const sortOffers = (type: number) => {
     switch (type) {
       case 1:
@@ -266,25 +261,7 @@ const OffersSidebar = function OffersSidebar({
     }
   }
   return (
-    <div
-      className={`fixed my-transition z-30 left-0 bottom-0  shadow-md ${
-        show ? "" : "-translate-x-full"
-      }  sm:max-w-min main-hight  h-full`}
-      style={{width: `min(454px, calc(${windowWidth} - 40px))`}}>
-      <div className="relative">
-        {show ? (
-          <MyButton
-            className="absolute top-1 -right-9 z-10 shadow-sm"
-            size="smSquare"
-            radius="none"
-            color="white"
-            onClick={() => {
-              setShow(false)
-            }}>
-            <BiArrowBack className="h-5 w-5" />
-          </MyButton>
-        ) : null}
-      </div>
+    <ListSidebar setShow={setShow} show={show}>
       <div
         className={` bg-white dark:bg-blue-charcoal w-full sm:max-w-min main-hight flex flex-col overflow-y-scroll hide-scrollbar h-full`}>
         <div className=" bg-white dark:bg-blue-charcoal w-full flex justify-between  items-center p-2 overflow-x-scroll scrollbar-hide">
@@ -386,7 +363,7 @@ const OffersSidebar = function OffersSidebar({
         openBannedModal={banned.onOpen}
       />
       <BannedModal isOpen={banned.isOpen} onClose={banned.onClose} />
-    </div>
+    </ListSidebar>
   )
 }
 
