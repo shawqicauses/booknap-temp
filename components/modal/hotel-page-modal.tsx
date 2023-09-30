@@ -32,24 +32,25 @@ const HotelPageModal = function HotelPageModal({
         <ModalBody>
           <div>
             <div className="relative w-auto min-h-[200px]">
-              <div className="flex gap-3  absolute bottom-3 left-4 z-10">
+              <div className="flex gap-3 items-center absolute bottom-3 left-3 z-10">
                 <Image
                   src={hotel.logo}
                   alt={hotel.name}
-                  className="!relative !w-20 !h-20 object-contain"
+                  className="!relative !w-16 !h-16 object-cover border-2 border-gray-100 rounded-md"
                   fill
                 />
                 <div>
-                  <h2 className="heading-2 mb-3 text-white">{hotel.name}</h2>
+                  <h2 className="heading-2 mb-2 text-white">{hotel.name}</h2>
                   <Rating
                     name="read-only"
                     value={hotel?.stars}
-                    className="text-blue-700"
                     readOnly
-                    style={{color: "#2F5597"}}
+                    style={{color: "#FBC831"}}
                     size="small"
                     icon={<AiFillStar className="text-inherit" />}
-                    emptyIcon={<AiFillStar className="text-inherit" />}
+                    emptyIcon={
+                      <AiFillStar className="text-inherit text-[#DDDDDD]" />
+                    }
                   />
                 </div>
               </div>

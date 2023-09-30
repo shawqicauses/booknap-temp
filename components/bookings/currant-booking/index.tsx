@@ -159,11 +159,12 @@ const HotelPageContent = function HotelPageContent({
                 </h2>
                 <Rating
                   value={result.hotel.stars}
-                  className="text-blue-700"
                   readOnly
-                  style={{color: "#2F5597"}}
+                  style={{color: "#FBC831"}}
                   icon={<AiFillStar className="text-inherit" />}
-                  emptyIcon={<AiFillStar className="text-inherit" />}
+                  emptyIcon={
+                    <AiFillStar className="text-inherit text-[#DDDDDD]" />
+                  }
                 />
               </div>
             </div>

@@ -13,6 +13,7 @@ import React, {
   useEffect,
   useState
 } from "react"
+import Image from "next/image"
 import {getGeocode, getDetails} from "use-places-autocomplete"
 import {useRouter} from "next/router"
 import {MdLocalOffer} from "react-icons/md"
@@ -24,6 +25,7 @@ import {Hotel, ICheckSitting} from "../../types"
 import MyButton from "./button"
 import PlacesSuggestionInput from "./searchPlaces"
 import HotelPageModal from "../modal/hotel-page-modal"
+import {useTheme} from "../../stores/theme"
 
 interface IPosition {
   lat: number
@@ -222,13 +224,13 @@ const HotelMarker = function HotelMarker({
       position={{lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)}}>
       <button
         type="button"
-        className="relative flex justify-center items-center"
+        className="relative flex justify-center items-center "
         onClick={() => {
           setPos({lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)})
           handleClick()
         }}>
-        <div className="absolute w-14 h-14 rounded-full bg-white p-2">
-          <FaHotel className="w-full h-full text-black" />
+        <div className="absolute w-14 h-14 rounded-full bg-white dark:bg-[#5B6C89] p-2 shadow-sm dark:shadow-white">
+          <FaHotel className="w-full h-full text-black dark:text-white" />
           {hotelPos.is_booking ? (
             <div className="absolute z-10 top-0 right-0 rounded-full bg-white h-5 w-5">
               <BiSolidUserCircle className="h-5 w-5 z-10 text-green-500" />
@@ -264,7 +266,239 @@ const zoomLevelArray = [
   "0.0746458232657938",
   "0.0373229116328969"
 ]
-
+const darkThemeMap = [
+  {
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#1d2c4d"
+      }
+    ]
+  },
+  {
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#8ec3b9"
+      }
+    ]
+  },
+  {
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#1a3646"
+      }
+    ]
+  },
+  {
+    featureType: "administrative.country",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#4b6878"
+      }
+    ]
+  },
+  {
+    featureType: "administrative.land_parcel",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#64779e"
+      }
+    ]
+  },
+  {
+    featureType: "administrative.province",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#4b6878"
+      }
+    ]
+  },
+  {
+    featureType: "landscape.man_made",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#334e87"
+      }
+    ]
+  },
+  {
+    featureType: "landscape.natural",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#023e58"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#283d6a"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#6f9ba5"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#1d2c4d"
+      }
+    ]
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#023e58"
+      }
+    ]
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#3C7680"
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#304a7d"
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#98a5be"
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#1d2c4d"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#2c6675"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [
+      {
+        color: "#255763"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#b0d5ce"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#023e58"
+      }
+    ]
+  },
+  {
+    featureType: "transit",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#98a5be"
+      }
+    ]
+  },
+  {
+    featureType: "transit",
+    elementType: "labels.text.stroke",
+    stylers: [
+      {
+        color: "#1d2c4d"
+      }
+    ]
+  },
+  {
+    featureType: "transit.line",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#283d6a"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#3a4762"
+      }
+    ]
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [
+      {
+        color: "#0e1626"
+      }
+    ]
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#4e6d70"
+      }
+    ]
+  }
+]
 const MyGoogleMap = function MyGoogleMap({
   pos,
   setPos,
@@ -291,6 +525,7 @@ const MyGoogleMap = function MyGoogleMap({
   checkSittings: ICheckSitting | undefined
 }) {
   const router = useRouter()
+  const {theme} = useTheme()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const [hotel, setHotel] = useState<Hotel | null>(null)
   const [directionsResponse, setDirectionsResponse] =
@@ -336,12 +571,8 @@ const MyGoogleMap = function MyGoogleMap({
 
   const maxArea = new Decimal(checkSittings?.result.max_area || 1)
   const minArea = new Decimal(checkSittings?.result.min_area || 1)
-
-  // Calculate d using Decimal
   const d = maxArea.minus(minArea).dividedBy(5)
   const r = new Decimal(zoomLevelArray[16 - myZoom])
-
-  // Calculate size using Decimal
   const size = d.dividedBy(r)
 
   return (
@@ -353,7 +584,8 @@ const MyGoogleMap = function MyGoogleMap({
         disableDefaultUI: true,
         maxZoom: 18,
         minZoom: 13,
-        scrollwheel: false
+        scrollwheel: false,
+        styles: theme === "dark" ? darkThemeMap : []
       }}
       onClick={(e) => {
         getGeocode({
@@ -391,14 +623,14 @@ const MyGoogleMap = function MyGoogleMap({
         position={userPos}
         mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
         zIndex={1000}>
-        <div className="relative flex justify-center items-center">
-          <div className="absolute w-5 h-5 flex items-center justify-center bg-my-primary rounded-full">
-            <div className="relative">
-              <div className="absolute -top-14 left-[50%] -translate-x-[50%] bg-my-primary text-white font-semi-bold px-4 py-1 text-medium rounded-lg z-10 shadow-base">
-                ME
-              </div>
-              <div className="absolute -top-6 left-[50%] w-0 h-0 -translate-x-[50%] border-transparent border-t-my-primary  border-[15px]" />
-            </div>
+        <div className="relative flex justify-center items-center w-0 h-0">
+          <div className="absolute w-20 h-20 -bottom-[15px]">
+            <Image
+              src={theme === "dark" ? "/me-dark.svg" : "/me.svg"}
+              alt="ME"
+              className="!relative w-full h-full"
+              fill
+            />
           </div>
         </div>
       </OverlayViewF>
@@ -450,7 +682,7 @@ const MyGoogleMap = function MyGoogleMap({
         <div className="w-[0] h-[0] flex items-center relative justify-center">
           <div className=" absolute w-[10px] h-[10px] bg-black/40 rounded-full" />
           <div
-            className=" absolute bg-black/10 rounded-full"
+            className=" absolute bg-black/10 dark:bg-white/10 rounded-full"
             style={{
               width: `${size.toString()}px`,
               height: `${size.toString()}px`
@@ -458,7 +690,7 @@ const MyGoogleMap = function MyGoogleMap({
           />
           {myZoom > 0 ? (
             <div
-              className=" absolute bg-black/10 rounded-full"
+              className=" absolute bg-black/10 dark:bg-white/5 rounded-full"
               style={{
                 width: `${size.mul(2)}px`,
                 height: `${size.mul(2)}px`
@@ -467,7 +699,7 @@ const MyGoogleMap = function MyGoogleMap({
           ) : null}
           {myZoom > 1 ? (
             <div
-              className=" absolute bg-black/5 rounded-full"
+              className=" absolute bg-black/5 dark:bg-white/5 rounded-full"
               style={{
                 width: `${size.mul(3)}px`,
                 height: `${size.mul(3)}px`
@@ -476,7 +708,7 @@ const MyGoogleMap = function MyGoogleMap({
           ) : null}
           {myZoom > 2 ? (
             <div
-              className=" absolute bg-black/5 rounded-full"
+              className=" absolute bg-black/5 dark:bg-white/5 rounded-full"
               style={{
                 width: `${size.mul(4)}px`,
                 height: `${size.mul(4)}px`
@@ -485,7 +717,7 @@ const MyGoogleMap = function MyGoogleMap({
           ) : null}
           {myZoom > 3 ? (
             <div
-              className=" absolute bg-black/5 rounded-full"
+              className=" absolute bg-black/5 dark:bg-white/5 rounded-full"
               style={{
                 width: `${size.mul(5)}px`,
                 height: `${size.mul(5)}px`
