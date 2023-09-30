@@ -218,7 +218,7 @@ const HotelMarker = function HotelMarker({
   return (
     <OverlayViewF
       key={hotelPos.id}
-      mapPaneName={OverlayView.FLOAT_PANE}
+      mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
       position={{lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)}}>
       <button
         type="button"
@@ -404,6 +404,7 @@ const MyGoogleMap = function MyGoogleMap({
       </OverlayViewF>
       {hotels.map((hotelPos) => (
         <HotelMarker
+          key={hotelPos.id}
           handleClick={() => {
             handleClick(hotelPos)
           }}
