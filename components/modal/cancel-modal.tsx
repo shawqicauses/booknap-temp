@@ -33,23 +33,21 @@ const CancelModal = function CancelModal({
   const [cancelReason, setCancelReason] = useState<number | null>(null)
   const [otherReason, setOtherReason] = useState<string>("")
   const {currentBooking, clearCurrentBookingOrder} = useCurrentBookingOrder()
-
   const handleCancel = async () => {
     if (
       cancelReason !== null ||
       (cancelReason === null && otherReason !== "")
     ) {
-      client(`hotels/bookings/cancel/${currentBooking?.id}`, {
+      const res = await client(`hotels/bookings/cancel/${currentBooking?.id}`, {
         body: JSON.stringify({reason: cancelReason, reason_other: otherReason}),
         method: "POST"
-      })?.then((res) => {
-        onClose()
-        clearCurrentBookingOrder()
-        setShow(false)
-        if (res.banned) {
-          openBannedModal()
-        }
       })
+      clearCurrentBookingOrder()
+      setShow(false)
+      onClose()
+      if (res.banned) {
+        openBannedModal()
+      }
     }
   }
   useEffect(() => {

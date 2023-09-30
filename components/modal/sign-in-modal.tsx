@@ -346,8 +346,8 @@ const SignInModal = function SignInModal({
       ].join("")
       window.confirmationResult
         .confirm(code)
-        .then(() => {
-          client("login-mobile", {
+        .then(async () => {
+          const resSign: ISginIn = await client("login-mobile", {
             method: "POST",
             body: JSON.stringify({
               name: formData.name,
@@ -355,20 +355,17 @@ const SignInModal = function SignInModal({
               type: "1",
               code: code
             })
-          })
-            ?.then((resSign: ISginIn) => {
-              localStorage.setItem("TOKEN", resSign.token)
-              handleUser(resSign.user)
-              if (resSign.has_booking) {
-                handleCurrentBookingOrder(resSign.booking)
-              }
-              setHotelRating(resSign.hotel_rating)
-              reset()
-              signIn()
-              onClose()
-              setPage(0)
-            })
-            .catch(() => {})
+          })?.catch(() => {})
+          localStorage.setItem("TOKEN", resSign.token)
+          handleUser(resSign.user)
+          if (resSign.has_booking) {
+            handleCurrentBookingOrder(resSign.booking)
+          }
+          setHotelRating(resSign.hotel_rating)
+          reset()
+          signIn()
+          onClose()
+          setPage(0)
           setLoading(false)
         })
         .catch(() => {
@@ -403,8 +400,8 @@ const SignInModal = function SignInModal({
     if (resSign.has_booking) {
       handleCurrentBookingOrder(resSign.booking)
     }
-    setHotelRating(resSign.hotel_rating)
     signIn()
+    setHotelRating(resSign.hotel_rating)
     onClose()
     setPage(0)
   }
