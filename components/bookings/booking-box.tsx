@@ -50,7 +50,7 @@ const BookingBox = function BookingBox({
   return (
     <div
       key={id}
-      className="flex bg-gray-100 p-3 gap-3 rounded-lg items-center dark:bg-mirage">
+      className="flex bg-gray-100 p-3 gap-3 rounded-lg items-center dark:bg-mirage sm:min-w-[400px]">
       <div className="relative !h-20 !w-20 rounded-lg overflow-hidden ">
         <Image
           src={hotel?.logo || ""}

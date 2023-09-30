@@ -65,7 +65,7 @@ const CartProvider = function CartProvider({
 }: {
   children: React.ReactElement
 }) {
-  const {token, ready} = useAuth()
+  const {token, ready, signOut} = useAuth()
   const [cartReady, setCartReady] = useState<boolean>(false)
   const [total, setTotal] = useState<string>("0.00")
   const [cart, setCart] = useState<CardProduct[]>([])
@@ -83,11 +83,15 @@ const CartProvider = function CartProvider({
   }, [cart])
 
   const getCardItems = useCallback(() => {
-    client("shopping/show/carts")?.then((res: {data: Array<CardProduct>}) => {
-      setCart(res.data)
-      setCartReady(true)
-    })
-  }, [])
+    client("shopping/show/carts")
+      ?.then((res: {data: Array<CardProduct>}) => {
+        setCart(res.data)
+        setCartReady(true)
+      })
+      .catch(() => {
+        signOut()
+      })
+  }, [signOut])
 
   useEffect(() => {
     if (ready && token) {
@@ -100,11 +104,15 @@ const CartProvider = function CartProvider({
       client(`shopping/carts/${product.id}`, {
         method: "POST",
         body: JSON.stringify({quantity: quantity})
-      })?.then(() => {
-        getCardItems()
       })
+        ?.then(() => {
+          getCardItems()
+        })
+        .catch(() => {
+          signOut()
+        })
     },
-    [getCardItems]
+    [getCardItems, signOut]
   )
 
   const updateItemQuantity = useCallback((id: number, quantity: number) => {
@@ -121,12 +129,17 @@ const CartProvider = function CartProvider({
     (id: number) => {
       client(`shopping/carts/delete/${id}`, {
         method: "POST"
-      })?.then(() => {
-        getCardItems()
       })
+        ?.then(() => {
+          getCardItems()
+        })
+        .catch(() => {
+          signOut()
+        })
     },
-    [getCardItems]
+    [getCardItems, signOut]
   )
+
   const handleCheckOut = useCallback(() => {
     client("shopping/cart/create/order", {
       method: "POST",
@@ -136,10 +149,14 @@ const CartProvider = function CartProvider({
           qty: itemCart.quantity
         }))
       })
-    })?.then(() => {
-      getCardItems()
     })
-  }, [getCardItems, cart])
+      ?.then(() => {
+        getCardItems()
+      })
+      .catch(() => {
+        signOut()
+      })
+  }, [getCardItems, cart, signOut])
 
   useEffect(() => {
     if (typeof window !== "undefined") {

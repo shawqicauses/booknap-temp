@@ -85,13 +85,18 @@ const NotificationsDropDown = function NotificationsDropDown({
   handleOpenNotifications: () => void
 }) {
   const {notifications, unReadMassages, ready} = useNotifications()
+  const {ready: tokenReady, signOut} = useAuth()
 
   const handleClick = () => {
     handleOpenNotifications()
-    if (ready) {
+    if (ready && tokenReady) {
       notifications.forEach((noti: any) => {
         if (!noti.read_at) {
-          client(`notifications/read/${noti.id}`, {method: "GET"})
+          client(`notifications/read/${noti.id}`, {method: "GET"})?.catch(
+            () => {
+              signOut()
+            }
+          )
         }
       })
     }

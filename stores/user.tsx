@@ -41,20 +41,24 @@ const UserProvider = function UserProvider({
   const [hotelRating, setHotelRating] = useState<any>()
 
   const [ready, setReady] = useState<boolean>(false)
-  const {token} = useAuth()
+  const {token, signOut} = useAuth()
   const {handleCurrentBookingOrder} = useCurrentBookingOrder()
   const getData = useCallback(async () => {
-    client("profile", {method: "GET"})?.then((res: IProfileRes) => {
-      if (res.success) {
-        setUser(res.user)
-        if (res.has_booking && res.booking.status === 0) {
-          handleCurrentBookingOrder(res.booking)
+    await client("profile", {method: "GET"})
+      ?.then((res: IProfileRes) => {
+        if (res.success) {
+          setUser(res.user)
+          if (res.has_booking && res.booking.status === 0) {
+            handleCurrentBookingOrder(res.booking)
+          }
+          setHotelRating(res.hotel_rating)
         }
-        setHotelRating(res.hotel_rating)
-      }
-      setReady(true)
-    })
-  }, [handleCurrentBookingOrder])
+        setReady(true)
+      })
+      .catch(() => {
+        signOut()
+      })
+  }, [handleCurrentBookingOrder, signOut])
 
   useEffect(() => {
     if (!token) {

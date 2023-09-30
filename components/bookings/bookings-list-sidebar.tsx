@@ -24,8 +24,8 @@ const BookingSidebar = function BookingSidebar({
           <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
           Bookings
         </h2>
-        <div className="py-3 px-5 flex-1">
-          <div className="flex flex-col relative gap-3">
+        <div className="py-3 px-5 flex-1 w-full">
+          <div className="flex flex-col relative gap-3 w-full">
             {userBookings.map((booking) => (
               <BookingBox
                 key={booking.id}

@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react"
 import IconSidebar from "../icon-sidebar"
 import OffersSidebar from "../bookings/offers-list-sidebar"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
-import {useAuth} from "../../stores/auth"
 import BookingSidebar from "../bookings/bookings-list-sidebar"
+import {useUser} from "../../stores/user"
 
 const Sidebar = function Sidebar() {
   const [showOffersSidebar, setShowOffersSidebar] = useState<boolean>(false)
   const [showBookingsSidebar, setShowBookingsSidebar] = useState<boolean>(false)
 
-  const {token} = useAuth()
+  const {user} = useUser()
   const {currentBooking, ready} = useCurrentBookingOrder()
   const [offersNum, setOffersNum] = useState<number | null>(null)
   useEffect(() => {
@@ -18,7 +18,7 @@ const Sidebar = function Sidebar() {
     }
   }, [ready, currentBooking])
 
-  if (token) {
+  if (user) {
     return (
       <div>
         <IconSidebar
