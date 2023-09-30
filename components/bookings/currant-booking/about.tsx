@@ -34,19 +34,21 @@ const About = function About() {
       </div>
       <div className="flex gap-4 flex-col sm:flex-row">
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[2]">
-          <div className="flex gap-4 items-center mb-3">
-            <FaLocationDot className="w-5 h-5 text-my-primary" />
-            <span className="heading-3 text-xl-2 dark:text-white">
-              Location
-            </span>
-          </div>
           <div className="flex justify-between">
-            <span>{result?.hotel?.country?.en_name}</span>
+            <div className="flex gap-4 items-center mb-3">
+              <FaLocationDot className="w-5 h-5 text-my-primary" />
+              <span className="heading-3 text-xl-2 dark:text-white">
+                Location
+              </span>
+            </div>
             <Link
               href={`/?lat=${result?.hotel?.lat}&lng=${result?.hotel?.lng}`}
               className="text-blue-500">
               Open Map
             </Link>
+          </div>
+          <div className="">
+            <span>{result?.hotel?.country?.en_name}</span>
           </div>
         </div>
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[3]">

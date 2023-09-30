@@ -63,7 +63,7 @@ const HotelPageModal = function HotelPageModal({
                 modules={[Autoplay]}>
                 {hotel?.banner ? (
                   <SwiperSlide>
-                    <div className="relative w-full max-h-[200px]">
+                    <div className="relative w-full h-[200px]">
                       <Image
                         src={`https://booknap-api.wpgooal.com/${hotel?.banner}`}
                         alt="Web Application"

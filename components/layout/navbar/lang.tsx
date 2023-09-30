@@ -33,7 +33,11 @@ const Lang = function Lang() {
   }
 
   return (
-    <Dropdown size="sm">
+    <Dropdown
+      size="sm"
+      className="px-0 py-2"
+      classNames={{backdrop: "w-10"}}
+      closeOnSelect={false}>
       <DropdownTrigger>
         <div className="flex gap-2 items-center  text-[#B9B9B9]  h-full dark:text-[#5B6C89] py-2 px-4 rounded-lg cursor-pointer">
           <span className="block">{selectedValue.name}</span>
@@ -46,15 +50,14 @@ const Lang = function Lang() {
         selectionMode="single"
         selectedKeys={[selectedLanguage.id]}
         onSelectionChange={handleSelectionChange}
-        className="!p-0"
-        closeOnSelect={false}>
+        className="p-0">
         {languages.map((language) => (
           <DropdownItem
             key={language.id}
+            className="hover:bg-gray-100 !rounded-none"
             startContent={
               <span className={`fi fi-${language.flag} fis h-full`} />
-            }
-            className="hover:bg-gray-200 !m-0 dark:text-white">
+            }>
             {language.name}
           </DropdownItem>
         ))}

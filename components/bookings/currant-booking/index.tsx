@@ -183,7 +183,7 @@ const HotelPageContent = function HotelPageContent({
               className=" rounded-lg overflow-x-hidden">
               {result?.hotel?.banner ? (
                 <SwiperSlide>
-                  <div className="relative w-full max-h-[400px]">
+                  <div className="relative w-full h-[200px] lg:h-[400px]">
                     <Image
                       src={`https://booknap-api.wpgooal.com/${result?.hotel?.banner}`}
                       alt="Web Application"
@@ -196,9 +196,10 @@ const HotelPageContent = function HotelPageContent({
               ) : null}
             </Swiper>
           </div>
-          <div className="bg-gray-300 w-fit rounded-full flex gap-1">
+          <div className="bg-[#E3E3E3] w-fit rounded-full flex p-1">
             <MyButton
-              color={!tab ? "primary" : "default"}
+              size="tab"
+              color={!tab ? "primary" : "tab"}
               radius="full"
               onClick={() => {
                 router.push(`/${id}`)
@@ -206,7 +207,8 @@ const HotelPageContent = function HotelPageContent({
               Booking
             </MyButton>
             <MyButton
-              color={tab === "1" ? "primary" : "default"}
+              size="tab"
+              color={tab === "1" ? "primary" : "tab"}
               radius="full"
               onClick={() => {
                 router.push(`/${id}/?tab=1`)
@@ -214,7 +216,8 @@ const HotelPageContent = function HotelPageContent({
               Rooms
             </MyButton>
             <MyButton
-              color={tab === "2" ? "primary" : "default"}
+              size="tab"
+              color={tab === "2" ? "primary" : "tab"}
               radius="full"
               onClick={() => {
                 router.push(`/${id}/?tab=2`)
@@ -222,7 +225,8 @@ const HotelPageContent = function HotelPageContent({
               Shop
             </MyButton>
             <MyButton
-              color={tab === "3" ? "primary" : "default"}
+              size="tab"
+              color={tab === "3" ? "primary" : "tab"}
               radius="full"
               onClick={() => {
                 router.push(`/${id}/?tab=3`)
