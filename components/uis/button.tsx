@@ -8,7 +8,8 @@ const MyButton = extendVariants(Button, {
         "px-unit-2 min-w-unit-10 min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex",
       navIcon:
         "px-unit-1 min-w-unit-10  min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex",
-      xl2: "px-5 py-3 min-w-unit-10 h-full !text-xl gap-unit-2 rounded-small inline-flex  w-full h-full"
+      xl2: "px-5 py-3 min-w-unit-10 h-full !text-xl gap-unit-2 rounded-small inline-flex  w-full h-full",
+      tab: "py-1 px-5 inline-flex  w-full h-full"
     },
     color: {
       success: "bg-green-500 text-white",
@@ -24,7 +25,8 @@ const MyButton = extendVariants(Button, {
       transparent: "bg-transparent",
       danger: "bg-red-600 text-white",
       navIcon:
-        "bg-white dark:bg-[rgb(0,8,24)] hover:bg-gray-100 dark:hover:bg-ebony-clay"
+        "bg-white dark:bg-[rgb(0,8,24)] hover:bg-gray-100 dark:hover:bg-ebony-clay",
+      tab: "bg-[#E3E3E3] text-[#909090]"
     }
   },
   defaultVariants: {
