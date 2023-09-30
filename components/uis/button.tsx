@@ -25,7 +25,7 @@ const MyButton = extendVariants(Button, {
       transparent: "bg-transparent",
       danger: "bg-red-600 text-white",
       navIcon:
-        "bg-white dark:bg-[rgb(0,8,24)] hover:bg-gray-100 dark:hover:bg-ebony-clay",
+        "bg-white dark:bg-[rgb(0,8,24)] hover:bg-gray-100 dark:hover:bg-ebony-clay text-[#B9B9B9] dark:text-[#5B6C89]",
       tab: "bg-[#E3E3E3] text-[#909090]"
     }
   },

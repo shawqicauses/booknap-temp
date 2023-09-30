@@ -26,7 +26,7 @@ const BookedModal = function BookedModal({
       classNames={type3}>
       <ModalContent>
         <ModalHeader>
-          <h2 className="heading-1">Booked</h2>
+          <h2 className="heading-1 dark:text-white">Booked</h2>
         </ModalHeader>
         <ModalBody>
           <div className="flex justify-between mb-5">

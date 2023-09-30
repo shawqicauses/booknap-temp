@@ -115,18 +115,18 @@ const NotificationsDropDown = function NotificationsDropDown({
             content={unReadMassages}
             shape="circle"
             disableOutline>
-            <IoMdNotificationsOutline className="w-6 h-6 text-[#B9B9B9]" />
+            <IoMdNotificationsOutline className="w-6 h-6" />
           </Badge>
         </MyButton>
         <div
           className={`${
             isNotificationsOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-72  shadow-lg z-50`}>
-          {/* <div className="absolute h-5 w-5 rotate-45 -top-[11px] right-0 -translate-x-[50%] bg-white -z-10 drop-shadow-2xl" /> */}
-          <h2 className="heading-3 bg-white dark:bg-blue-charcoal dark:text-white w-full text-start rounded-t-md p-2 z-10">
+          <div className="absolute h-5 w-5 rotate-45 -top-[10px] right-0 -translate-x-[50%] bg-white dark:bg-mirage " />
+          <h2 className="heading-3 bg-white dark:bg-mirage dark:text-white w-full text-start rounded-t-md p-2 z-10">
             Notifications
           </h2>
-          <ul className="bg-white dark:bg-blue-charcoal rounded-b-md divide-y-1 divide-gray-100 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
+          <ul className="bg-white dark:bg-mirage rounded-b-md divide-y-1 divide-gray-100 dark:divide-gray-500 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
             {ready ? (
               notifications.length > 0 ? (
                 notifications.map((notfi: any) => (
@@ -188,20 +188,21 @@ const CartDropDown = function CartDropDown({
               content={cart.length}
               shape="circle"
               disableOutline>
-              <AiOutlineShoppingCart className="w-6 h-6 text-[#B9B9B9]" />
+              <AiOutlineShoppingCart className="w-6 h-6" />
             </Badge>
           ) : (
-            <AiOutlineShoppingCart className="w-6 h-6 text-[#B9B9B9]" />
+            <AiOutlineShoppingCart className="w-6 h-6" />
           )}
         </MyButton>
         <div
           className={`${
             isCartDropDownOpen ? "block" : "hidden"
           } absolute lg:top-14 bottom-14 right-0 w-72 shadow-md z-50`}>
-          <h2 className="heading-3 bg-white dark:bg-blue-charcoal dark:text-white w-full text-start rounded-t-md p-2 z-10">
+          <div className="absolute h-5 w-5 rotate-45 -top-[10px] right-0 -translate-x-[50%] bg-white dark:bg-mirage " />
+          <h2 className="heading-3 bg-white dark:bg-mirage dark:text-white w-full text-start rounded-t-md p-2 z-10">
             Cart
           </h2>
-          <ul className="bg-white dark:bg-blue-charcoal rounded-b-md divide-gray-100 shadow-base divide-y-1 overflow-y-scroll max-h-64 hide-scrollbar">
+          <ul className="bg-white dark:bg-mirage rounded-b-md divide-gray-100 shadow-base divide-y-1 overflow-y-scroll max-h-64 hide-scrollbar">
             {cartReady ? (
               cart.length > 0 ? (
                 <>
@@ -334,9 +335,9 @@ const Navbar = function Navbar() {
                           setIsOpened(false)
                         }}>
                         {theme === "light" ? (
-                          <BiMoon className="w-6 h-6 text-[#B9B9B9]" />
+                          <BiMoon className="w-6 h-6" />
                         ) : (
-                          <BsFillSunFill className="w-6 h-6 text-[#B9B9B9]" />
+                          <BsFillSunFill className="w-6 h-6" />
                         )}
                       </MyButton>
                     </li>
@@ -352,7 +353,7 @@ const Navbar = function Navbar() {
                             signInModel.onOpen()
                             setIsOpened(false)
                           }}>
-                          <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                          <BiUser className="w-6 h-6 m-auto" />
                         </MyButton>
                       </li>
                     ) : null}
@@ -373,7 +374,7 @@ const Navbar = function Navbar() {
                           />
                         </li>
                         <li>
-                          <Dropdown className="px-0" radius="sm">
+                          <Dropdown className="px-0 dark:bg-mirage" radius="sm">
                             <DropdownTrigger>
                               {ready ? (
                                 <button
@@ -402,9 +403,9 @@ const Navbar = function Navbar() {
                             </DropdownTrigger>
                             <DropdownMenu className="p-0">
                               <DropdownItem
-                                className="hover:bg-gray-100 !rounded-none"
+                                className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
                                 startContent={
-                                  <BiUser className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                  <BiUser className="w-6 h-6 m-auto" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -416,9 +417,9 @@ const Navbar = function Navbar() {
                                 </Link>
                               </DropdownItem>
                               <DropdownItem
-                                className="hover:bg-gray-100 !rounded-none"
+                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <GoChecklist className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                  <GoChecklist className="w-6 h-6 m-auto" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -430,9 +431,9 @@ const Navbar = function Navbar() {
                                 </Link>
                               </DropdownItem>
                               <DropdownItem
-                                className="hover:bg-gray-100 !rounded-none"
+                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <BiTrash className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                  <BiTrash className="w-6 h-6 m-auto" />
                                 }
                                 onClick={() => {
                                   deleteAccount.onOpen()
@@ -443,9 +444,9 @@ const Navbar = function Navbar() {
                                 </span>
                               </DropdownItem>
                               <DropdownItem
-                                className="hover:bg-gray-100 !rounded-none"
+                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <HiOutlineLogout className="w-6 h-6 text-[#B9B9B9] dark:text-[#5B6C89] m-auto" />
+                                  <HiOutlineLogout className="w-6 h-6 m-auto" />
                                 }
                                 onClick={() => {
                                   handleSignOut()

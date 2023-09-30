@@ -295,7 +295,7 @@ const OffersSidebar = function OffersSidebar({
         <div className="bg-gray-100 dark:bg-blue-charcoal py-3 px-5 flex-1 w-full sm:w-[454px]">
           {currentBooking ? (
             <>
-              <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white  rounded-lg mb-3">
+              <p className="py-3 px-6 border-gray-300 border-1.5 body text-black dark:text-white dark:border-[#242E3F] rounded-lg mb-3">
                 if you Don&apos;t like the offers you can reject The Offers
               </p>
               <div className="flex mb-3 gap-2  w-auto">

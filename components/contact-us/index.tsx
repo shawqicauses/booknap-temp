@@ -40,7 +40,7 @@ const ContactUsForm = function ContactUsForm() {
           <Controller
             render={({field}) => (
               <Input
-                label="name"
+                label="Name"
                 labelPlacement="outside"
                 type="text"
                 {...field}
@@ -49,7 +49,8 @@ const ContactUsForm = function ContactUsForm() {
                 size="lg"
                 radius="sm"
                 classNames={{
-                  inputWrapper: "shadow-none bg-white"
+                  inputWrapper:
+                    "shadow-none bg-white dark:bg-blue-charcoal dark:border-ebony-clay border"
                 }}
                 disabled={isSubmitting}
               />
@@ -76,7 +77,8 @@ const ContactUsForm = function ContactUsForm() {
                 size="lg"
                 radius="sm"
                 classNames={{
-                  inputWrapper: "shadow-none bg-white"
+                  inputWrapper:
+                    "shadow-none bg-white dark:bg-blue-charcoal dark:border-ebony-clay border"
                 }}
                 disabled={isSubmitting}
               />
@@ -102,10 +104,11 @@ const ContactUsForm = function ContactUsForm() {
               variant="flat"
               label="Your Message"
               labelPlacement="outside"
-              placeholder="message"
+              placeholder="Message"
               radius="sm"
               classNames={{
-                inputWrapper: "shadow-none bg-white p-0",
+                inputWrapper:
+                  "shadow-none bg-white p-0 dark:bg-blue-charcoal dark:border-ebony-clay border",
                 input: "p-4 resize-y"
               }}
               disabled={isSubmitting}
@@ -136,7 +139,7 @@ const ContactUsForm = function ContactUsForm() {
 
 const ContactUsContent = function ContactUsContent() {
   return (
-    <div className="pt-4 pb-10 mx-auto">
+    <div className="pt-4 pb-16 mx-auto">
       <div className="my-container">
         <div className="text-center rounded-lg bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6 ">
           <h1 className="heading-1 text-my-primary mb-4">CONTACT US</h1>

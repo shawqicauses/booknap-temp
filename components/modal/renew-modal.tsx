@@ -83,7 +83,7 @@ const RenewBookingModal = function RenewBookingModal({
     <Modal size="xs" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
         <ModalHeader>
-          <h2 className="heading-3">Renew Your Booking</h2>
+          <h2 className="heading-3 dark:text-white">Renew Your Booking</h2>
         </ModalHeader>
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>

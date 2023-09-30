@@ -229,8 +229,8 @@ const HotelMarker = function HotelMarker({
           setPos({lat: Number(hotelPos.lat), lng: Number(hotelPos.lng)})
           handleClick()
         }}>
-        <div className="absolute w-14 h-14 rounded-full bg-white dark:bg-[#5B6C89] p-2 shadow-sm dark:shadow-white">
-          <FaHotel className="w-full h-full text-black dark:text-white" />
+        <div className="absolute w-14 h-14">
+          <Image src="/map-hotel.svg" alt="Hotel" className="relative" fill />
           {hotelPos.is_booking ? (
             <div className="absolute z-10 top-0 right-0 rounded-full bg-white h-5 w-5">
               <BiSolidUserCircle className="h-5 w-5 z-10 text-green-500" />

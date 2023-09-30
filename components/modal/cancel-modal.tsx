@@ -66,7 +66,7 @@ const CancelModal = function CancelModal({
       classNames={type3}>
       <ModalContent>
         <ModalHeader>
-          <h1 className="heading-2 mb-2">Cancel Reason</h1>
+          <h1 className="heading-2 mb-2 dark:text-white">Cancel Reason</h1>
         </ModalHeader>
         <ModalBody>
           {cancelListReason.map(({id, en_name}) => (
@@ -99,7 +99,7 @@ const CancelModal = function CancelModal({
                 value={otherReason}
                 type="text"
                 placeholder="Please Write The Reason To Help Us Improve"
-                className="input p-3 leading-5 bg-white rounded-lg"
+                className="input p-3 leading-5 rounded-lg bg-white dark:bg-blue-charcoal dark:border-ebony-clay border"
                 onChange={(e) => setOtherReason(e.target.value)}
               />
             </div>

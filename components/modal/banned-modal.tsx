@@ -21,7 +21,7 @@ const BannedModal = function BannedModal({
     <Modal size="lg" isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalHeader>
-          <h1 className="heading-2 mb-6">Banned</h1>
+          <h1 className="heading-2 mb-6 dark:text-white">Banned</h1>
         </ModalHeader>
         <ModalBody>
           <div className="flex justify-between mb-5">

@@ -91,7 +91,7 @@ module.exports = {
       colors: {
         "gray-100": "#F5F5F5",
         "my-primary": "#2f5597",
-        "blue-charcoal": "#010919",
+        "blue-charcoal": "#000818",
         "mirage": "#1a2230",
         "ebony-clay": "#242e3f",
         "waikawa-gray": "#5B6C89"

@@ -1,5 +1,5 @@
 import {NextPage} from "next"
-import {useState, useEffect} from "react"
+import {useState, useEffect, useMemo} from "react"
 import {useRouter} from "next/router"
 import HotelPageContent from "../../components/bookings/currant-booking"
 import Footer from "../../components/layout/footer"
@@ -11,8 +11,7 @@ import LoadingDiv from "../../components/uis/loading"
 import {useAuth} from "../../stores/auth"
 import client from "../../helpers/client"
 import Shop from "../../components/bookings/currant-booking/shop"
-
-const tabs = [<Booking />, <RoomsDetails />, <Shop />, <About />]
+import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 
 export interface Datum {
   id: number
@@ -36,14 +35,29 @@ const BookingData: NextPage = function BookingData() {
   const {tab, shopTab} = router.query
   const [categories, setCategories] = useState<Datum[]>()
   const {token} = useAuth()
+  const {userBookings} = useCurrentBookingOrder()
   const id = Number(router.query.id)
+
+  const hotelId = useMemo(
+    () => userBookings?.find((booking) => booking.id === id)?.hotel?.id,
+    [id, userBookings]
+  )
+  const tabs = useMemo(
+    () => [
+      <Booking />,
+      <RoomsDetails />,
+      <Shop hotelId={hotelId || 0} />,
+      <About />
+    ],
+    [hotelId]
+  )
   useEffect(() => {
     if (router.isReady && token) {
-      client(`shopping/categories?hotel_id=${id}`)?.then((res: Test) => {
+      client(`shopping/categories?hotel_id=${hotelId}`)?.then((res: Test) => {
         setCategories(res.data)
       })
     }
-  }, [id, router, token])
+  }, [id, router, token, hotelId])
   if (!shopTab && router.isReady && categories?.length) {
     router.push(`${id}/?tab=2&shopTab=${categories[0].id}`)
   }

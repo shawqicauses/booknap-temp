@@ -77,7 +77,7 @@ const RatingModal = function RatingModal({
       classNames={{closeButton: "hidden"}}>
       <ModalContent>
         <ModalHeader className="px-5 pb-2 pt-5">
-          <h1 className="heading-2 mx-auto">Thank You</h1>
+          <h1 className="heading-2 mx-auto dark:text-white">Thank You</h1>
         </ModalHeader>
         <ModalBody className="px-5 py-0 pb-2">
           <div className="flex flex-col gap-2 items-center">

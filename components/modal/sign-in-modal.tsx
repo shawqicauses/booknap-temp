@@ -413,17 +413,12 @@ const SignInModal = function SignInModal({
   }
 
   return (
-    <Modal
-      size="lg"
-      isOpen={isOpen}
-      onClose={onClose}
-      className="bg-[#F5F5F5]"
-      classNames={type3}>
+    <Modal size="lg" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
         <div className="p-5">
           <div id="recaptcha-container" />
           <ModalHeader>
-            <h1 className="heading-2">Sign In</h1>
+            <h1 className="heading-2 dark:text-white">Sign In</h1>
           </ModalHeader>
           <ModalBody>
             <form
