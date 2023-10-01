@@ -24,7 +24,6 @@ const Sidebar = function Sidebar() {
         <IconSidebar
           setShowOffersSidebar={setShowOffersSidebar}
           setShowBookingsSidebar={setShowBookingsSidebar}
-          isBookingNow={!!currentBooking}
           offersNum={offersNum || 0}
         />
         <OffersSidebar

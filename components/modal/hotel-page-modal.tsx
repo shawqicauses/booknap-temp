@@ -77,21 +77,27 @@ const HotelPageModal = function HotelPageModal({
                 ) : null}
               </Swiper>
             </div>
-            <div className="bg-white p-4">
+            <div className="p-4">
               <div className="flex gap-4">
                 <FaUsers className="w-5 h-5 text-my-primary" />
-                <span className="heading-3 text-xl-2">About Us</span>
+                <span className="heading-3 text-xl-2 dark:text-white">
+                  About Us
+                </span>
               </div>
-              <p className="body-sm text-black">{hotel?.about}</p>
+              <p className="body-sm text-black dark:text-white">
+                {hotel?.about}
+              </p>
             </div>
-            <div className="bg-white p-4 body-sm text-black">
+            <div className="p-4 body-sm text-black">
               <div className="flex gap-4 items-center mb-2">
                 <LuMail className="w-5 h-5 text-my-primary" />
-                <span className="heading-3 text-xl-2">Contact</span>
+                <span className="heading-3 text-xl-2 dark:text-white">
+                  Contact
+                </span>
               </div>
-              <div className="mb-4">{hotel?.address}</div>
+              <div className="mb-4 dark:text-white">{hotel?.address}</div>
               <div className="flex flex-col gap-1">
-                <div className="flex justify-between gap-3">
+                <div className="flex justify-between gap-3 dark:text-white">
                   <span>Phone:</span>
                   <a
                     href={`https://wa.me/${hotel.phone.replaceAll(" ", "")}`}
@@ -101,7 +107,7 @@ const HotelPageModal = function HotelPageModal({
                     {hotel?.phone}
                   </a>
                 </div>
-                <div className="flex justify-between gap-3">
+                <div className="flex justify-between gap-3 dark:text-white">
                   <span>Website:</span>
                   <a
                     target="_blank"

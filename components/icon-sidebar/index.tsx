@@ -8,12 +8,10 @@ import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 const IconSidebar = function IconSidebar({
   setShowOffersSidebar,
   setShowBookingsSidebar,
-  isBookingNow,
   offersNum
 }: {
   setShowOffersSidebar: React.Dispatch<React.SetStateAction<boolean>>
   setShowBookingsSidebar: React.Dispatch<React.SetStateAction<boolean>>
-  isBookingNow: boolean
   offersNum: number
 }) {
   const {userBookings} = useCurrentBookingOrder()
@@ -29,11 +27,11 @@ const IconSidebar = function IconSidebar({
             className="shadow-sm"
             onClick={() => setShowOffersSidebar(true)}>
             <Badge
-              color={isBookingNow ? "danger" : "default"}
+              color="danger"
               content={offersNum}
               shape="circle"
               disableOutline>
-              <MdLocalOffer className="h-5 w-5 text-[#B9B9B9]" />
+              <MdLocalOffer className="h-5 w-5 text-gray-600" />
             </Badge>
           </MyButton>
         </div>
@@ -51,7 +49,7 @@ const IconSidebar = function IconSidebar({
                 content={userBookings?.length}
                 shape="circle"
                 disableOutline>
-                <HiClipboardDocumentList className="h-5 w-5 text-[#B9B9B9]" />
+                <HiClipboardDocumentList className="h-5 w-5 text-gray-600" />
               </Badge>
             </MyButton>
           </div>

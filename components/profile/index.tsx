@@ -26,8 +26,11 @@ interface IProfile {
 
 const inputStyle = {
   label: "text-black dark:text-white/90 text-lg",
-  inputWrapper: ["bg-white", "h-[50px]", "shadow-none"],
-  input: "pl-2 text-black"
+  inputWrapper: [
+    "h-[50px]",
+    "bg-white dark:bg-blue-charcoal dark:border-ebony-clay border"
+  ],
+  input: "pl-2 text-black dark:text-white"
 }
 
 const ProfileContent = function ProfileContent() {
@@ -159,7 +162,17 @@ const ProfileContent = function ProfileContent() {
                     className="!relative"
                     fill
                   />
-                ) : null}
+                ) : (
+                  <Image
+                    src={
+                      user?.avatar ||
+                      `/user/${theme === "light" ? "light" : "dark"}.png`
+                    }
+                    alt="user profile"
+                    className="!relative"
+                    fill
+                  />
+                )}
               </div>
             </div>
             <div className="mb-2">
@@ -192,7 +205,7 @@ const ProfileContent = function ProfileContent() {
             </div>
             <div className="bg-[#E9EDF4] dark:bg-blue-charcoal rounded-md">
               <div className="p-5 text-center max-w-xs mx-auto">
-                <p className="mb-3 text-sm text-black/70 ">
+                <p className="mb-3 text-sm text-black/70 dark:text-white/70">
                   Upload A New Avatar. Larger Image Will Be Resized
                   Automatically
                 </p>
@@ -247,7 +260,7 @@ const ProfileContent = function ProfileContent() {
                   <div>
                     <Input
                       size="lg"
-                      label="mobile"
+                      label="Mobile"
                       labelPlacement="outside"
                       type="string"
                       {...register("mobile", {required: true})}
@@ -311,10 +324,10 @@ const ProfileContent = function ProfileContent() {
                             <AiOutlineCheck className="h-5 w-5 text-my-primary" />
                           ) : null
                         }
-                        className={`!text-lg border-2 ${
+                        className={`!text-lg ${
                           gender === 2
-                            ? "bg-my-primary/5 border-my-primary"
-                            : "dark:bg-blue-charcoal dark:text-white border-white"
+                            ? "border-2 bg-my-primary/5  border-my-primary"
+                            : "dark:bg-blue-charcoal dark:text-white"
                         }`}>
                         Female
                       </MyButton>

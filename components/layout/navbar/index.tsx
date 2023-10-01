@@ -86,7 +86,7 @@ const NotificationsDropDown = function NotificationsDropDown({
 }) {
   const {notifications, unReadMassages, ready} = useNotifications()
   const {ready: tokenReady, signOut} = useAuth()
-
+  const {theme} = useTheme()
   const handleClick = () => {
     handleOpenNotifications()
     if (ready && tokenReady) {
@@ -135,7 +135,11 @@ const NotificationsDropDown = function NotificationsDropDown({
                     key={notfi.id}>
                     <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
                       <Image
-                        src="/notifications.png"
+                        src={
+                          theme === "dark"
+                            ? "/notifications-dark.png"
+                            : "/notifications.png"
+                        }
                         alt="logo"
                         className="relative"
                         fill

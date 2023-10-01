@@ -113,6 +113,7 @@ export interface Result {
   rooms_no: null
   offers: Offer[]
   hotel: Hotel
+  banners: {id: number; image: string}[]
   rooms_details: Array<RoomDetails>
 }
 
@@ -182,11 +183,11 @@ const HotelPageContent = function HotelPageContent({
               }}
               modules={[Autoplay, Pagination]}
               className=" rounded-lg overflow-x-hidden">
-              {result?.hotel?.banner ? (
-                <SwiperSlide>
+              {result?.banners.map(({id: imageId, image}) => (
+                <SwiperSlide key={imageId}>
                   <div className="relative w-full h-[200px] lg:h-[400px]">
                     <Image
-                      src={`https://booknap-api.wpgooal.com/${result?.hotel?.banner}`}
+                      src={`https://booknap-api.wpgooal.com/${image}`}
                       alt="Web Application"
                       fill
                       className="!relative !inset-auto !rounded-lg w-full object-cover"
@@ -194,10 +195,10 @@ const HotelPageContent = function HotelPageContent({
                     <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                   </div>
                 </SwiperSlide>
-              ) : null}
+              ))}
             </Swiper>
           </div>
-          <div className="bg-[#E3E3E3] w-fit rounded-full flex p-1">
+          <div className="bg-[#E3E3E3] dark:bg-blue-charcoal w-fit rounded-full flex p-1">
             <MyButton
               size="tab"
               color={!tab ? "primary" : "tab"}

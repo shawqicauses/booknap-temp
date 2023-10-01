@@ -246,6 +246,7 @@ const BookingModal = function BookingModal({
   const {handleCurrentBookingOrder, currentBooking} = useCurrentBookingOrder()
   const [page, setPage] = useState<number>(0)
   const signIn = useDisclosure()
+
   const {register, handleSubmit, watch, setValue, reset} =
     useForm<BasicFormData>({
       defaultValues: {

@@ -92,7 +92,7 @@ const HotelOfferBox = function HotelOfferBox({
   getOffers
 }: HotelOfferBoxProps) {
   const [reject, setReject] = useState<boolean>(
-    !!(offer.status === 2 && offer.price_after_reject)
+    !(offer.status === 0 && offer.price_after_reject)
   )
   const {isOpen, onClose, onOpen} = useDisclosure()
 
@@ -119,7 +119,7 @@ const HotelOfferBox = function HotelOfferBox({
   }
   return (
     <>
-      <div className="bg-white dark:bg-mirage p-2 rounded-lg shadow-base snap-center relative">
+      <div className="bg-white dark:bg-mirage p-3 rounded-lg shadow-base snap-center relative">
         {offer?.price_after_reject ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
@@ -130,7 +130,7 @@ const HotelOfferBox = function HotelOfferBox({
             className="flex gap-2 cursor-pointer"
             onClick={onOpen}
             aria-hidden="true">
-            <div className="!w-20 !h-20 overflow-hidden rounded-lg border-2 border-gray-100">
+            <div className="!w-20 !h-20 overflow-hidden rounded-lg">
               <Image
                 src={offer.hotel.logo}
                 alt={offer.hotel.name}
@@ -151,7 +151,7 @@ const HotelOfferBox = function HotelOfferBox({
                 emptyIcon={<AiFillStar className="text-inherit" />}
               />
               <div className="flex gap-1">
-                <span className="label-gray">
+                <span className="label-gray text-sm">
                   {offer.booking.rooms
                     .filter((room) => room.number > 0)
                     .map((room) => room.name_en)
@@ -161,7 +161,7 @@ const HotelOfferBox = function HotelOfferBox({
             </div>
           </div>
           <div className="flex flex-col gap-1 items-center">
-            <span className="text-red-500 text-xl font-bold">
+            <span className="text-red-600 text-xl font-bold">
               {offer?.price_after_reject
                 ? offer.price_after_reject
                 : offer.price}
@@ -176,6 +176,7 @@ const HotelOfferBox = function HotelOfferBox({
           {!offer.price_after_reject ? (
             <MyButton
               size="sm"
+              radius="sm"
               color="reject"
               className="!w-[72px]"
               isLoading={reject}
@@ -186,6 +187,7 @@ const HotelOfferBox = function HotelOfferBox({
           ) : null}
           <MyButton
             size="sm"
+            radius="sm"
             color="primary"
             onClick={handleBooked}
             isDisabled={reject}>
@@ -300,7 +302,7 @@ const OffersSidebar = function OffersSidebar({
               </p>
               <div className="flex mb-3 gap-2  w-auto">
                 <MyButton
-                  color={filter === 1 ? "primary" : "white"}
+                  color={filter === 1 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
                   startContent={
@@ -311,7 +313,7 @@ const OffersSidebar = function OffersSidebar({
                   Highest Rated
                 </MyButton>
                 <MyButton
-                  color={filter === 2 ? "primary" : "white"}
+                  color={filter === 2 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
                   startContent={
@@ -322,7 +324,7 @@ const OffersSidebar = function OffersSidebar({
                   Lowest Price
                 </MyButton>
                 <MyButton
-                  color={filter === 3 ? "primary" : "white"}
+                  color={filter === 3 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
                   startContent={

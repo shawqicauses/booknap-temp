@@ -108,7 +108,7 @@ const ContactUsForm = function ContactUsForm() {
               radius="sm"
               classNames={{
                 inputWrapper:
-                  "shadow-none bg-white p-0 dark:bg-blue-charcoal dark:border-ebony-clay border",
+                  "shadow-none p-0 bg-white dark:bg-blue-charcoal dark:border-ebony-clay border",
                 input: "p-4 resize-y"
               }}
               disabled={isSubmitting}

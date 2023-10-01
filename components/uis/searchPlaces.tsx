@@ -59,7 +59,7 @@ const PlacesSuggestionInput = function PlacesSuggestionInput({
           onChange={handleInput}
           disabled={!ready}
           placeholder="Where are you going?"
-          className="input p-3 px-4 leading-5 bg-white shadow-md rounded-md w-full sm:w-[400px] dark:bg-mirage dark:border-mirage dark:text-white"
+          className="input p-3 px-4 leading-5 bg-white shadow-md rounded-md w-full sm:w-[400px] dark:bg-blue-charcoal dark:border-ebony-clay border dark:text-white"
         />
         {status === "OK" && openList ? (
           <ul className="absolute bottom-[104%] left-0 overflow-y-scroll h-[200px] bg-white dark:bg-mirage z-30 flex flex-col w-full shadow-sm rounded-base divide-y-1 dark:divide-ebony-clay">
