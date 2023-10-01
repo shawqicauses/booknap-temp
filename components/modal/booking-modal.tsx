@@ -251,9 +251,9 @@ const BookingModal = function BookingModal({
     useForm<BasicFormData>({
       defaultValues: {
         FromDate: "",
-        FromTime: checkSittings?.result?.check_in,
+        FromTime: checkSittings?.result?.check_in!,
         ToDate: "",
-        ToTime: checkSittings?.result?.check_out,
+        ToTime: checkSittings?.result?.check_out!,
         note: "",
         noAdults: 0,
         noChildren: 0,
