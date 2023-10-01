@@ -316,6 +316,7 @@ const SignInModal = function SignInModal({
       })
       .catch(() => {})
   }
+
   const {
     register,
     handleSubmit,
@@ -365,9 +366,9 @@ const SignInModal = function SignInModal({
           setHotelRating(resSign.hotel_rating)
           reset()
           signIn()
+          setLoading(false)
           onClose()
           setPage(0)
-          setLoading(false)
         })
         .catch(() => {
           toast.error("Code is not Correct", {
@@ -401,15 +402,14 @@ const SignInModal = function SignInModal({
     if (resSign.has_booking) {
       handleCurrentBookingOrder(resSign.booking)
     }
-    signIn()
+    reset()
     setHotelRating(resSign.hotel_rating)
     onClose()
+    signIn()
     setPage(0)
   }
 
   const handleResend = () => {
-    // window.confirmationResult = undefined
-    // window.recaptchaVerifier = undefined
     // onSignUp(watch().mobile)
   }
 

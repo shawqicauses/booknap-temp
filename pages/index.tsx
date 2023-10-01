@@ -41,10 +41,11 @@ const MyHome: NextPage = function MyHome() {
   })
   const {token, ready: tokenReady} = useAuth()
   const [userPos, setUserPos] = useState<IPosition>()
-  const [pos, setPos] = useState<IPosition | undefined>({lat: 30, lng: 40})
+  const [pos, setPos] = useState<IPosition | undefined>()
   const [hotels, setHotels] = useState<Array<Hotel>>([])
   const {currentBooking} = useCurrentBookingOrder()
   const {hotelRating, ready} = useUser()
+
   useEffect(() => {
     if (respond) {
       setHotels(respond.result)
@@ -80,7 +81,7 @@ const MyHome: NextPage = function MyHome() {
       ) : (
         <>
           <MyGoogleMap
-            pos={pos!}
+            pos={pos || {lat: 30, lng: 40}}
             setPos={setPos}
             userPos={userPos ?? {lat: 30, lng: 30}}
             myZoom={myZoom}
@@ -95,7 +96,7 @@ const MyHome: NextPage = function MyHome() {
           <BookingModal
             isOpen={isOpen}
             onClose={onClose}
-            pos={pos!}
+            pos={pos || {lat: 30, lng: 40}}
             setPos={setPos}
             destination={destination}
             myZoom={myZoom}

@@ -34,7 +34,7 @@ const Lang = function Lang() {
       className="px-0 py-2 dark:bg-mirage"
       classNames={{backdrop: "w-10"}}>
       <DropdownTrigger>
-        <div className="flex gap-2 items-center  text-[#B9B9B9]  h-full dark:text-[#5B6C89] py-2 px-4 rounded-lg cursor-pointer">
+        <div className="flex gap-2 items-center hover:bg-gray-100 dark:hover:bg-ebony-clay text-[#B9B9B9]  h-full dark:text-[#5B6C89] py-2 px-2.5 rounded-lg cursor-pointer">
           <span className="block">{selectedValue.name}</span>
         </div>
       </DropdownTrigger>

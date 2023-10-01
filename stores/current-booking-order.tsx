@@ -66,21 +66,23 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
   const {token, ready: tokenReady, signOut} = useAuth()
 
   const fetchUserBookings = useCallback(() => {
-    client("hotels/bookings?status=1&is_active=1", {method: "GET"})
-      ?.then((res: IListBookingHotelRes) => {
-        const data = res.result.data.filter((booking) => {
-          const today = new Date()
-          const dateFrom = new Date(booking.date_from)
-          const dateTo = new Date(booking.date_to)
-          if (booking.hotel && today > dateFrom && today < dateTo) return true
-          return false
+    if (tokenReady && token) {
+      client("hotels/bookings?status=1&is_active=1", {method: "GET"})
+        ?.then((res: IListBookingHotelRes) => {
+          const data = res.result.data.filter((booking) => {
+            const today = new Date()
+            const dateFrom = new Date(booking.date_from)
+            const dateTo = new Date(booking.date_to)
+            if (booking.hotel && today > dateFrom && today < dateTo) return true
+            return false
+          })
+          setUserBookings(data)
         })
-        setUserBookings(data)
-      })
-      .catch(() => {
-        signOut()
-      })
-  }, [signOut])
+        .catch(() => {
+          signOut()
+        })
+    }
+  }, [signOut, tokenReady, token])
 
   useEffect(() => {
     if (!token && tokenReady) {

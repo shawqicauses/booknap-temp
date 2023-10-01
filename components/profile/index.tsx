@@ -154,10 +154,7 @@ const ProfileContent = function ProfileContent() {
               <div className="w-40 h-40 overflow-hidden rounded-full mx-auto relative">
                 {user.avatar ? (
                   <Image
-                    src={
-                      user.avatar ||
-                      `/user/${theme === "light" ? "light" : "dark"}.png`
-                    }
+                    src={user.avatar}
                     alt="user"
                     className="!relative"
                     fill
@@ -166,7 +163,7 @@ const ProfileContent = function ProfileContent() {
                   <Image
                     src={
                       user?.avatar ||
-                      `/user/${theme === "light" ? "light" : "dark"}.png`
+                      `/user/${theme === "light" ? "light" : "dark"}.svg`
                     }
                     alt="user profile"
                     className="!relative"

@@ -45,8 +45,8 @@ const ThemeProvider = function ThemeProvider({
       document.body.parentElement.classList.remove(
         theme === "light" ? "dark" : "light"
       )
-      document.body.parentElement.classList.add(theme!)
-      localStorage.setItem("THEME", theme!)
+      document.body.parentElement.classList.add(theme || "light")
+      localStorage.setItem("THEME", theme || "light")
     }
   }, [theme, ready])
 

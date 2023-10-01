@@ -46,28 +46,30 @@ const BookingDetailsModal = function BookingDetailsModal({
                 {Booking.date_to}
               </span>
             </div>
-            <div className="flex gap-3 rounded-lg py-2">
-              <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                <Image
-                  src={Booking.hotel?.logo!}
-                  alt={Booking.hotel?.name!}
-                  fill
-                />
+            {Booking.hotel ? (
+              <div className="flex gap-3 rounded-lg py-2">
+                <div className="relative h-20 w-20 rounded-lg overflow-hidden">
+                  <Image
+                    src={Booking.hotel?.logo}
+                    alt={Booking.hotel?.name}
+                    fill
+                  />
+                </div>
+                <div>
+                  <h3 className="heading-3">{bookingData.hotelName}</h3>
+                  <Rating
+                    name="read-only"
+                    value={Booking.hotel?.stars}
+                    className="text-blue-700"
+                    readOnly
+                    style={{color: "#2F5597"}}
+                    size="small"
+                    icon={<AiFillStar className="text-inherit" />}
+                    emptyIcon={<AiFillStar className="text-inherit" />}
+                  />
+                </div>
               </div>
-              <div>
-                <h3 className="heading-3">{bookingData.hotelName}</h3>
-                <Rating
-                  name="read-only"
-                  value={Booking.hotel?.stars}
-                  className="text-blue-700"
-                  readOnly
-                  style={{color: "#2F5597"}}
-                  size="small"
-                  icon={<AiFillStar className="text-inherit" />}
-                  emptyIcon={<AiFillStar className="text-inherit" />}
-                />
-              </div>
-            </div>
+            ) : null}
             <div>
               <div className="my-flex-between py-2 border-b-1 border-gray-200">
                 <span>From:</span>

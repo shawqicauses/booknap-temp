@@ -74,7 +74,19 @@ const HotelPageModal = function HotelPageModal({
                       <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                     </div>
                   </SwiperSlide>
-                ) : null}
+                ) : (
+                  <SwiperSlide>
+                    <div className="relative w-full h-[200px]">
+                      <Image
+                        src="/banner.png"
+                        alt="Web Application"
+                        fill
+                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
+                    </div>
+                  </SwiperSlide>
+                )}
               </Swiper>
             </div>
             <div className="p-4">

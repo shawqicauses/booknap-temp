@@ -133,7 +133,7 @@ const NotificationsDropDown = function NotificationsDropDown({
                   <li
                     className="flex gap-2 justify-center items-center p-3 cursor-pointer"
                     key={notfi.id}>
-                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
+                    <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100 dark:border-gray-500">
                       <Image
                         src={
                           theme === "dark"
@@ -391,7 +391,7 @@ const Navbar = function Navbar() {
                                         user?.avatar ||
                                         `/user/${
                                           theme === "light" ? "light" : "dark"
-                                        }.png`
+                                        }.svg`
                                       }
                                       alt="user profile"
                                       className="!relative"
@@ -409,7 +409,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
                                 startContent={
-                                  <BiUser className="w-6 h-6 m-auto" />
+                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -423,7 +423,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <GoChecklist className="w-6 h-6 m-auto" />
+                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -437,7 +437,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <BiTrash className="w-6 h-6 m-auto" />
+                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   deleteAccount.onOpen()
@@ -450,7 +450,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <HiOutlineLogout className="w-6 h-6 m-auto" />
+                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   handleSignOut()

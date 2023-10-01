@@ -146,11 +146,11 @@ const HotelPageContent = function HotelPageContent({
         <div className="p-3 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
           <div className="relative mb-2">
             <div className="flex gap-3 absolute bottom-3 left-4 z-10">
-              <div className="relative h-full">
+              <div className="relative h-full rounded-sm">
                 <Image
                   src={result.hotel.logo}
                   alt={result.hotel.name}
-                  className="!relative !w-20 !h-20 object-contain"
+                  className="!relative !w-20 !h-20 object-cover"
                   fill
                 />
               </div>
@@ -183,11 +183,25 @@ const HotelPageContent = function HotelPageContent({
               }}
               modules={[Autoplay, Pagination]}
               className=" rounded-lg overflow-x-hidden">
-              {result?.banners.map(({id: imageId, image}) => (
-                <SwiperSlide key={imageId}>
+              {result?.banners.length > 0 ? (
+                result?.banners.map(({id: imageId, image}) => (
+                  <SwiperSlide key={imageId}>
+                    <div className="relative w-full h-[200px] lg:h-[400px]">
+                      <Image
+                        src={`https://booknap-api.wpgooal.com/${image}`}
+                        alt="Web Application"
+                        fill
+                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
+                    </div>
+                  </SwiperSlide>
+                ))
+              ) : (
+                <SwiperSlide>
                   <div className="relative w-full h-[200px] lg:h-[400px]">
                     <Image
-                      src={`https://booknap-api.wpgooal.com/${image}`}
+                      src="/banner.png"
                       alt="Web Application"
                       fill
                       className="!relative !inset-auto !rounded-lg w-full object-cover"
@@ -195,7 +209,7 @@ const HotelPageContent = function HotelPageContent({
                     <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                   </div>
                 </SwiperSlide>
-              ))}
+              )}
             </Swiper>
           </div>
           <div className="bg-[#E3E3E3] dark:bg-blue-charcoal w-fit rounded-full flex p-1">
