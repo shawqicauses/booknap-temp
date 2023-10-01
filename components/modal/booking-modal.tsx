@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, {useState, Dispatch, SetStateAction} from "react"
+import React, {useState, Dispatch, SetStateAction, useEffect} from "react"
 import {FiMinus, FiPlus} from "react-icons/fi"
 import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
@@ -84,6 +84,7 @@ const CounterStyled = function CounterStyled({
   value,
   handleClickPlus,
   handleClickMinus,
+  reset,
   isOpen,
   setIsOpen
 }: {
@@ -91,6 +92,7 @@ const CounterStyled = function CounterStyled({
   value: number
   handleClickPlus: React.MouseEventHandler<Element>
   handleClickMinus: React.MouseEventHandler<Element>
+  reset: React.MouseEventHandler<Element>
   isOpen: boolean
   setIsOpen: Function
 }) {
@@ -106,7 +108,7 @@ const CounterStyled = function CounterStyled({
           color="transparent"
           onClick={(e) => {
             if (isOpen) {
-              handleClickMinus(e)
+              reset(e)
             } else {
               handleClickPlus(e)
             }
@@ -157,8 +159,9 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noSingleRoom", data.noSingleRoom)
           }
           handleClickMinus={() =>
-            handleClick(-data.noSingleRoom, "noSingleRoom", data.noSingleRoom)
+            handleClick(-1, "noSingleRoom", data.noSingleRoom)
           }
+          reset={() => handleClick(0, "noSingleRoom", 0)}
           isOpen={isSingleOpen}
           setIsOpen={setIsSingleOpen}
         />
@@ -169,8 +172,9 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noDoubleRoom", data.noDoubleRoom)
           }
           handleClickMinus={() =>
-            handleClick(-data.noDoubleRoom, "noDoubleRoom", data.noDoubleRoom)
+            handleClick(-1, "noDoubleRoom", data.noDoubleRoom)
           }
+          reset={() => handleClick(0, "noDoubleRoom", 0)}
           isOpen={isDoubleOpen}
           setIsOpen={setIsDoubleOpen}
         />
@@ -181,8 +185,9 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noSuiteRooms", data.noSuiteRooms)
           }
           handleClickMinus={() =>
-            handleClick(-data.noSuiteRooms, "noSuiteRooms", data.noSuiteRooms)
+            handleClick(-1, "noSuiteRooms", data.noSuiteRooms)
           }
+          reset={() => handleClick(0, "noSuiteRooms", 0)}
           isOpen={isSuiteOpen}
           setIsOpen={setIsSuiteOpen}
         />
@@ -193,12 +198,9 @@ const FormPageTow = function FormPageTow({
             handleClick(1, "noPresidentialSuite", data.noPresidentialSuite)
           }
           handleClickMinus={() =>
-            handleClick(
-              -data.noPresidentialSuite,
-              "noPresidentialSuite",
-              data.noPresidentialSuite
-            )
+            handleClick(-1, "noPresidentialSuite", data.noPresidentialSuite)
           }
+          reset={() => handleClick(0, "noPresidentialSuite", 0)}
           isOpen={isPresidentialOpen}
           setIsOpen={setIsPresidentialOpen}
         />
@@ -246,14 +248,24 @@ const BookingModal = function BookingModal({
   const {handleCurrentBookingOrder, currentBooking} = useCurrentBookingOrder()
   const [page, setPage] = useState<number>(0)
   const signIn = useDisclosure()
+  const [check, setCheck] = useState({in: "", out: ""})
+
+  useEffect(() => {
+    if (checkSittings?.result.check_in && checkSittings.result.check_out) {
+      setCheck({
+        in: checkSittings.result.check_in,
+        out: checkSittings.result.check_out
+      })
+    }
+  }, [checkSittings])
 
   const {register, handleSubmit, watch, setValue, reset} =
     useForm<BasicFormData>({
       defaultValues: {
         FromDate: "",
-        FromTime: checkSittings?.result?.check_in!,
+        FromTime: check.in,
         ToDate: "",
-        ToTime: checkSittings?.result?.check_out!,
+        ToTime: check.out,
         note: "",
         noAdults: 0,
         noChildren: 0,
@@ -269,6 +281,10 @@ const BookingModal = function BookingModal({
     onClose()
     reset()
   }
+  useEffect(() => {
+    setValue("FromTime", check.in)
+    setValue("ToTime", check.out)
+  }, [check, setValue])
 
   const handleClick = (
     num: number,
@@ -381,7 +397,7 @@ const BookingModal = function BookingModal({
           <ModalBody className="overflow-hidden">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div
-                className={`grid grid-cols-2 gap-2 w-[860px] my-transition h-[550px] ${
+                className={`grid grid-cols-2 gap-4 w-[860px] my-transition  ${
                   page === 1 ? "-translate-x-[50%]" : ""
                 }`}>
                 <FormPageTow
@@ -426,8 +442,7 @@ const BookingModal = function BookingModal({
                             <Input
                               type="date"
                               {...register("FromDate", {
-                                required: true,
-                                min: toDayDate[0]
+                                required: true
                               })}
                               value={watch().FromDate}
                               variant="flat"
@@ -439,8 +454,7 @@ const BookingModal = function BookingModal({
                             <Input
                               type="time"
                               {...register("FromTime", {
-                                required: true,
-                                min: toDayDate[1]
+                                required: true
                               })}
                               value={watch().FromTime}
                               variant="flat"
@@ -474,8 +488,7 @@ const BookingModal = function BookingModal({
                             <Input
                               type="time"
                               {...register("ToTime", {
-                                required: true,
-                                min: toDayDate[1]
+                                required: true
                               })}
                               value={watch().ToTime}
                               variant="flat"
