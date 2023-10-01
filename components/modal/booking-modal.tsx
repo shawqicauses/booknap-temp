@@ -280,6 +280,8 @@ const BookingModal = function BookingModal({
     setPage(0)
     onClose()
     reset()
+    setValue("FromTime", check.in)
+    setValue("ToTime", check.out)
   }
   useEffect(() => {
     setValue("FromTime", check.in)
@@ -364,6 +366,8 @@ const BookingModal = function BookingModal({
             setPage(0)
           }
           reset()
+          setValue("FromTime", check.in)
+          setValue("ToTime", check.out)
           setPage(0)
         })
         .catch(() => {
