@@ -58,7 +58,7 @@ const BookingData: NextPage = function BookingData() {
       })
     }
   }, [id, router, token, hotelId])
-  if (!shopTab && router.isReady && categories?.length) {
+  if (!shopTab && router.isReady && categories?.length && tab === "2") {
     router.push(`${id}/?tab=2&shopTab=${categories[0].id}`)
   }
 
