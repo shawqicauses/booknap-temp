@@ -56,7 +56,7 @@ const ItemPage = function ItemPage() {
                 className="relative h-full object-contain"
               />
             </div>
-            <div className="relative w-full h-1/3 rounded-lg overflow-hidden">
+            <div className="relative overflow-hidden w-full h-1/3 rounded-lg ">
               <Image
                 src="/user-profile.jpg"
                 alt="w"
@@ -73,7 +73,7 @@ const ItemPage = function ItemPage() {
               />
             </div>
           </div>
-          <div className="relative  w-[490px]  h-[490px] flex-1 rounded-lg overflow-hidden">
+          <div className="relative h-[490px] w-[490px] flex-1 rounded-lg overflow-hidden">
             <MyButton
               isIconOnly
               className="absolute top-2 right-2 z-10 bg-opacity-50 "
@@ -84,12 +84,7 @@ const ItemPage = function ItemPage() {
                 <MdFavoriteBorder className="w-5 h-5 text-white" />
               )}
             </MyButton>
-            <Image
-              src="/user-profile.jpg"
-              alt="w"
-              fill
-              className="relative w-full h-full "
-            />
+            <Image src="/user-profile.jpg" alt="w" fill className="relative w-full h-full " />
           </div>
         </div>
         <div className="flex gap-5 flex-col justify-center">
@@ -98,19 +93,15 @@ const ItemPage = function ItemPage() {
           <div>
             <h3 className="body mb-2">Options</h3>
             <div className="flex gap-2">
-              {product?.data?.product_features[1]?.values?.map(
-                ({id: sizeId, name_en}) => (
-                  <MyButton
-                    key={sizeId}
-                    size="smSquare"
-                    onClick={() => setSize(sizeId)}
-                    className={
-                      size === sizeId ? "border !border-blue-600" : ""
-                    }>
-                    {name_en}
-                  </MyButton>
-                )
-              )}
+              {product?.data?.product_features[1]?.values?.map(({id: sizeId, name_en}) => (
+                <MyButton
+                  key={sizeId}
+                  size="smSquare"
+                  onClick={() => setSize(sizeId)}
+                  className={size === sizeId ? "border !border-blue-600" : ""}>
+                  {name_en}
+                </MyButton>
+              ))}
             </div>
           </div>
           <div>
@@ -131,12 +122,7 @@ const ItemPage = function ItemPage() {
             </div>
           </div>
           <div>
-            <MyButton
-              color="primary"
-              radius="sm"
-              fullWidth
-              size="xl"
-              onClick={handleAddItem}>
+            <MyButton color="primary" radius="sm" fullWidth size="xl" onClick={handleAddItem}>
               Add To Cart
             </MyButton>
           </div>

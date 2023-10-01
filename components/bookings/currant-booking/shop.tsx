@@ -82,9 +82,7 @@ const CardItem = function CardItem({
       </div>
       <h3 className="text-lg leading-none my-2 capitalize">{product}</h3>
       <div className="flex justify-between items-center">
-        <span className="text-xl font-bold text-red-500 items-center">
-          ${price}
-        </span>
+        <span className="text-xl font-bold text-red-500 items-center">${price}</span>
         <div className="flex gap-2">
           <MyButton isIconOnly onClick={handleClickHere}>
             {favorite ? (
@@ -108,9 +106,7 @@ const Shop = function Shop({hotelId}: {hotelId: number}) {
   const shopTab = Number(router.query.shopTab)
 
   const {data: products} = useFetch<{data: {data: Product[]}}>(
-    shopTab === -1
-      ? `shopping/products/get-favorite?hotel_id=${hotelId}`
-      : "shopping/products"
+    shopTab === -1 ? `shopping/products/get-favorite?hotel_id=${hotelId}` : "shopping/products"
   )
 
   if (products && router.isReady) {

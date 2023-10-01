@@ -1,13 +1,8 @@
+import Link from "next/link"
 import React, {useState, useEffect} from "react"
 import {SubmitHandler, UseFormGetValues, useForm} from "react-hook-form"
 import {BsApple, BsGoogle} from "react-icons/bs"
-import {
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader
-} from "@nextui-org/react"
+import {Input, Modal, ModalBody, ModalContent, ModalHeader} from "@nextui-org/react"
 import {toast} from "react-toastify"
 import {
   GoogleAuthProvider,
@@ -150,25 +145,18 @@ const SignIn = function SignIn({
         <span className="inline-block h-0.5 w-full bg-gray-200" />
       </div>
       <div className="flex gap-4">
-        <MyButton
-          color="transparent"
-          variant="bordered"
-          radius="full"
-          fullWidth
-          onClick={google}>
+        <MyButton color="transparent" variant="bordered" radius="full" fullWidth onClick={google}>
           <BsGoogle className="h-5 w-5 text-gray-400" />
           Google
         </MyButton>
-        <MyButton
-          variant="bordered"
-          color="transparent"
-          radius="full"
-          fullWidth
-          onClick={apple}>
+        <MyButton variant="bordered" color="transparent" radius="full" fullWidth onClick={apple}>
           <BsApple className="h-5 w-5 text-gray-400" />
           Apple
         </MyButton>
       </div>
+      <Link href="https://booknap-api.wpgooal.com/hotels/login" className="body text-center">
+        Sign in as Hotel
+      </Link>
     </>
   )
 }
@@ -220,19 +208,13 @@ const ConfigCode = function ConfigCode({
         const nextIndex = index + 1
         ;(checks[nextIndex] as HTMLInputElement).focus()
         ;(checks[nextIndex] as HTMLInputElement).value = rest.join("")
-        ;(checks[nextIndex] as HTMLInputElement).dispatchEvent(
-          new Event("input")
-        )
+        ;(checks[nextIndex] as HTMLInputElement).dispatchEvent(new Event("input"))
       }
     }
 
     checks.forEach((element, index) => {
-      element.addEventListener("keydown", (e) =>
-        handleKeyDown(index, e as KeyboardEvent)
-      )
-      element.addEventListener("input", (e) =>
-        handleInput(index, e as InputEvent)
-      )
+      element.addEventListener("keydown", (e) => handleKeyDown(index, e as KeyboardEvent))
+      element.addEventListener("input", (e) => handleInput(index, e as InputEvent))
     })
   }, [])
 
@@ -249,13 +231,7 @@ const ConfigCode = function ConfigCode({
       </div>
       <div className="flex gap-0.5 md:gap-3 flex-row justify-evenly mb-4">
         {Object.keys(init).map((check: any) => {
-          const check2:
-            | "check1"
-            | "check2"
-            | "check3"
-            | "check4"
-            | "check5"
-            | "check6" = check
+          const check2: "check1" | "check2" | "check3" | "check4" | "check5" | "check6" = check
           return (
             <input
               lang="en"
@@ -269,11 +245,7 @@ const ConfigCode = function ConfigCode({
           )
         })}
       </div>
-      <MyButton
-        color="primary"
-        type="submit"
-        fullWidth
-        isLoading={loading || isSubmitting}>
+      <MyButton color="primary" type="submit" fullWidth isLoading={loading || isSubmitting}>
         Sign in
       </MyButton>
     </>
@@ -386,17 +358,14 @@ const SignInModal = function SignInModal({
   }
 
   const signInByProviders = async (name: string, email: string) => {
-    const resSign: ISginIn = await client(
-      "https://booknap-api.wpgooal.com/api/login-email",
-      {
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          type: "1"
-        }),
-        method: "POST"
-      }
-    )?.catch(() => {})
+    const resSign: ISginIn = await client("https://booknap-api.wpgooal.com/api/login-email", {
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        type: "1"
+      }),
+      method: "POST"
+    })?.catch(() => {})
     localStorage.setItem("TOKEN", resSign.token)
     handleUser(resSign.user)
     if (resSign.has_booking) {
