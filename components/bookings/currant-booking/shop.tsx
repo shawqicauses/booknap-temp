@@ -77,11 +77,11 @@ const CardItem = function CardItem({
 
   return (
     <div className="p-3 h-auto bg-gray-100 dark:bg-mirage rounded-lg" key={id}>
-      <div className="relative h-auto rounded-lg overflow-hidden">
+      <div className="relative rounded-lg overflow-hidden w-52 h-52">
         <Image src={image} alt={product} fill className="!relative" />
       </div>
       <h3 className="text-lg leading-none my-2 capitalize">{product}</h3>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <span className="text-xl font-bold text-red-500 items-center">
           ${price}
         </span>
@@ -119,7 +119,7 @@ const Shop = function Shop({hotelId}: {hotelId: number}) {
         {products.data.data
           .filter(
             (product) =>
-              product.hotel_id === id &&
+              product.hotel_id === hotelId &&
               (shopTab === -1 || product.shopping_category_id === shopTab)
           )
           .map(({id: productId, image, price, description, is_favourite}) => {

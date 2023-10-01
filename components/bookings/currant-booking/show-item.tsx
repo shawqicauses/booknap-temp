@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import Image from "next/image"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {useRouter} from "next/router"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
 import MyButton from "../../uis/button"
@@ -9,6 +9,7 @@ import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
 import {Product} from "./shop"
 import {useCart} from "../../../stores/cart"
+import client from "../../../helpers/client"
 
 const ItemPage = function ItemPage() {
   const router = useRouter()
@@ -19,14 +20,28 @@ const ItemPage = function ItemPage() {
     id && !Number.isNaN(id) ? `shopping/products/${id}` : ""
   )
   const [quantity, setQuantity] = useState(1)
-  const [isFavorite, setISFavorite] = useState(false)
   const [size, setSize] = useState(0)
+  const [favorite, setFavorite] = useState<boolean>(false)
+
+  const handleClickHere = () => {
+    setFavorite((pre) => !pre)
+    client("shopping/products/add-favorite", {
+      method: "POST",
+      body: JSON.stringify({shopping_product_id: id})
+    })
+  }
 
   const handleAddItem = () => {
     if (product) {
       addItemToCart(product.data, quantity)
     }
   }
+
+  useEffect(() => {
+    if (product) {
+      setFavorite(!!product?.data.is_favourite)
+    }
+  }, [product])
 
   if (product) {
     return (
@@ -62,8 +77,8 @@ const ItemPage = function ItemPage() {
             <MyButton
               isIconOnly
               className="absolute top-2 right-2 z-10 bg-opacity-50 "
-              onClick={() => setISFavorite((pre) => !pre)}>
-              {isFavorite ? (
+              onClick={handleClickHere}>
+              {favorite ? (
                 <MdFavorite className="w-5 h-5 text-red-500" />
               ) : (
                 <MdFavoriteBorder className="w-5 h-5 text-white" />

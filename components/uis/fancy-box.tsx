@@ -1,26 +1,33 @@
-/* eslint-disable react/destructuring-assignment */
-import React, {useRef, useEffect} from "react"
-import {Fancybox as NativeFancybox} from "@fancyapps/ui"
+import {ReactNode, useEffect, useRef} from "react"
+import {Fancybox as NativeFancyBox} from "@fancyapps/ui"
 import "@fancyapps/ui/dist/fancybox/fancybox.css"
 
-const Fancybox = function Fancybox(props: any) {
-  const containerRef = useRef(null)
-
+const FancyBox = function FancyBox({
+  delegate,
+  options,
+  children
+}: {
+  delegate?: string
+  options?: any
+  children: ReactNode
+}) {
+  const ref = useRef(null)
   useEffect(() => {
-    const container = containerRef.current
-
-    const delegate = props.delegate || "[data-fancybox]"
-    const options = props.options || {}
-
-    NativeFancybox.bind(container, delegate, options)
+    const container = ref.current
+    if (delegate) NativeFancyBox.bind(container, delegate, options)
 
     return () => {
-      NativeFancybox.unbind(container)
-      NativeFancybox.close()
+      NativeFancyBox.unbind(container)
+      NativeFancyBox.close()
     }
   })
 
-  return <div ref={containerRef}>{props.children}</div>
+  return <div ref={ref}>{children}</div>
 }
 
-export default Fancybox
+FancyBox.defaultProps = {
+  delegate: "[data-fancybox]",
+  options: {}
+}
+
+export default FancyBox

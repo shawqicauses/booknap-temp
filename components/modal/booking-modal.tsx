@@ -148,7 +148,7 @@ const FormPageTow = function FormPageTow({
   const [isPresidentialOpen, setIsPresidentialOpen] = useState<boolean>(false)
 
   return (
-    <div className="mt-10 w-[360px]">
+    <div className="mt-10 overflow-y-scroll hide-scrollbar">
       <div className=" flex flex-col gap-3 h-full overflow-y-scroll hide-scrollbar px-5">
         <CounterStyled
           label="Single Room"
@@ -204,7 +204,7 @@ const FormPageTow = function FormPageTow({
         />
         <div className="flex-1 justify-end flex flex-col items-center mb-5">
           <MyButton
-            className=""
+            className="inline-block"
             color="primary"
             radius="sm"
             fullWidth
@@ -371,7 +371,7 @@ const BookingModal = function BookingModal({
   return (
     <>
       <Modal
-        size="sm"
+        size="md"
         backdrop="opaque"
         isDismissable={false}
         isOpen={isOpen}
@@ -381,7 +381,7 @@ const BookingModal = function BookingModal({
           <ModalBody className="overflow-hidden">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div
-                className={`flex gap-4 w-[756px] my-transition h-[550px] ${
+                className={`grid grid-cols-2 gap-2 w-[860px] my-transition h-[550px] ${
                   page === 1 ? "-translate-x-[50%]" : ""
                 }`}>
                 <FormPageTow
@@ -389,7 +389,7 @@ const BookingModal = function BookingModal({
                   handleClick={handleClick}
                   setPage={setPage}
                 />
-                <div className="flex flex-col gap-1 relative justify-start w-[360px]">
+                <div className="flex flex-col gap-1 relative justify-start overflow-y-scroll hide-scrollbar">
                   <MyButton
                     size="sm"
                     radius="md"
@@ -425,11 +425,11 @@ const BookingModal = function BookingModal({
                           <div className="my-flex gap-2">
                             <Input
                               type="date"
-                              value={watch().FromDate}
                               {...register("FromDate", {
                                 required: true,
                                 min: toDayDate[0]
                               })}
+                              value={watch().FromDate}
                               variant="flat"
                               classNames={{
                                 inputWrapper: "shadow-none dark:bg-mirage",
@@ -438,11 +438,11 @@ const BookingModal = function BookingModal({
                             />
                             <Input
                               type="time"
-                              value={watch().FromTime}
                               {...register("FromTime", {
                                 required: true,
                                 min: toDayDate[1]
                               })}
+                              value={watch().FromTime}
                               variant="flat"
                               classNames={{
                                 inputWrapper: "shadow-none dark:bg-mirage",
@@ -460,11 +460,11 @@ const BookingModal = function BookingModal({
                           <div className="my-flex gap-2">
                             <Input
                               type="date"
-                              value={watch().ToDate}
                               {...register("ToDate", {
                                 required: true,
                                 min: toDayDate[0]
                               })}
+                              value={watch().ToDate}
                               variant="flat"
                               classNames={{
                                 inputWrapper: "shadow-none dark:bg-mirage",
@@ -473,11 +473,11 @@ const BookingModal = function BookingModal({
                             />
                             <Input
                               type="time"
-                              value={watch().ToTime}
                               {...register("ToTime", {
                                 required: true,
                                 min: toDayDate[1]
                               })}
+                              value={watch().ToTime}
                               variant="flat"
                               classNames={{
                                 inputWrapper: "shadow-none dark:bg-mirage",
@@ -563,7 +563,7 @@ const BookingModal = function BookingModal({
                         />
                       </div>
                       <MyButton
-                        className=""
+                        className="inline-block"
                         radius="sm"
                         color="primary"
                         fullWidth
