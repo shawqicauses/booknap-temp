@@ -9,7 +9,7 @@ const MyButton = extendVariants(Button, {
       navIcon:
         "px-unit-1 min-w-unit-10  min-h-unit-10 h-full text-small gap-unit-2 rounded-small inline-flex",
       xl2: "px-5 py-3 min-w-unit-10 h-full !text-xl gap-unit-2 rounded-small inline-flex  w-full h-full",
-      tab: "py-1 px-5 inline-flex  w-full h-full"
+      tab: "py-1 px-5 inline-flex w-full h-full"
     },
     color: {
       success: "bg-green-500 text-white",

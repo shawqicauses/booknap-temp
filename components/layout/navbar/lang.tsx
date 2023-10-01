@@ -28,11 +28,7 @@ const Lang = function Lang() {
     setShowChild(true)
   }, [])
 
-  if (!showChild) {
-    return null
-  }
-
-  return (
+  return showChild ? (
     <Dropdown
       size="sm"
       className="px-0 py-2 dark:bg-mirage"
@@ -62,7 +58,7 @@ const Lang = function Lang() {
         ))}
       </DropdownMenu>
     </Dropdown>
-  )
+  ) : null
 }
 
 export default Lang

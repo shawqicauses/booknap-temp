@@ -52,35 +52,31 @@ const SignIn = function SignIn({
   errors: any
   watch: any
   // eslint-disable-next-line no-unused-vars
-  signInByProviders: (data: {
-    name: string
-    email: string
-    type: "1"
-  }) => Promise<void>
+  signInByProviders: (name: string, email: string) => Promise<void>
   getValues: UseFormGetValues<IConfigCode & ISignIn>
   onSignUp: Function
   setPage: Function
 }) {
   const google = async () => {
     const provider = new GoogleAuthProvider()
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then(async (res) => {
         GoogleAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
         if (email && displayName) {
-          await signInByProviders({name: displayName, email: email, type: "1"})
+          await signInByProviders(displayName, email)
         }
       })
       .catch(() => {})
   }
   const apple = async () => {
     const provider = new OAuthProvider("apple.com")
-    signInWithPopup(auth, provider)
+    await signInWithPopup(auth, provider)
       .then(async (res) => {
         OAuthProvider.credentialFromResult(res)
         const {displayName, email} = res.user
         if (email && displayName) {
-          await signInByProviders({name: displayName, email: email, type: "1"})
+          await signInByProviders(displayName, email)
         }
       })
       .catch(() => {})
@@ -101,7 +97,8 @@ const SignIn = function SignIn({
             placeholder="userName"
             classNames={{
               inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none"
+                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none dark:bg-mirage dark:border-mirage",
+              input: "dark:text-white"
             }}
           />
           {errors.mobile?.types?.required ? (
@@ -124,7 +121,8 @@ const SignIn = function SignIn({
             placeholder="+000000000000"
             classNames={{
               inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none"
+                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none dark:bg-mirage dark:border-mirage",
+              input: "dark:text-white"
             }}
           />
           {errors.name?.types?.required ? (
@@ -326,6 +324,9 @@ const SignInModal = function SignInModal({
     formState: {errors, isSubmitting},
     reset
   } = useForm<IConfigCode & ISignIn>({
+    defaultValues: {
+      mobile: "+966"
+    },
     criteriaMode: "all"
   })
   const [loading, setLoading] = useState<boolean>(false)
@@ -383,18 +384,18 @@ const SignInModal = function SignInModal({
     }
   }
 
-  const signInByProviders = async (data: {
-    name: string
-    email: string
-    type: "1"
-  }) => {
+  const signInByProviders = async (name: string, email: string) => {
     const resSign: ISginIn = await client(
       "https://booknap-api.wpgooal.com/api/login-email",
       {
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          type: "1"
+        }),
         method: "POST"
       }
-    )
+    )?.catch(() => {})
     localStorage.setItem("TOKEN", resSign.token)
     handleUser(resSign.user)
     if (resSign.has_booking) {
@@ -407,9 +408,9 @@ const SignInModal = function SignInModal({
   }
 
   const handleResend = () => {
-    window.confirmationResult = undefined
-    window.recaptchaVerifier = undefined
-    onSignUp(watch().mobile)
+    // window.confirmationResult = undefined
+    // window.recaptchaVerifier = undefined
+    // onSignUp(watch().mobile)
   }
 
   return (

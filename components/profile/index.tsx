@@ -4,7 +4,7 @@ import {toast} from "react-toastify"
 import Image from "next/image"
 import React, {useEffect, useState} from "react"
 import {SubmitHandler, useForm} from "react-hook-form"
-import {AiOutlineCheck, AiTwotoneStar} from "react-icons/ai"
+import {AiFillStar, AiOutlineCheck} from "react-icons/ai"
 import MyButton from "../uis/button"
 import client from "../../helpers/client"
 import LoadingDiv from "../uis/loading"
@@ -28,7 +28,7 @@ const inputStyle = {
   label: "text-black dark:text-white/90 text-lg",
   inputWrapper: [
     "h-[50px]",
-    "bg-white dark:bg-blue-charcoal dark:border-ebony-clay border"
+    "bg-white dark:bg-blue-charcoal dark:border-blue-charcoal  border"
   ],
   input: "pl-2 text-black dark:text-white"
 }
@@ -181,12 +181,11 @@ const ProfileContent = function ProfileContent() {
               </h2>
               <div className="flex justify-center">
                 <Rating
-                  name="read-only"
                   value={user.stars}
-                  readOnly
                   size="large"
-                  icon={<AiTwotoneStar />}
-                  emptyIcon={<AiTwotoneStar className="text-gray-300" />}
+                  readOnly
+                  icon={<AiFillStar className="text-inherit" />}
+                  emptyIcon={<AiFillStar className="text-gray-600" />}
                 />
               </div>
             </div>

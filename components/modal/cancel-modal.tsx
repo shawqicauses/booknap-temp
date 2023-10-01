@@ -58,12 +58,7 @@ const CancelModal = function CancelModal({
     getData()
   }, [])
   return (
-    <Modal
-      size="lg"
-      isOpen={isOpen}
-      onClose={onClose}
-      className="bg-[#F5F5F5]"
-      classNames={type3}>
+    <Modal size="lg" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
         <ModalHeader>
           <h1 className="heading-2 mb-2 dark:text-white">Cancel Reason</h1>

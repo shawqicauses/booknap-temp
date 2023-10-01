@@ -18,27 +18,26 @@ const Sidebar = function Sidebar() {
     }
   }, [ready, currentBooking])
 
-  if (user) {
-    return (
-      <div>
-        <IconSidebar
-          setShowOffersSidebar={setShowOffersSidebar}
-          setShowBookingsSidebar={setShowBookingsSidebar}
-          offersNum={offersNum || 0}
-        />
-        <OffersSidebar
-          show={showOffersSidebar}
-          setShow={setShowOffersSidebar}
-          setOffersNum={setOffersNum}
-        />
-        <BookingSidebar
-          show={showBookingsSidebar}
-          setShow={setShowBookingsSidebar}
-        />
-      </div>
-    )
-  }
-  return null
+  return user ? (
+    <div>
+      <IconSidebar
+        setShowOffersSidebar={setShowOffersSidebar}
+        setShowBookingsSidebar={setShowBookingsSidebar}
+        offersNum={offersNum || 0}
+      />
+      <OffersSidebar
+        show={showOffersSidebar}
+        setShow={setShowOffersSidebar}
+        setOffersNum={setOffersNum}
+      />
+      <BookingSidebar
+        show={showBookingsSidebar}
+        setShow={setShowBookingsSidebar}
+      />
+    </div>
+  ) : (
+    <span />
+  )
 }
 
 export default Sidebar

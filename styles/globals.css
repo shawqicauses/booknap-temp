@@ -87,7 +87,7 @@
   }
 
   .label-uppercase {
-    @apply label uppercase tracking-widest text-gray-500/75;
+    @apply label uppercase text-gray-500/75;
   }
 
   .label-lg {

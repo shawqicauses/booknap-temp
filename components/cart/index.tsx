@@ -9,7 +9,7 @@ const CartContent = function CartContent() {
     <div className="my-10 my-container flex gap-8 flex-col">
       {cart.length > 0 ? (
         <>
-          <div className="p-5 bg-[#F5F5F5] dark:bg-mirage rounded-lg mb-3">
+          <div className="p-5 bg-gray-100 dark:bg-mirage rounded-lg mb-3">
             <ItemTable />
           </div>
           <CheckoutCard />

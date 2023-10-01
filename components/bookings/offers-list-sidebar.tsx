@@ -91,19 +91,23 @@ const HotelOfferBox = function HotelOfferBox({
   setShow,
   getOffers
 }: HotelOfferBoxProps) {
-  const [reject, setReject] = useState<boolean>(
-    !(offer.status === 0 && offer.price_after_reject)
-  )
+  const [reject, setReject] = useState<boolean>(offer.status === 2)
   const {isOpen, onClose, onOpen} = useDisclosure()
+
+  useEffect(() => {
+    if (reject && offer.status === 0) {
+      setReject(false)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offer.status])
 
   const handleBooked = () => {
     client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})?.then(
       (res) => {
         if (res.success) {
           setShow(false)
-          setTimeout(() => {
-            clearCurrentBookingOrder()
-          }, 2000)
+          clearCurrentBookingOrder()
         }
       }
     )
@@ -143,12 +147,13 @@ const HotelOfferBox = function HotelOfferBox({
               <Rating
                 name="read-only"
                 value={offer.hotel.stars}
-                className="text-blue-700"
                 readOnly
                 style={{color: "#2F5597"}}
                 size="small"
                 icon={<AiFillStar className="text-inherit" />}
-                emptyIcon={<AiFillStar className="text-inherit" />}
+                emptyIcon={
+                  <AiFillStar className="text-inherit text-ebony-clay" />
+                }
               />
               <div className="flex gap-1">
                 <span className="label-gray text-sm">

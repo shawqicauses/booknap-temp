@@ -18,12 +18,7 @@ const BookedModal = function BookedModal({
   onClose: () => void
 }) {
   return (
-    <Modal
-      size="lg"
-      isOpen={isOpen}
-      onClose={onClose}
-      className="bg-[#F5F5F5]"
-      classNames={type3}>
+    <Modal size="lg" isOpen={isOpen} classNames={type3}>
       <ModalContent>
         <ModalHeader>
           <h2 className="heading-1 dark:text-white">Booked</h2>

@@ -40,7 +40,7 @@ const Footer = function Footer() {
   const {theme} = useTheme()
   return (
     <footer>
-      <div className="bg-[#F5F5F5] dark:bg-mirage pb-10">
+      <div className="bg-gray-100 dark:bg-mirage pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-container py-10 gap-6">
           <div className="pt-2">
             <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
