@@ -43,12 +43,7 @@ const BookingData: NextPage = function BookingData() {
     [id, userBookings]
   )
   const tabs = useMemo(
-    () => [
-      <Booking />,
-      <RoomsDetails />,
-      <Shop hotelId={hotelId || 0} />,
-      <About />
-    ],
+    () => [<Booking />, <RoomsDetails />, <Shop hotelId={hotelId || 0} />, <About />],
     [hotelId]
   )
   useEffect(() => {
@@ -68,14 +63,12 @@ const BookingData: NextPage = function BookingData() {
         <HotelPageContent>
           {tab === "2" ? (
             <div className="mt-5">
-              <div className="flex border-b-2 border-b-gray-200">
+              <div className="flex border-b-2 border-b-gray-200 dark:border-b-[#5B6C89]">
                 {categories?.map(({name, id: tabId}) => (
                   <div
                     key={tabId}
                     className={`cursor-pointer px-5 py-1 ${
-                      Number(shopTab) === tabId
-                        ? "border-b-2 border-b-blue-700"
-                        : ""
+                      Number(shopTab) === tabId ? "border-b-2 border-b-blue-700" : ""
                     }`}
                     onClick={() => router.push(`${id}/?tab=2&shopTab=${tabId}`)}
                     aria-hidden="true">

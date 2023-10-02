@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {Spinner, useDisclosure} from "@nextui-org/react"
+import {useDisclosure} from "@nextui-org/react"
 import {MdLocalOffer} from "react-icons/md"
 import {BiTime} from "react-icons/bi"
 import Image from "next/image"
@@ -14,6 +14,7 @@ import {useCurrentBookingOrder} from "../../stores/current-booking-order"
 import HotelPageModal from "../modal/hotel-page-modal"
 import State from "../state"
 import ListSidebar from "../uis/list-sidebar"
+import MySpinner from "../uis/my-spinner"
 
 export interface Room {
   type: number
@@ -103,14 +104,12 @@ const HotelOfferBox = function HotelOfferBox({
   }, [offer.status])
 
   const handleBooked = () => {
-    client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})?.then(
-      (res) => {
-        if (res.success) {
-          setShow(false)
-          clearCurrentBookingOrder()
-        }
+    client(`hotels/bookings/offers/accept/${offer.id}`, {method: "GET"})?.then((res) => {
+      if (res.success) {
+        setShow(false)
+        clearCurrentBookingOrder()
       }
-    )
+    })
     openBookedModal()
   }
   const handleReject = () => {
@@ -123,17 +122,14 @@ const HotelOfferBox = function HotelOfferBox({
   }
   return (
     <>
-      <div className="bg-white dark:bg-mirage p-3 rounded-lg shadow-base snap-center relative">
+      <div className="bg-white dark:bg-mirage p-3 rounded-lg snap-center relative">
         {offer?.price_after_reject ? (
           <div className="absolute top-0 left-0 bg-red-600 text-white text-sm px-3 py-1 rounded-br-large rounded-tl-large z-20">
             New Offer
           </div>
         ) : null}
         <div className="flex justify-between gap-2 mb-2">
-          <div
-            className="flex gap-2 cursor-pointer"
-            onClick={onOpen}
-            aria-hidden="true">
+          <div className="flex gap-2 cursor-pointer" onClick={onOpen} aria-hidden="true">
             <div className="!w-20 !h-20 overflow-hidden rounded-lg">
               <Image
                 src={offer.hotel.logo}
@@ -151,9 +147,7 @@ const HotelOfferBox = function HotelOfferBox({
                 style={{color: "#2F5597"}}
                 size="small"
                 icon={<AiFillStar className="text-inherit" />}
-                emptyIcon={
-                  <AiFillStar className="text-inherit text-ebony-clay" />
-                }
+                emptyIcon={<AiFillStar className="text-inherit dark:text-ebony-clay" />}
               />
               <div className="flex gap-1">
                 <span className="label-gray text-sm">
@@ -167,10 +161,7 @@ const HotelOfferBox = function HotelOfferBox({
           </div>
           <div className="flex flex-col gap-1 items-center">
             <span className="text-red-600 text-xl font-bold">
-              {offer?.price_after_reject
-                ? offer.price_after_reject
-                : offer.price}
-              $
+              {offer?.price_after_reject ? offer.price_after_reject : offer.price}$
             </span>
             {offer?.price_after_reject ? (
               <span className="line-through text-gray-400">{offer.price}$</span>
@@ -186,7 +177,7 @@ const HotelOfferBox = function HotelOfferBox({
               className="!w-[72px]"
               isLoading={reject}
               onClick={handleReject}
-              spinner={<Spinner size="md" />}>
+              spinner={<MySpinner />}>
               {!reject ? "reject" : ""}
             </MyButton>
           ) : null}
@@ -239,12 +230,9 @@ const OffersSidebar = function OffersSidebar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBooking, clearCurrentBookingOrder])
   const getOffers = async () => {
-    const res: IGetOffersRes = await client(
-      "hotels/bookings/offers/guest-index",
-      {
-        method: "GET"
-      }
-    )
+    const res: IGetOffersRes = await client("hotels/bookings/offers/guest-index", {
+      method: "GET"
+    })
     setOffers(res.result.data)
   }
   useEffect(() => {
@@ -288,10 +276,7 @@ const OffersSidebar = function OffersSidebar({
                 {String(time.seconds || 0).padStart(2, "0")}
               </span>
 
-              <MyButton
-                color="transparent"
-                className="text-gray-400"
-                onClick={cancel.onOpen}>
+              <MyButton color="transparent" className="text-gray-400" onClick={cancel.onOpen}>
                 Cancel
               </MyButton>
             </>
@@ -310,9 +295,7 @@ const OffersSidebar = function OffersSidebar({
                   color={filter === 1 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
-                  startContent={
-                    filter === 1 ? <AiOutlineCheck className="h-5 w-5" /> : null
-                  }
+                  startContent={filter === 1 ? <AiOutlineCheck className="h-5 w-5" /> : null}
                   onClick={() => serFilter(1)}
                   disableAnimation>
                   Highest Rated
@@ -321,9 +304,7 @@ const OffersSidebar = function OffersSidebar({
                   color={filter === 2 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
-                  startContent={
-                    filter === 2 ? <AiOutlineCheck className="h-5 w-5" /> : null
-                  }
+                  startContent={filter === 2 ? <AiOutlineCheck className="h-5 w-5" /> : null}
                   onClick={() => serFilter(2)}
                   disableAnimation>
                   Lowest Price
@@ -332,9 +313,7 @@ const OffersSidebar = function OffersSidebar({
                   color={filter === 3 ? "primary2" : "white"}
                   radius="sm"
                   size="sm"
-                  startContent={
-                    filter === 3 ? <AiOutlineCheck className="h-5 w-5" /> : null
-                  }
+                  startContent={filter === 3 ? <AiOutlineCheck className="h-5 w-5" /> : null}
                   onClick={() => serFilter(3)}
                   disableAnimation>
                   Highest Price

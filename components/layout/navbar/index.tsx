@@ -7,7 +7,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Spinner,
   useDisclosure
 } from "@nextui-org/react"
 import {useRouter} from "next/router"
@@ -31,6 +30,7 @@ import client from "../../../helpers/client"
 import {useUser} from "../../../stores/user"
 import {useNotifications} from "../../../stores/notifications"
 import {useTheme} from "../../../stores/theme"
+import MySpinner from "../../uis/my-spinner"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -42,9 +42,7 @@ interface INavbarProps {
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NavbarOpenToggle = function NavbarOpenToggle({
-  setIsOpened
-}: INavbarProps): ReactElement {
+const NavbarOpenToggle = function NavbarOpenToggle({setIsOpened}: INavbarProps): ReactElement {
   return (
     <button
       type="button"
@@ -58,9 +56,7 @@ const NavbarOpenToggle = function NavbarOpenToggle({
   )
 }
 
-const NavbarCloseToggle = function NavbarCloseToggle({
-  setIsOpened
-}: INavbarProps): ReactElement {
+const NavbarCloseToggle = function NavbarCloseToggle({setIsOpened}: INavbarProps): ReactElement {
   return (
     <button
       type="button"
@@ -92,11 +88,9 @@ const NotificationsDropDown = function NotificationsDropDown({
     if (ready && tokenReady) {
       notifications.forEach((noti: any) => {
         if (!noti.read_at) {
-          client(`notifications/read/${noti.id}`, {method: "GET"})?.catch(
-            () => {
-              signOut()
-            }
-          )
+          client(`notifications/read/${noti.id}`, {method: "GET"})?.catch(() => {
+            signOut()
+          })
         }
       })
     }
@@ -105,16 +99,8 @@ const NotificationsDropDown = function NotificationsDropDown({
   return (
     <div className="relative h-full">
       <OutsideClickHandler onOutsideClick={() => setIsNotificationsOpen(false)}>
-        <MyButton
-          isIconOnly
-          size="navIcon"
-          color="navIcon"
-          onClick={handleClick}>
-          <Badge
-            color="danger"
-            content={unReadMassages}
-            shape="circle"
-            disableOutline>
+        <MyButton isIconOnly size="navIcon" color="navIcon" onClick={handleClick}>
+          <Badge color="danger" content={unReadMassages} shape="circle" disableOutline>
             <IoMdNotificationsOutline className="w-6 h-6" />
           </Badge>
         </MyButton>
@@ -135,11 +121,7 @@ const NotificationsDropDown = function NotificationsDropDown({
                     key={notfi.id}>
                     <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100 dark:border-gray-500">
                       <Image
-                        src={
-                          theme === "dark"
-                            ? "/notifications-dark.png"
-                            : "/notifications.png"
-                        }
+                        src={theme === "dark" ? "/notifications-dark.png" : "/notifications.png"}
                         alt="logo"
                         className="relative"
                         fill
@@ -158,7 +140,7 @@ const NotificationsDropDown = function NotificationsDropDown({
               )
             ) : (
               <li className="max-h-[150px] flex justify-center items-center">
-                <Spinner size="md" />
+                <MySpinner />
               </li>
             )}
           </ul>
@@ -181,17 +163,9 @@ const CartDropDown = function CartDropDown({
   return (
     <div className="relative h-full">
       <OutsideClickHandler onOutsideClick={() => setIsCartDropDownOpen(false)}>
-        <MyButton
-          size="navIcon"
-          color="navIcon"
-          onClick={handleOpenCartDropDown}
-          isIconOnly>
+        <MyButton size="navIcon" color="navIcon" onClick={handleOpenCartDropDown} isIconOnly>
           {cart.length > 0 ? (
-            <Badge
-              color="danger"
-              content={cart.length}
-              shape="circle"
-              disableOutline>
+            <Badge color="danger" content={cart.length} shape="circle" disableOutline>
               <AiOutlineShoppingCart className="w-6 h-6" />
             </Badge>
           ) : (
@@ -211,24 +185,15 @@ const CartDropDown = function CartDropDown({
               cart.length > 0 ? (
                 <>
                   {cart.slice(0, 3).map((item) => (
-                    <li
-                      className="flex gap-2 items-center p-3 cursor-pointer"
-                      key={item.id}>
+                    <li className="flex gap-2 items-center p-3 cursor-pointer" key={item.id}>
                       <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
                         {item.product?.image ? (
-                          <Image
-                            src={item.product?.image}
-                            alt="logo"
-                            className="relative"
-                            fill
-                          />
+                          <Image src={item.product?.image} alt="logo" className="relative" fill />
                         ) : null}
                       </div>
                       <div className="flex flex-col flex-1 text-start">
                         <h3 className="">{item?.product?.name}</h3>
-                        <span className="body-sm line-clamp-1">
-                          {item?.product?.description}
-                        </span>
+                        <span className="body-sm line-clamp-1">{item?.product?.description}</span>
                       </div>
                     </li>
                   ))}
@@ -245,7 +210,7 @@ const CartDropDown = function CartDropDown({
               )
             ) : (
               <li className="max-h-[150px] flex justify-center items-center">
-                <Spinner size="md" />
+                <MySpinner />
               </li>
             )}
           </ul>
@@ -287,9 +252,7 @@ const Navbar = function Navbar() {
           <div className="flex gap-10 w-full items-center  justify-between md:justify-start">
             <Link href="/" className="relative w-40 lg:mt-0">
               <Image
-                src={`/logo/${
-                  theme === "light" ? "blue-logo" : "white-logo"
-                }.png `}
+                src={`/logo/${theme === "light" ? "blue-logo" : "white-logo"}.png `}
                 alt="Logo"
                 fill
                 className="!relative !inset-auto !w-max object-contain"
@@ -299,9 +262,7 @@ const Navbar = function Navbar() {
               <NavbarOpenToggle setIsOpened={setIsOpened} />
               <ul
                 className={[
-                  isOpened
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-full opacity-0",
+                  isOpened ? "translate-x-0 opacity-100" : "translate-x-full opacity-0",
                   "my-flex my-transition  !items-center lg:!justify-between fixed inset-0 z-50 transform flex-col gap-3 bg-white dark:bg-[rgb(0,8,24)] lg:static lg:z-10 lg:!flex lg:translate-x-0 lg:flex-row lg:bg-transparent lg:opacity-100"
                 ].join(" ")}>
                 <NavbarCloseToggle setIsOpened={setIsOpened} />
@@ -389,9 +350,7 @@ const Navbar = function Navbar() {
                                     <Image
                                       src={
                                         user?.avatar ||
-                                        `/user/${
-                                          theme === "light" ? "light" : "dark"
-                                        }.svg`
+                                        `/user/${theme === "light" ? "light" : "dark"}.svg`
                                       }
                                       alt="user profile"
                                       className="!relative"
@@ -401,7 +360,7 @@ const Navbar = function Navbar() {
                                 </button>
                               ) : (
                                 <div className="min-w-[100px] h-full flex justify-center items-center rounded-lg">
-                                  <Spinner />
+                                  <MySpinner />
                                 </div>
                               )}
                             </DropdownTrigger>
@@ -443,9 +402,7 @@ const Navbar = function Navbar() {
                                   deleteAccount.onOpen()
                                   setIsOpened(false)
                                 }}>
-                                <span className="dark:text-white">
-                                  Delete Account
-                                </span>
+                                <span className="dark:text-white">Delete Account</span>
                               </DropdownItem>
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
@@ -471,10 +428,7 @@ const Navbar = function Navbar() {
         </div>
       </nav>
       <SignInModal isOpen={signInModel.isOpen} onClose={signInModel.onClose} />
-      <DeleteAccountModal
-        isOpen={deleteAccount.isOpen}
-        onClose={deleteAccount.onClose}
-      />
+      <DeleteAccountModal isOpen={deleteAccount.isOpen} onClose={deleteAccount.onClose} />
     </>
   )
 }

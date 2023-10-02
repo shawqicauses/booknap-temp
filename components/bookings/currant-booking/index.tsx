@@ -123,11 +123,7 @@ export interface res {
   result: Result
 }
 
-const HotelPageContent = function HotelPageContent({
-  children
-}: {
-  children?: ReactNode
-}) {
+const HotelPageContent = function HotelPageContent({children}: {children?: ReactNode}) {
   const router = useRouter()
   const id = Number(router.query.id)
   const [result, setResult] = useState<Result>()
@@ -150,22 +146,18 @@ const HotelPageContent = function HotelPageContent({
                 <Image
                   src={result.hotel.logo}
                   alt={result.hotel.name}
-                  className="!relative !w-20 !h-20 object-cover"
+                  className="!relative !w-20 !h-20 object-cover border-2 border-gray-100 dark:border-[#5B6C89] rounded-lg"
                   fill
                 />
               </div>
               <div>
-                <h2 className="heading-2 mb-3 text-white">
-                  {result.hotel.name}
-                </h2>
+                <h2 className="heading-2 mb-3 text-white">{result.hotel.name}</h2>
                 <Rating
                   value={result.hotel.stars}
                   readOnly
                   style={{color: "#FBC831"}}
                   icon={<AiFillStar className="text-inherit" />}
-                  emptyIcon={
-                    <AiFillStar className="text-inherit text-[#DDDDDD]" />
-                  }
+                  emptyIcon={<AiFillStar className="text-inherit text-[#DDDDDD]" />}
                 />
               </div>
             </div>
@@ -191,7 +183,7 @@ const HotelPageContent = function HotelPageContent({
                         src={`https://booknap-api.wpgooal.com/${image}`}
                         alt="Web Application"
                         fill
-                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                        className="!relative !inset-auto w-full object-cover"
                       />
                       <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                     </div>
@@ -204,7 +196,7 @@ const HotelPageContent = function HotelPageContent({
                       src="/banner.png"
                       alt="Web Application"
                       fill
-                      className="!relative !inset-auto !rounded-lg w-full object-cover"
+                      className="!relative !inset-auto w-full object-cover"
                     />
                     <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                   </div>

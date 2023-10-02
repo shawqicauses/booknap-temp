@@ -194,3 +194,14 @@ input[type="number"] {
 .test-h {
   height: calc(100vh - 360px);
 }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  animation: spin 1s linear infinite;
+}

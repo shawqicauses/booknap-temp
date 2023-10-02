@@ -36,7 +36,7 @@ const HotelPageModal = function HotelPageModal({
                 <Image
                   src={hotel.logo}
                   alt={hotel.name}
-                  className="!relative !w-16 !h-16 object-cover border-2 border-gray-100 rounded-md"
+                  className="!relative !w-16 !h-16 object-cover border-2 border-gray-100 dark:border-[#5B6C89] rounded-lg"
                   fill
                 />
                 <div>
@@ -48,9 +48,7 @@ const HotelPageModal = function HotelPageModal({
                     style={{color: "#FBC831"}}
                     size="small"
                     icon={<AiFillStar className="text-inherit" />}
-                    emptyIcon={
-                      <AiFillStar className="text-inherit text-[#DDDDDD]" />
-                    }
+                    emptyIcon={<AiFillStar className="text-inherit text-[#DDDDDD]" />}
                   />
                 </div>
               </div>
@@ -69,7 +67,7 @@ const HotelPageModal = function HotelPageModal({
                         src={`https://booknap-api.wpgooal.com/${hotel?.banner}`}
                         alt="Web Application"
                         fill
-                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                        className="!relative !inset-auto w-full object-cover"
                       />
                       <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                     </div>
@@ -81,7 +79,7 @@ const HotelPageModal = function HotelPageModal({
                         src="/banner.png"
                         alt="Web Application"
                         fill
-                        className="!relative !inset-auto !rounded-lg w-full object-cover"
+                        className="!relative !inset-auto w-full object-cover"
                       />
                       <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
                     </div>
@@ -92,20 +90,14 @@ const HotelPageModal = function HotelPageModal({
             <div className="p-4">
               <div className="flex gap-4">
                 <FaUsers className="w-5 h-5 text-my-primary" />
-                <span className="heading-3 text-xl-2 dark:text-white">
-                  About Us
-                </span>
+                <span className="heading-3 text-xl-2 dark:text-white">About Us</span>
               </div>
-              <p className="body-sm text-black dark:text-white">
-                {hotel?.about}
-              </p>
+              <p className="body-sm text-black dark:text-white">{hotel?.about}</p>
             </div>
             <div className="p-4 body-sm text-black">
               <div className="flex gap-4 items-center mb-2">
                 <LuMail className="w-5 h-5 text-my-primary" />
-                <span className="heading-3 text-xl-2 dark:text-white">
-                  Contact
-                </span>
+                <span className="heading-3 text-xl-2 dark:text-white">Contact</span>
               </div>
               <div className="mb-4 dark:text-white">{hotel?.address}</div>
               <div className="flex flex-col gap-1">
