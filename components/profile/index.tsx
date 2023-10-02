@@ -26,10 +26,7 @@ interface IProfile {
 
 const inputStyle = {
   label: "text-black dark:text-white/90 text-lg",
-  inputWrapper: [
-    "h-[50px]",
-    "bg-white dark:bg-blue-charcoal dark:border-blue-charcoal  border"
-  ],
+  inputWrapper: ["h-[50px]", "bg-white dark:bg-blue-charcoal dark:border-blue-charcoal  border"],
   input: "pl-2 text-black dark:text-white"
 }
 
@@ -42,8 +39,9 @@ const ProfileContent = function ProfileContent() {
     handleSubmit,
     formState: {isLoading, errors}
   } = useForm<IProfile>({
-    defaultValues: async () =>
-      await client("profile", {method: "GET"})?.then((res) => res.user),
+    defaultValues: token
+      ? async () => await client("profile", {method: "GET"})?.then((res) => res.user)
+      : {},
     criteriaMode: "all"
   })
   const {reFetch} = useNotifications()
@@ -108,10 +106,7 @@ const ProfileContent = function ProfileContent() {
       })
   }
   const handleImage = (e: any) => {
-    if (
-      e.target.files[0].type === "image/png" ||
-      e.target.files[0].type === "image/jpeg"
-    ) {
+    if (e.target.files[0].type === "image/png" || e.target.files[0].type === "image/jpeg") {
       const reader = new FileReader()
       reader.readAsBinaryString(e.target.files[0])
       reader.onload = () => {
@@ -153,18 +148,10 @@ const ProfileContent = function ProfileContent() {
             <div className="relative w-fit mx-auto">
               <div className="w-40 h-40 overflow-hidden rounded-full mx-auto relative">
                 {user.avatar ? (
-                  <Image
-                    src={user.avatar}
-                    alt="user"
-                    className="!relative"
-                    fill
-                  />
+                  <Image src={user.avatar} alt="user" className="!relative" fill />
                 ) : (
                   <Image
-                    src={
-                      user?.avatar ||
-                      `/user/${theme === "light" ? "light" : "dark"}.svg`
-                    }
+                    src={user?.avatar || `/user/${theme === "light" ? "light" : "dark"}.svg`}
                     alt="user profile"
                     className="!relative"
                     fill
@@ -187,10 +174,7 @@ const ProfileContent = function ProfileContent() {
               </div>
             </div>
             <div className="flex justify-center">
-              <MyButton
-                color="primary"
-                size="xl"
-                className="relative text-base">
+              <MyButton color="primary" size="xl" className="relative text-base">
                 Upload New Photo
                 <input
                   type="file"
@@ -202,8 +186,7 @@ const ProfileContent = function ProfileContent() {
             <div className="bg-[#E9EDF4] dark:bg-blue-charcoal rounded-md">
               <div className="p-5 text-center max-w-xs mx-auto">
                 <p className="mb-3 text-sm text-black/70 dark:text-white/70">
-                  Upload A New Avatar. Larger Image Will Be Resized
-                  Automatically
+                  Upload A New Avatar. Larger Image Will Be Resized Automatically
                 </p>
                 <p className="text-sm">
                   Maximum Upload Size Is
@@ -214,9 +197,7 @@ const ProfileContent = function ProfileContent() {
           </div>
           <div className="py-10 bg-gray-100 dark:bg-mirage rounded-lg flex-1">
             <div className="sm:px-5 md:px-10 lg:px-20">
-              <h1 className="heading-1 mb-5 dark:text-white mt-5">
-                EDIT PROFILE
-              </h1>
+              <h1 className="heading-1 mb-5 dark:text-white mt-5">EDIT PROFILE</h1>
               <div className="p-3 gap-2 gap-x-3 pb-1">
                 <div className="grid grid-cols-1  lg:grid-cols-2 gap-3 mb-8">
                   <div>
@@ -347,11 +328,7 @@ const ProfileContent = function ProfileContent() {
                   </div>
                 </div>
                 <div className="my-flex">
-                  <MyButton
-                    size="xl"
-                    color="primary"
-                    type="submit"
-                    className="px-10 text-lg">
+                  <MyButton size="xl" color="primary" type="submit" className="px-10 text-lg">
                     Save
                   </MyButton>
                 </div>

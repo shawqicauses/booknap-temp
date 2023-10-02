@@ -43,7 +43,7 @@ const NotificationProvider = function NotificationProvider({
   const {token, ready: tokenReady, signOut} = useAuth()
   const reFetch = useCallback(async () => {
     setReady(false)
-    if (tokenReady) {
+    if (tokenReady && token) {
       await client("notifications")
         ?.then((res) => {
           setNotifications(res.result.data)
@@ -54,7 +54,7 @@ const NotificationProvider = function NotificationProvider({
           signOut()
         })
     }
-  }, [signOut, tokenReady])
+  }, [signOut, tokenReady, token])
 
   const clearNotifications = useCallback(() => {
     setNotifications([])
@@ -79,16 +79,12 @@ const NotificationProvider = function NotificationProvider({
       } as INotifications),
     [notifications, reFetch, ready, clearNotifications, unReadMassages]
   )
-  return (
-    <Notifications.Provider value={value}>{children}</Notifications.Provider>
-  )
+  return <Notifications.Provider value={value}>{children}</Notifications.Provider>
 }
 const useNotifications = function useNotifications() {
   const context = useContext(Notifications)
   if (!context) {
-    throw new Error(
-      "useNotifications must be used within an NotificationProvider"
-    )
+    throw new Error("useNotifications must be used within an NotificationProvider")
   }
   return context
 }
