@@ -130,7 +130,7 @@ const HotelOfferBox = function HotelOfferBox({
         ) : null}
         <div className="flex justify-between gap-2 mb-2">
           <div className="flex gap-2 cursor-pointer" onClick={onOpen} aria-hidden="true">
-            <div className="!w-20 !h-20 overflow-hidden rounded-lg">
+            <div className="!w-20 !h-20 border-2 border-gray-100 dark:border-waikawa-gray rounded-lg overflow-hidden">
               <Image
                 src={offer.hotel.logo}
                 alt={offer.hotel.name}

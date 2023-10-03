@@ -4,6 +4,7 @@ import {AiFillStar} from "react-icons/ai"
 import Image from "next/image"
 import React from "react"
 import {IBooking} from "../../types"
+import {type3} from "../uis/modal-styles"
 
 const bookingData = {
   hotelName: "Grand Hotel",
@@ -29,34 +30,25 @@ const BookingDetailsModal = function BookingDetailsModal({
   Booking: IBooking
 }) {
   return (
-    <Modal
-      size="xl"
-      isOpen={isOpen}
-      onClose={onClose}
-      className="bg-gray-100"
-      scrollBehavior="inside">
+    <Modal size="lg" classNames={type3} isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalBody>
           <div className="p-10">
             <div className="my-flex-between py-2 text-sm">
-              <span className="bg-white rounded-full inline-block px-2 py-1 ">
+              <span className="bg-gray-100 dark:bg-mirage rounded-lg inline-block px-2 py-1 ">
                 Order {Booking.id}
               </span>
-              <span className="bg-white rounded-full inline-block px-2 py-1">
+              <span className="bg-gray-100 dark:bg-mirage rounded-lg inline-block px-2 py-1">
                 {Booking.date_to}
               </span>
             </div>
             {Booking.hotel ? (
               <div className="flex gap-3 rounded-lg py-2">
                 <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                  <Image
-                    src={Booking.hotel?.logo}
-                    alt={Booking.hotel?.name}
-                    fill
-                  />
+                  <Image src={Booking.hotel?.logo} alt={Booking.hotel?.name} fill />
                 </div>
                 <div>
-                  <h3 className="heading-3">{bookingData.hotelName}</h3>
+                  <h3 className="heading-main-3 text-white">{bookingData.hotelName}</h3>
                   <Rating
                     name="read-only"
                     value={Booking.hotel?.stars}

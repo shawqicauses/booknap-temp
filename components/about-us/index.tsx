@@ -30,7 +30,7 @@ const AboutUsContent = function AboutUsContent() {
               diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam{" "}
             </p>
           </div>
-          <div className="relative lg:w-2/5 h-full">
+          <div className="relative lg:w-2/5 h-full rounded-lg overflow-hidden">
             <Image src="/about-img-1.png" alt="img" fill className="!relative object-contain" />
           </div>
         </div>
@@ -75,7 +75,7 @@ const AboutUsContent = function AboutUsContent() {
               </ul>
             </div>
           </div>
-          <div className="relative lg:w-2/5 h-full">
+          <div className="relative lg:w-2/5 h-full rounded-lg overflow-hidden">
             <Image src="/about-img-2.png" alt="img" fill className="!relative object-contain" />
           </div>
         </div>

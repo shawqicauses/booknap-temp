@@ -16,7 +16,8 @@ const ItemModal = function ItemModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      classNames={{...type3, base: "w-[900px] max-w-2xl m-0 p-0", body: `${type3.body} !px-0`}}>
+      classNames={{...type3, base: "w-[800px] max-w-2xl m-1 p-5", body: `${type3.body} !p-0`}}
+      scrollBehavior="outside">
       <ModalContent>
         <ModalBody className="px-5 py-0 pb-2 ">
           <ItemPage id={itemId} />

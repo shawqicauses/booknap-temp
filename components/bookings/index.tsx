@@ -92,7 +92,7 @@ const BookingsContent = function BookingsContent() {
     return (
       <>
         <div className="my-container my-5">
-          <div className="text-center bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6">
+          <div className="text-center rounded-lg overflow-hidden bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6">
             <h1 className="heading-1 text-my-primary mb-4">My Bookings</h1>
           </div>
         </div>

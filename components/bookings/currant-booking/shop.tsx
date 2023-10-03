@@ -47,10 +47,10 @@ const CardItem = function CardItem({
         }}
         className="cursor-pointer"
         aria-hidden="true">
-        <div className="relative w-52 h-52 border-2 border-[#dddddd] dark:border-waikawa-gray rounded-lg overflow-hidden">
+        <div className="relative w-52 h-52 border-2 border-[#dddddd] dark:border-waikawa-gray rounded-lg overflow-hidden mx-auto">
           <Image src={image} alt={product} fill className="!relative" />
         </div>
-        <h3 className="text-base text-gray-500 leading-none my-2 capitalize line-clamp-2 h-9">
+        <h3 className="text-base text-gray-500 leading-none my-2 capitalize line-clamp-2 h-8">
           {product}
         </h3>
       </div>

@@ -6,6 +6,7 @@ import {Rating} from "@mui/material"
 import MyButton from "../uis/button"
 import client from "../../helpers/client"
 import {useUser} from "../../stores/user"
+import {type3} from "../uis/modal-styles"
 
 const RatingModal = function RatingModal({
   hotelId,
@@ -68,7 +69,7 @@ const RatingModal = function RatingModal({
       isOpen={isOpen}
       onClose={onClose}
       isDismissable={false}
-      classNames={{closeButton: "hidden"}}>
+      classNames={{...type3, closeButton: "hidden"}}>
       <ModalContent>
         <ModalHeader className="px-5 pb-2 pt-5">
           <h1 className="heading-2 mx-auto dark:text-white">Thank You</h1>

@@ -40,8 +40,8 @@ const ItemPage = function ItemPage({id}: {id: number}) {
   }, [product])
 
   return product ? (
-    <div className="flex gap-5 flex-col md:flex-row m-5">
-      <div className="relative h-[500px] w-[500px] rounded-lg overflow-hidden">
+    <div className="flex gap-5 flex-col md:flex-row">
+      <div className="relative !h-[300px] !w-[300px] sm:!h-[400px] sm:!w-[400px] rounded-lg overflow-hidden mx-auto">
         <MyButton
           isIconOnly
           className="absolute top-2 right-2 z-10 bg-opacity-50 "
@@ -52,10 +52,15 @@ const ItemPage = function ItemPage({id}: {id: number}) {
             <MdFavoriteBorder className="w-5 h-5 text-white" />
           )}
         </MyButton>
-        <Image src={product.data.image} alt="w" fill className="relative w-full h-full " />
+        <Image
+          src={product.data.image}
+          alt="w"
+          fill
+          className="relative w-full h-full object-cover"
+        />
       </div>
-      <div className="flex gap-5 flex-col justify-center">
-        <h2 className="heading-2 text-black dark:text-white">{product.data.name}</h2>
+      <div className="flex gap-3 flex-col justify-center w-[380px] py-5">
+        <h2 className="text-xl font-semi-bold text-black dark:text-white">{product.data.name}</h2>
         <p>{product.data.description}</p>
         <div>
           <h3 className="body mb-2">Options</h3>
