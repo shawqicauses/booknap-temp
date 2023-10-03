@@ -1,11 +1,5 @@
 import React, {useState} from "react"
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader
-} from "@nextui-org/react"
+import {Modal, ModalBody, ModalContent, ModalFooter, ModalHeader} from "@nextui-org/react"
 import {toast} from "react-toastify"
 import {AiFillStar} from "react-icons/ai"
 import {Rating} from "@mui/material"
@@ -82,8 +76,7 @@ const RatingModal = function RatingModal({
         <ModalBody className="px-5 py-0 pb-2">
           <div className="flex flex-col gap-2 items-center">
             <p className="text-center">
-              The <span className="font-semi-bold">{hotelName}</span>{" "}
-              Reservation Period has Expired
+              The <span className="font-semi-bold">{hotelName}</span> Reservation Period has Expired
             </p>
             <Rating
               value={rating}
@@ -101,7 +94,7 @@ const RatingModal = function RatingModal({
               onChange={(e) => {
                 setMassage(e.target.value)
               }}
-              className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none"
+              className="input p-3 leading-5 bg-gray-100 rounded-xl resize-none dark:bg-mirage dark:text-white"
             />
           </div>
         </ModalBody>

@@ -4,52 +4,14 @@ import React, {useState} from "react"
 import {useRouter} from "next/router"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
+import {useDisclosure} from "@nextui-org/react"
 import MyButton from "../../uis/button"
 import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
 import client from "../../../helpers/client"
-
-interface product_feature {
-  id: number
-  shopping_product_id: number
-  name_en: string
-  name_ar: string
-  created_at: string
-  updated_at: string
-  deleted_at: null
-  hotel_id: number
-  values: Array<{
-    id: number
-    feature_id: number
-    name_ar: string
-    name_en: string
-    created_at: string
-    updated_at: string
-    product_id: number
-    hotel_id: number
-    deleted_at: null
-  }>
-}
-export interface Product {
-  id: number
-  shopping_category_id: null
-  name: string
-  description: string
-  price: string
-  discount_price: string
-  color: string
-  on_sale: number
-  quantity: number
-  featured: number
-  in_stock: number
-  created_at: string
-  updated_at: string
-  deleted_at: null
-  image: string
-  product_features: Array<product_feature>
-  hotel_id: number
-  is_favourite: number
-}
+import ItemModal from "../../modal/item-modal"
+import {Product} from "../../../types"
+import {useCart} from "../../../stores/cart"
 
 const CardItem = function CardItem({
   id,
@@ -57,7 +19,8 @@ const CardItem = function CardItem({
   product,
   price,
   isFavorite,
-  handleClick
+  handleClick,
+  showDetails
 }: {
   id: number
   image: string
@@ -65,6 +28,7 @@ const CardItem = function CardItem({
   price: number
   isFavorite: number
   handleClick: () => void
+  showDetails: () => void
 }) {
   const [favorite, setFavorite] = useState(!!isFavorite)
   const handleClickHere = () => {
@@ -77,22 +41,31 @@ const CardItem = function CardItem({
 
   return (
     <div className="p-3 h-auto bg-gray-100 dark:bg-mirage rounded-lg" key={id}>
-      <div className="relative rounded-lg overflow-hidden w-52 h-52">
-        <Image src={image} alt={product} fill className="!relative" />
+      <div
+        onClick={() => {
+          showDetails()
+        }}
+        className="cursor-pointer"
+        aria-hidden="true">
+        <div className="relative w-52 h-52 border-2 border-[#dddddd] dark:border-waikawa-gray rounded-lg overflow-hidden">
+          <Image src={image} alt={product} fill className="!relative" />
+        </div>
+        <h3 className="text-base text-gray-500 leading-none my-2 capitalize line-clamp-2 h-9">
+          {product}
+        </h3>
       </div>
-      <h3 className="text-lg leading-none my-2 capitalize">{product}</h3>
       <div className="flex justify-between items-center">
         <span className="text-xl font-bold text-red-500 items-center">${price}</span>
         <div className="flex gap-2">
-          <MyButton isIconOnly onClick={handleClickHere}>
+          <MyButton isIconOnly className="bg-[#E3E3E3]" onClick={handleClickHere}>
             {favorite ? (
               <MdFavorite className="w-5 h-5 text-red-500" />
             ) : (
-              <MdFavoriteBorder className="w-5 h-5 text-red-500" />
+              <MdFavoriteBorder className="w-5 h-5 text-[#B9B9B9]" />
             )}
           </MyButton>
-          <MyButton color="default" isIconOnly onClick={handleClick}>
-            <HiOutlineShoppingCart className="h-5 w-5" />
+          <MyButton isIconOnly className="bg-[#E3E3E3]" onClick={handleClick}>
+            <HiOutlineShoppingCart className="w-5 h-5 text-[#B9B9B9]" />
           </MyButton>
         </div>
       </div>
@@ -102,17 +75,18 @@ const CardItem = function CardItem({
 
 const Shop = function Shop({hotelId}: {hotelId: number | null}) {
   const router = useRouter()
-  const id = Number(router.query.id)
   const shopTab = Number(router.query.shopTab)
+  const [currentProductId, setCurrentProductId] = useState<number | null>()
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   const {data: products} = useFetch<{data: {data: Product[]}}>(
     shopTab === -1 && hotelId
       ? `shopping/products/get-favorite?hotel_id=${hotelId}`
       : "shopping/products"
   )
-
-  if (products && router.isReady) {
-    return (
+  const {addItemToCart} = useCart()
+  return products && router.isReady ? (
+    <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-5 h-auto mt-5 mb-10">
         {products.data.data
           .filter(
@@ -120,7 +94,8 @@ const Shop = function Shop({hotelId}: {hotelId: number | null}) {
               product.hotel_id === hotelId &&
               (shopTab === -1 || product.shopping_category_id === shopTab)
           )
-          .map(({id: productId, image, price, description, is_favourite}) => {
+          .map((product) => {
+            const {id: productId, image, price, description, is_favourite} = product
             return (
               <CardItem
                 key={productId}
@@ -130,15 +105,23 @@ const Shop = function Shop({hotelId}: {hotelId: number | null}) {
                 isFavorite={is_favourite}
                 product={description}
                 handleClick={() => {
-                  router.push(`/${id}/shop/${productId}`)
+                  addItemToCart(product, 1)
+                }}
+                showDetails={() => {
+                  onOpen()
+                  setCurrentProductId(productId)
                 }}
               />
             )
           })}
       </div>
-    )
-  }
-  return <LoadingDiv />
+      {currentProductId ? (
+        <ItemModal itemId={currentProductId} isOpen={isOpen} onClose={onClose} />
+      ) : null}
+    </>
+  ) : (
+    <LoadingDiv />
+  )
 }
 
 export default Shop

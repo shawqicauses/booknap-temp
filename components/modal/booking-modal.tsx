@@ -5,13 +5,7 @@ import {AiOutlineDoubleLeft} from "react-icons/ai"
 import {IoMdClose} from "react-icons/io"
 import {HiOutlinePlus} from "react-icons/hi"
 import {SubmitHandler, useForm} from "react-hook-form"
-import {
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  useDisclosure
-} from "@nextui-org/react"
+import {Input, Modal, ModalBody, ModalContent, useDisclosure} from "@nextui-org/react"
 import {toast} from "react-toastify"
 import SignInModal from "./sign-in-modal"
 import MyButton from "../uis/button"
@@ -155,12 +149,8 @@ const FormPageTow = function FormPageTow({
         <CounterStyled
           label="Single Room"
           value={data.noSingleRoom}
-          handleClickPlus={() =>
-            handleClick(1, "noSingleRoom", data.noSingleRoom)
-          }
-          handleClickMinus={() =>
-            handleClick(-1, "noSingleRoom", data.noSingleRoom)
-          }
+          handleClickPlus={() => handleClick(1, "noSingleRoom", data.noSingleRoom)}
+          handleClickMinus={() => handleClick(-1, "noSingleRoom", data.noSingleRoom)}
           reset={() => handleClick(0, "noSingleRoom", 0)}
           isOpen={isSingleOpen}
           setIsOpen={setIsSingleOpen}
@@ -168,12 +158,8 @@ const FormPageTow = function FormPageTow({
         <CounterStyled
           label="Double Room"
           value={data.noDoubleRoom}
-          handleClickPlus={() =>
-            handleClick(1, "noDoubleRoom", data.noDoubleRoom)
-          }
-          handleClickMinus={() =>
-            handleClick(-1, "noDoubleRoom", data.noDoubleRoom)
-          }
+          handleClickPlus={() => handleClick(1, "noDoubleRoom", data.noDoubleRoom)}
+          handleClickMinus={() => handleClick(-1, "noDoubleRoom", data.noDoubleRoom)}
           reset={() => handleClick(0, "noDoubleRoom", 0)}
           isOpen={isDoubleOpen}
           setIsOpen={setIsDoubleOpen}
@@ -181,12 +167,8 @@ const FormPageTow = function FormPageTow({
         <CounterStyled
           label="Suite Rooms"
           value={data.noSuiteRooms}
-          handleClickPlus={() =>
-            handleClick(1, "noSuiteRooms", data.noSuiteRooms)
-          }
-          handleClickMinus={() =>
-            handleClick(-1, "noSuiteRooms", data.noSuiteRooms)
-          }
+          handleClickPlus={() => handleClick(1, "noSuiteRooms", data.noSuiteRooms)}
+          handleClickMinus={() => handleClick(-1, "noSuiteRooms", data.noSuiteRooms)}
           reset={() => handleClick(0, "noSuiteRooms", 0)}
           isOpen={isSuiteOpen}
           setIsOpen={setIsSuiteOpen}
@@ -194,12 +176,8 @@ const FormPageTow = function FormPageTow({
         <CounterStyled
           label="Presidential Suite"
           value={data.noPresidentialSuite}
-          handleClickPlus={() =>
-            handleClick(1, "noPresidentialSuite", data.noPresidentialSuite)
-          }
-          handleClickMinus={() =>
-            handleClick(-1, "noPresidentialSuite", data.noPresidentialSuite)
-          }
+          handleClickPlus={() => handleClick(1, "noPresidentialSuite", data.noPresidentialSuite)}
+          handleClickMinus={() => handleClick(-1, "noPresidentialSuite", data.noPresidentialSuite)}
           reset={() => handleClick(0, "noPresidentialSuite", 0)}
           isOpen={isPresidentialOpen}
           setIsOpen={setIsPresidentialOpen}
@@ -259,23 +237,22 @@ const BookingModal = function BookingModal({
     }
   }, [checkSittings])
 
-  const {register, handleSubmit, watch, setValue, reset} =
-    useForm<BasicFormData>({
-      defaultValues: {
-        FromDate: "",
-        FromTime: check.in,
-        ToDate: "",
-        ToTime: check.out,
-        note: "",
-        noAdults: 0,
-        noChildren: 0,
-        noDoubleRoom: 0,
-        noPresidentialSuite: 0,
-        noSingleRoom: 0,
-        noSuiteRooms: 0
-      },
-      criteriaMode: "all"
-    })
+  const {register, handleSubmit, watch, setValue, reset} = useForm<BasicFormData>({
+    defaultValues: {
+      FromDate: "",
+      FromTime: check.in,
+      ToDate: "",
+      ToTime: check.out,
+      note: "",
+      noAdults: 0,
+      noChildren: 0,
+      noDoubleRoom: 0,
+      noPresidentialSuite: 0,
+      noSingleRoom: 0,
+      noSuiteRooms: 0
+    },
+    criteriaMode: "all"
+  })
   const closeBookingModal = () => {
     setPage(0)
     onClose()
@@ -304,9 +281,7 @@ const BookingModal = function BookingModal({
     }
   }
 
-  const onSubmit: SubmitHandler<BasicFormData> = async (
-    formData: BasicFormData
-  ) => {
+  const onSubmit: SubmitHandler<BasicFormData> = async (formData: BasicFormData) => {
     if (currentBooking) {
       toast.error("You are Booking Now", {
         position: "bottom-left",
@@ -404,11 +379,7 @@ const BookingModal = function BookingModal({
                 className={`grid grid-cols-2 gap-4 w-[860px] my-transition  ${
                   page === 1 ? "-translate-x-[50%]" : ""
                 }`}>
-                <FormPageTow
-                  data={watch()}
-                  handleClick={handleClick}
-                  setPage={setPage}
-                />
+                <FormPageTow data={watch()} handleClick={handleClick} setPage={setPage} />
                 <div className="flex flex-col gap-1 relative justify-start overflow-y-scroll hide-scrollbar">
                   <MyButton
                     size="sm"
@@ -437,9 +408,7 @@ const BookingModal = function BookingModal({
                           Date:
                         </label>
                         <div className="flex justify-between items-center mb-2">
-                          <label
-                            htmlFor="date"
-                            className="w-[60px] dark:text-white inline-block">
+                          <label htmlFor="date" className="w-[60px] dark:text-white inline-block">
                             From:
                           </label>
                           <div className="my-flex gap-2">
@@ -470,9 +439,7 @@ const BookingModal = function BookingModal({
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <label
-                            htmlFor="date"
-                            className="w-[60px] dark:text-white inline-block">
+                          <label htmlFor="date" className="w-[60px] dark:text-white inline-block">
                             To:
                           </label>
                           <div className="my-flex gap-2">
@@ -505,9 +472,7 @@ const BookingModal = function BookingModal({
                         </div>
                       </div>
                       <div>
-                        <label
-                          htmlFor="numPeople"
-                          className="label-gray text-sm">
+                        <label htmlFor="numPeople" className="label-gray text-sm">
                           Number Of People:
                         </label>
                         <div className="flex justify-between items-center mb-2">
@@ -516,12 +481,8 @@ const BookingModal = function BookingModal({
                           </label>
                           <Counter
                             value={watch().noAdults}
-                            handleClickPlus={() =>
-                              handleClick(1, "noAdults", watch().noAdults)
-                            }
-                            handleClickMinus={() =>
-                              handleClick(-1, "noAdults", watch().noAdults)
-                            }
+                            handleClickPlus={() => handleClick(1, "noAdults", watch().noAdults)}
+                            handleClickMinus={() => handleClick(-1, "noAdults", watch().noAdults)}
                           />
                         </div>
                         <div className="flex justify-between items-center">
@@ -530,9 +491,7 @@ const BookingModal = function BookingModal({
                           </label>
                           <Counter
                             value={watch().noChildren}
-                            handleClickPlus={() =>
-                              handleClick(1, "noChildren", watch().noChildren)
-                            }
+                            handleClickPlus={() => handleClick(1, "noChildren", watch().noChildren)}
                             handleClickMinus={() =>
                               handleClick(-1, "noChildren", watch().noChildren)
                             }
@@ -540,9 +499,7 @@ const BookingModal = function BookingModal({
                         </div>
                       </div>
                       <div>
-                        <label
-                          htmlFor="date"
-                          className="w-[60px]  label-gray text-sm">
+                        <label htmlFor="date" className="w-[60px]  label-gray text-sm">
                           Number Of Room:
                         </label>
                         <div className="grid grid-cols-2 gap-2 ">

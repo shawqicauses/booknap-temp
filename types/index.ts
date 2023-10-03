@@ -232,3 +232,45 @@ export interface ICheckSitting {
     max_area: string
   }
 }
+
+interface product_feature {
+  id: number
+  shopping_product_id: number
+  name_en: string
+  name_ar: string
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  hotel_id: number
+  values: Array<{
+    id: number
+    feature_id: number
+    name_ar: string
+    name_en: string
+    created_at: string
+    updated_at: string
+    product_id: number
+    hotel_id: number
+    deleted_at: null
+  }>
+}
+export interface Product {
+  id: number
+  shopping_category_id: null
+  name: string
+  description: string
+  price: string
+  discount_price: string
+  color: string
+  on_sale: number
+  quantity: number
+  featured: number
+  in_stock: number
+  created_at: string
+  updated_at: string
+  deleted_at: null
+  image: string
+  product_features: Array<product_feature>
+  hotel_id: number
+  is_favourite: number
+}
