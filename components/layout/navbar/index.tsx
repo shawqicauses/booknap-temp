@@ -87,9 +87,9 @@ const NotificationsDropDown = function NotificationsDropDown({
     handleOpenNotifications()
     if (ready && tokenReady) {
       handleReadMassage()
-      notifications.forEach((noti: any) => {
-        if (!noti.read_at) {
-          client(`notifications/read/${noti.id}`, {method: "GET"})?.catch(() => {
+      notifications.forEach((notification: any) => {
+        if (!notification.read_at) {
+          client(`notifications/read/${notification.id}`, {method: "GET"})?.catch(() => {
             signOut()
           })
         }
@@ -116,10 +116,10 @@ const NotificationsDropDown = function NotificationsDropDown({
           <ul className="bg-white dark:bg-mirage rounded-b-md divide-y-1 divide-gray-100 dark:divide-gray-500 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
             {ready ? (
               notifications.length > 0 ? (
-                notifications.map((notfi: any) => (
+                notifications.map((notification: any) => (
                   <li
                     className="flex gap-2 justify-center items-center p-3 cursor-pointer"
-                    key={notfi.id}>
+                    key={notification.id}>
                     <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100 dark:border-gray-500">
                       <Image
                         src={theme === "dark" ? "/notifications-dark.png" : "/notifications.png"}
@@ -129,8 +129,8 @@ const NotificationsDropDown = function NotificationsDropDown({
                       />
                     </div>
                     <div className="flex-1 text-start flex flex-col gap-0">
-                      <h3 className="">{notfi.data.title}</h3>
-                      <span className="body-sm">{notfi.data.details}</span>
+                      <h3 className="">{notification.data.title}</h3>
+                      <span className="body-sm">{notification.data.details}</span>
                     </div>
                   </li>
                 ))
