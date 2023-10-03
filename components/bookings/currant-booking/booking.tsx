@@ -130,6 +130,39 @@ const calcStyle = (index: number, completedDays: string) => {
       : null
   return inProgress || progress
 }
+const OrderBox = function OrderBox({
+  orderId,
+  created_at,
+  order_itmes
+}: {
+  orderId: number
+  created_at: string
+  order_itmes: OrderItme[]
+}) {
+  return (
+    <div className="bg-gray-100 dark:bg-mirage rounded-lg p-3 w-full" key={orderId}>
+      <div className="my-flex-between py-2 text-gray-400">
+        <span className=" inline-block px-2 py-1 font-semi-bold">Order {orderId}</span>
+        <span className="inline-block px-2 py-1">{created_at}</span>
+      </div>
+      <div className="divide-y-2 dark:divide-waikawa-gray">
+        {order_itmes.map(({id: itemId, price, product}) => (
+          <div key={itemId} className="flex p-1 py-3 gap-3">
+            <div className="relative h-20 w-20 rounded-lg overflow-hidden object-cover border-2 border-[#dddddd] dark:border-waikawa-gray">
+              <Image src={product.image} alt={`item ${itemId}`} fill />
+            </div>
+            <div>
+              <p className="body-sm text-black dark:text-white">{product.description}</p>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <span className="text-red-500 font-semi-bold text-xl">{price}$</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 const Booking = function Booking() {
   const [showChild, setShowChild] = useState(false)
@@ -210,30 +243,21 @@ const Booking = function Booking() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-4 my-4 min-h-[400px]">
-        {orders.map(({id: orderId, created_at, order_itmes}) => (
-          <div className="bg-gray-100 dark:bg-mirage rounded-lg p-3" key={orderId}>
-            <div className="my-flex-between py-2 text-gray-400">
-              <span className=" inline-block px-2 py-1 font-semi-bold">Order {orderId}</span>
-              <span className="inline-block px-2 py-1">{created_at}</span>
-            </div>
-            <div className="divide-y-2">
-              {order_itmes.map(({id: itemId, price, product}) => (
-                <div key={itemId} className="flex p-1 py-3 gap-3">
-                  <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                    <Image src={product.image} alt={`item ${itemId}`} fill />
-                  </div>
-                  <div>
-                    <p className="body-sm">{product.description}</p>
-                  </div>
-                  <div className="flex-1 flex justify-end">
-                    <span className="text-red-500 font-semi-bold text-xl">{price}$</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="flex gap-3 w-full">
+        <div className="flex flex-col items-center gap-3 flex-1">
+          {orders.map(({id: orderId, created_at, order_itmes}, index) =>
+            index % 2 === 0 ? (
+              <OrderBox created_at={created_at} orderId={orderId} order_itmes={order_itmes} />
+            ) : null
+          )}
+        </div>
+        <div className="flex flex-col items-center gap-3 flex-1">
+          {orders.map(({id: orderId, created_at, order_itmes}, index) =>
+            index % 2 !== 0 ? (
+              <OrderBox created_at={created_at} orderId={orderId} order_itmes={order_itmes} />
+            ) : null
+          )}
+        </div>
       </div>
       <RenewBookingModal
         isOpen={isOpen}

@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import {useRouter} from "next/router"
 import React, {useState, useEffect} from "react"
-import {FaRegImage, FaUsers} from "react-icons/fa"
+import {FaPlay, FaRegImage, FaUsers} from "react-icons/fa"
 import {FaLocationDot} from "react-icons/fa6"
 import {LuMail} from "react-icons/lu"
 import client from "../../../helpers/client"
@@ -28,18 +28,14 @@ const About = function About() {
           <FaUsers className="w-5 h-5 text-my-primary" />
           <span className="heading-3 text-xl-2 dark:text-white">About Us</span>
         </div>
-        <p className="body text-black dark:text-white">
-          {result?.hotel?.about}
-        </p>
+        <p className="body text-black dark:text-white">{result?.hotel?.about}</p>
       </div>
       <div className="flex gap-4 flex-col sm:flex-row">
         <div className="bg-gray-100 dark:bg-mirage rounded-lg p-4 flex-grow-[2]">
           <div className="flex justify-between">
             <div className="flex gap-4 items-center mb-3">
               <FaLocationDot className="w-5 h-5 text-my-primary" />
-              <span className="heading-3 text-xl-2 dark:text-white">
-                Location
-              </span>
+              <span className="heading-3 text-xl-2 dark:text-white">Location</span>
             </div>
             <Link
               href={`/?lat=${result?.hotel?.lat}&lng=${result?.hotel?.lng}`}
@@ -61,19 +57,14 @@ const About = function About() {
             <div className="flex gap-3">
               <span>Phone:</span>
               <a
-                href={`https://wa.me/${result?.hotel?.phone?.replaceAll(
-                  " ",
-                  ""
-                )}`}
+                href={`https://wa.me/${result?.hotel?.phone?.replaceAll(" ", "")}`}
                 className="text-blue-500">
                 {result?.hotel?.phone}
               </a>
             </div>
             <div className="flex gap-3">
               <span>Website:</span>
-              <Link
-                href={result?.hotel?.website || ""}
-                className="text-blue-500">
+              <Link href={result?.hotel?.website || ""} className="text-blue-500">
                 View Website
               </Link>
             </div>
@@ -86,18 +77,29 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Gallery</span>
         </div>
         <FancyBox>
-          <div className="grid grid-cols-4 grid-row-4 h-full gap-4">
-            {result?.hotel?.media?.map(({id: imgId, file}) => (
-              <div
-                className="relative h-full w-full rounded-lg overflow-hidden"
-                key={imgId}>
-                <Image
-                  data-fancybox="gallery"
-                  src={`https://booknap-api.wpgooal.com/${file}`}
-                  alt="image"
-                  fill
-                  className="!relative"
-                />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-row-4 h-full gap-4">
+            {result?.hotel?.media?.map(({id: imgId, file, type}) => (
+              <div className="relative h-full w-full rounded-lg overflow-hidden" key={imgId}>
+                {type !== "mp4" ? (
+                  <Image
+                    data-fancybox="gallery"
+                    src={`https://booknap-api.wpgooal.com/${file}`}
+                    alt="image"
+                    fill
+                    className="!relative object-cover"
+                  />
+                ) : (
+                  <Link data-fancybox="gallery" href={`https://booknap-api.wpgooal.com${file}`}>
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10 flex justify-center items-center">
+                      <FaPlay className="relative h-5 w-5 text-white z-20" />
+                    </div>
+                    {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                    <video
+                      src={`https://booknap-api.wpgooal.com${file}`}
+                      className="!relative object-cover w-full h-full"
+                    />
+                  </Link>
+                )}
               </div>
             ))}
           </div>

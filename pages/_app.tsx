@@ -22,25 +22,27 @@ const MyApp = function MyApp({Component, pageProps}: AppProps) {
             <UserProvider>
               <NotificationProvider>
                 <NextUIProvider>
-                  <Navbar />
-                  <Sidebar />
-                  <div className="w-full">
-                    <Component {...pageProps} />
+                  <div className="my-flex-col h-full min-h-screen !items-stretch">
+                    <Navbar />
+                    <Sidebar />
+                    <div className="w-full">
+                      <Component {...pageProps} />
+                    </div>
+                    <ToastContainer
+                      position="bottom-left"
+                      autoClose={5000}
+                      limit={8}
+                      hideProgressBar={false}
+                      newestOnTop
+                      closeOnClick
+                      rtl
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover={false}
+                      theme="colored"
+                    />
+                    <Footer />
                   </div>
-                  <ToastContainer
-                    position="bottom-left"
-                    autoClose={5000}
-                    limit={8}
-                    hideProgressBar={false}
-                    newestOnTop
-                    closeOnClick
-                    rtl
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover={false}
-                    theme="colored"
-                  />
-                  <Footer />
                 </NextUIProvider>
               </NotificationProvider>
             </UserProvider>

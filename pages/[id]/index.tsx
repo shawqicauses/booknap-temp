@@ -82,7 +82,7 @@ const BookingData: NextPage = function BookingData() {
         <HotelPageContent>
           {tab === "2" ? (
             <div className="mt-5">
-              <div className="flex border-b-2 border-b-gray-200 dark:border-b-[#5B6C89]">
+              <div className="flex border-b-2 border-b-gray-200 dark:border-b-waikawa-gray">
                 {categories?.map(({name, id: tabId}) => (
                   <div
                     key={tabId}

@@ -221,7 +221,7 @@ const Navbar = function Navbar() {
                       <li key={id}>
                         <Link
                           href={href}
-                          className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89] ${
+                          className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-waikawa-gray ${
                             router.pathname === href ? "!text-my-primary" : ""
                           }`}
                           onClick={() => {
@@ -309,7 +309,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
                                 startContent={
-                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -323,7 +323,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -337,7 +337,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
                                 }
                                 onClick={() => {
                                   deleteAccount.onOpen()
@@ -348,7 +348,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
                                 }
                                 onClick={() => {
                                   handleSignOut()

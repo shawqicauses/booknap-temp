@@ -1,10 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem
-} from "@nextui-org/react"
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react"
 import "flag-icons/css/flag-icons.min.css"
 
 const languages = [
@@ -15,10 +10,7 @@ const languages = [
 const Lang = function Lang() {
   const [selectedLanguage, setSelectedLanguage] = React.useState(languages[0])
   const [showChild, setShowChild] = useState(false)
-  const selectedValue = React.useMemo(
-    () => selectedLanguage,
-    [selectedLanguage]
-  )
+  const selectedValue = React.useMemo(() => selectedLanguage, [selectedLanguage])
 
   const handleSelectionChange = (language: any) => {
     const set: string = Array.from(language)[0] as string
@@ -29,12 +21,9 @@ const Lang = function Lang() {
   }, [])
 
   return showChild ? (
-    <Dropdown
-      size="sm"
-      className="px-0 py-2 dark:bg-mirage"
-      classNames={{backdrop: "w-10"}}>
+    <Dropdown size="sm" className="px-0 py-2 dark:bg-mirage" classNames={{backdrop: "w-10"}}>
       <DropdownTrigger>
-        <div className="flex gap-2 items-center hover:bg-gray-100 dark:hover:bg-ebony-clay text-[#B9B9B9]  h-full dark:text-[#5B6C89] py-2 px-2.5 rounded-lg cursor-pointer">
+        <div className="flex gap-2 items-center hover:bg-gray-100 dark:hover:bg-ebony-clay text-[#B9B9B9]  h-full dark:text-waikawa-gray py-2 px-2.5 rounded-lg cursor-pointer">
           <span className="block">{selectedValue.name}</span>
         </div>
       </DropdownTrigger>
@@ -50,9 +39,7 @@ const Lang = function Lang() {
           <DropdownItem
             key={language.id}
             className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
-            startContent={
-              <span className={`fi fi-${language.flag} fis h-full`} />
-            }>
+            startContent={<span className={`fi fi-${language.flag} fis h-full`} />}>
             {language.name}
           </DropdownItem>
         ))}

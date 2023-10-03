@@ -146,7 +146,7 @@ const HotelPageContent = function HotelPageContent({children}: {children?: React
                 <Image
                   src={result.hotel.logo}
                   alt={result.hotel.name}
-                  className="!relative !w-20 !h-20 object-cover border-2 border-gray-100 dark:border-[#5B6C89] rounded-lg"
+                  className="!relative !w-20 !h-20 object-cover border-2 border-gray-100 dark:border-waikawa-gray rounded-lg"
                   fill
                 />
               </div>
