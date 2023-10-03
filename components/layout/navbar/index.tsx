@@ -300,7 +300,7 @@ const Navbar = function Navbar() {
                                   </div>
                                 </button>
                               ) : (
-                                <div className="w-9 h-9 flex justify-center items-center rounded-lg">
+                                <div className="w-7 h-7 flex justify-center items-center rounded-lg">
                                   <MySpinner />
                                 </div>
                               )}
