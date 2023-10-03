@@ -19,7 +19,9 @@ const CheckoutCard = function CheckoutCard() {
         radius="sm"
         fullWidth
         size="xl"
-        onClick={handleCheckOut}>
+        onClick={() => {
+          handleCheckOut()
+        }}>
         Proceed To Checkout
       </MyButton>
     </div>

@@ -236,8 +236,10 @@ const OffersSidebar = function OffersSidebar({
     setOffers(res.result.data)
   }
   useEffect(() => {
-    getOffers()
-  }, [time.minutes])
+    if (currentBooking) {
+      getOffers()
+    }
+  }, [time.minutes, currentBooking])
 
   useEffect(() => {
     setOffersNum(offers.length)

@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useEffect,
-  useCallback,
-  useState
-} from "react"
+import React, {createContext, useContext, useMemo, useEffect, useCallback, useState} from "react"
 import {useAuth} from "./auth"
 import client from "../helpers/client"
 
@@ -49,6 +42,7 @@ const Context = createContext<{
   getTotal: Function
   total: string
   handleCheckOut: Function
+  handleChangeBookingID: Function
 }>({
   cart: [],
   cartReady: false,
@@ -57,41 +51,38 @@ const Context = createContext<{
   deleteItem: () => {},
   getTotal: () => {},
   total: "",
-  handleCheckOut: () => {}
+  handleCheckOut: () => {},
+  handleChangeBookingID: () => {}
 })
 
-const CartProvider = function CartProvider({
-  children
-}: {
-  children: React.ReactElement
-}) {
-  const {token, ready, signOut} = useAuth()
+const CartProvider = function CartProvider({children}: {children: React.ReactElement}) {
+  const {token, ready} = useAuth()
   const [cartReady, setCartReady] = useState<boolean>(false)
   const [total, setTotal] = useState<string>("0.00")
   const [cart, setCart] = useState<CardProduct[]>([])
-
+  const [bookingId, setBookingId] = useState<number | null>()
   const getTotal = useCallback(() => {
     setTotal(
       cart
-        .reduce(
-          (pre, cartItem) =>
-            pre + cartItem.quantity * Number(cartItem.product?.price),
-          0
-        )
+        .reduce((pre, cartItem) => pre + cartItem.quantity * Number(cartItem.product?.price), 0)
         .toFixed(2)
     )
   }, [cart])
 
+  const handleChangeBookingID = useCallback((id: number) => {
+    setBookingId(id)
+  }, [])
+
   const getCardItems = useCallback(() => {
-    client("shopping/show/carts")
-      ?.then((res: {data: Array<CardProduct>}) => {
-        setCart(res.data)
-        setCartReady(true)
-      })
-      .catch(() => {
-        signOut()
-      })
-  }, [signOut])
+    if (bookingId && ready && token) {
+      client(`shopping/show/carts?booking_id=${bookingId}`)
+        ?.then((res: {data: Array<CardProduct>}) => {
+          setCart(res.data)
+          setCartReady(true)
+        })
+        .catch(() => {})
+    }
+  }, [bookingId, ready, token])
 
   useEffect(() => {
     if (ready && token) {
@@ -101,18 +92,18 @@ const CartProvider = function CartProvider({
 
   const addItemToCart = useCallback(
     (product: Product, quantity: number) => {
-      client(`shopping/carts/${product.id}`, {
-        method: "POST",
-        body: JSON.stringify({quantity: quantity})
-      })
-        ?.then(() => {
-          getCardItems()
+      if (bookingId && ready && token) {
+        client(`shopping/carts/${product.id}`, {
+          method: "POST",
+          body: JSON.stringify({booking_id: bookingId, quantity: quantity})
         })
-        .catch(() => {
-          signOut()
-        })
+          ?.then(() => {
+            getCardItems()
+          })
+          .catch(() => {})
+      }
     },
-    [getCardItems, signOut]
+    [bookingId, getCardItems, ready, token]
   )
 
   const updateItemQuantity = useCallback((id: number, quantity: number) => {
@@ -127,36 +118,38 @@ const CartProvider = function CartProvider({
 
   const deleteItem = useCallback(
     (id: number) => {
-      client(`shopping/carts/delete/${id}`, {
-        method: "POST"
+      if (bookingId && ready && token) {
+        client(`shopping/carts/delete/${id}`, {
+          method: "POST",
+          body: JSON.stringify({booking_id: bookingId})
+        })
+          ?.then(() => {
+            getCardItems()
+          })
+          .catch(() => {})
+      }
+    },
+    [bookingId, getCardItems, ready, token]
+  )
+
+  const handleCheckOut = useCallback(() => {
+    if (bookingId) {
+      client("shopping/cart/create/order", {
+        method: "POST",
+        body: JSON.stringify({
+          booking_id: bookingId,
+          carts: cart.map((itemCart) => ({
+            id: itemCart.id,
+            qty: itemCart.quantity
+          }))
+        })
       })
         ?.then(() => {
           getCardItems()
         })
-        .catch(() => {
-          signOut()
-        })
-    },
-    [getCardItems, signOut]
-  )
-
-  const handleCheckOut = useCallback(() => {
-    client("shopping/cart/create/order", {
-      method: "POST",
-      body: JSON.stringify({
-        carts: cart.map((itemCart) => ({
-          id: itemCart.id,
-          qty: itemCart.quantity
-        }))
-      })
-    })
-      ?.then(() => {
-        getCardItems()
-      })
-      .catch(() => {
-        signOut()
-      })
-  }, [getCardItems, cart, signOut])
+        .catch(() => {})
+    }
+  }, [bookingId, getCardItems, cart])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -173,7 +166,8 @@ const CartProvider = function CartProvider({
       deleteItem,
       getTotal,
       total,
-      handleCheckOut
+      handleCheckOut,
+      handleChangeBookingID
     }),
     [
       cart,
@@ -183,7 +177,8 @@ const CartProvider = function CartProvider({
       deleteItem,
       getTotal,
       total,
-      handleCheckOut
+      handleCheckOut,
+      handleChangeBookingID
     ]
   )
   return <Context.Provider value={exposed}>{children}</Context.Provider>

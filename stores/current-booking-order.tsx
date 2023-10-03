@@ -126,18 +126,12 @@ const CurrentBookingOrderProvider = function CurrentBookingOrderProvider({
     ]
   )
 
-  return (
-    <CurrentBookingOrder.Provider value={value}>
-      {children}
-    </CurrentBookingOrder.Provider>
-  )
+  return <CurrentBookingOrder.Provider value={value}>{children}</CurrentBookingOrder.Provider>
 }
 const useCurrentBookingOrder = function useCurrentBookingOrder() {
   const context = useContext(CurrentBookingOrder)
   if (!context) {
-    throw new Error(
-      "useCurrentBookingOrder must be used within an CurrentBookingOrderProvider"
-    )
+    throw new Error("useCurrentBookingOrder must be used within an CurrentBookingOrderProvider")
   }
   return context
 }

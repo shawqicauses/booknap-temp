@@ -100,13 +100,15 @@ const CardItem = function CardItem({
   )
 }
 
-const Shop = function Shop({hotelId}: {hotelId: number}) {
+const Shop = function Shop({hotelId}: {hotelId: number | null}) {
   const router = useRouter()
   const id = Number(router.query.id)
   const shopTab = Number(router.query.shopTab)
 
   const {data: products} = useFetch<{data: {data: Product[]}}>(
-    shopTab === -1 ? `shopping/products/get-favorite?hotel_id=${hotelId}` : "shopping/products"
+    shopTab === -1 && hotelId
+      ? `shopping/products/get-favorite?hotel_id=${hotelId}`
+      : "shopping/products"
   )
 
   if (products && router.isReady) {

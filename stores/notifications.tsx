@@ -16,10 +16,11 @@ interface INotification {
 }
 interface INotifications {
   notifications: Array<INotification>
-  reFetch: () => {}
+  reFetch: () => void
   ready: boolean
   clearNotifications: () => void
   unReadMassages: number
+  handleReadMassage: () => void
 }
 
 const Notifications = createContext({
@@ -27,7 +28,8 @@ const Notifications = createContext({
   reFetch: () => {},
   ready: false,
   clearNotifications: () => {},
-  unReadMassages: 0
+  unReadMassages: 0,
+  handleReadMassage: () => {}
 } as INotifications)
 
 interface INotificationsProvider {
@@ -68,6 +70,10 @@ const NotificationProvider = function NotificationProvider({
     }
   }, [token, clearNotifications, reFetch])
 
+  const handleReadMassage = useCallback(() => {
+    setUnReadMassages(0)
+  }, [])
+
   const value = useMemo(
     () =>
       ({
@@ -75,9 +81,10 @@ const NotificationProvider = function NotificationProvider({
         reFetch,
         ready,
         clearNotifications,
-        unReadMassages
+        unReadMassages,
+        handleReadMassage
       } as INotifications),
-    [notifications, reFetch, ready, clearNotifications, unReadMassages]
+    [notifications, reFetch, ready, clearNotifications, unReadMassages, handleReadMassage]
   )
   return <Notifications.Provider value={value}>{children}</Notifications.Provider>
 }

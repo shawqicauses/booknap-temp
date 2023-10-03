@@ -1,6 +1,5 @@
 import type {AppProps} from "next/app"
 import "react-toastify/dist/ReactToastify.css"
-import "../styles/globals.css"
 import {NextUIProvider} from "@nextui-org/react"
 import {ToastContainer} from "react-toastify"
 import Navbar from "../components/layout/navbar"
@@ -9,9 +8,9 @@ import {CartProvider} from "../stores/cart"
 import {UserProvider} from "../stores/user"
 import {NotificationProvider} from "../stores/notifications"
 import {CurrentBookingOrderProvider} from "../stores/current-booking-order"
-
 import {ThemeProvider} from "../stores/theme"
 import Sidebar from "../components/uis/sidebar"
+import "../styles/globals.css"
 
 const MyApp = function MyApp({Component, pageProps}: AppProps) {
   return (

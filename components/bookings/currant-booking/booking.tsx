@@ -125,8 +125,7 @@ const calc2 = (date1: string, date2: string) => {
 const calcStyle = (index: number, completedDays: string) => {
   const progress = index + 1 <= parseFloat(completedDays) ? 100 : 0
   const inProgress =
-    parseFloat(completedDays) > index &&
-    !(parseFloat(completedDays) >= index + 1)
+    parseFloat(completedDays) > index && !(parseFloat(completedDays) >= index + 1)
       ? parseInt(completedDays.split(".")[1], 10)
       : null
   return inProgress || progress
@@ -139,37 +138,29 @@ const Booking = function Booking() {
   const [orders, setOrders] = useState<Order[]>()
   const id = Number(router.query.id)
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const totalDays = useMemo(
-    () => calc(result?.date_from!, result?.date_to!),
-    [result]
-  )
+  const totalDays = useMemo(() => calc(result?.date_from!, result?.date_to!), [result])
 
   const AllDate = result?.date_to
     ? new Date(result?.date_to)?.toISOString()?.split("T")
     : new Date()?.toISOString()?.split("T")
 
-  const completedDays = useMemo(
-    () => calc2(result?.date_from!, new Date().toISOString()),
-    [result]
-  )
+  const completedDays = useMemo(() => calc2(result?.date_from!, new Date().toISOString()), [result])
 
   useEffect(() => {
-    if (id > -1) {
+    if (router.isReady && id > -1) {
       client(`hotels/bookings/show/${id}`)?.then((response: res) => {
         setResult(response.result)
       })
     }
-  }, [id])
+  }, [id, router.isReady])
 
   useEffect(() => {
-    if (id > -1) {
-      client(`shopping/orders?hotel_booking_id=${id}`)?.then(
-        (response: Test) => {
-          setOrders(response.data)
-        }
-      )
+    if (router.isReady && id > -1) {
+      client(`shopping/orders?hotel_booking_id=${id}`)?.then((response: Test) => {
+        setOrders(response.data)
+      })
     }
-  }, [id])
+  }, [id, router.isReady])
 
   useEffect(() => {
     setShowChild(true)
@@ -213,7 +204,7 @@ const Booking = function Booking() {
             </p>
           </div>
           <div className="flex flex-1 justify-end">
-            <MyButton disableAnimation onClick={onOpen}>
+            <MyButton color="reject" onClick={onOpen}>
               Renewal
             </MyButton>
           </div>
@@ -221,13 +212,9 @@ const Booking = function Booking() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-4 my-4 min-h-[400px]">
         {orders.map(({id: orderId, created_at, order_itmes}) => (
-          <div
-            className="bg-gray-100 dark:bg-mirage rounded-lg p-3"
-            key={orderId}>
+          <div className="bg-gray-100 dark:bg-mirage rounded-lg p-3" key={orderId}>
             <div className="my-flex-between py-2 text-gray-400">
-              <span className=" inline-block px-2 py-1 font-semi-bold">
-                Order {orderId}
-              </span>
+              <span className=" inline-block px-2 py-1 font-semi-bold">Order {orderId}</span>
               <span className="inline-block px-2 py-1">{created_at}</span>
             </div>
             <div className="divide-y-2">
@@ -240,9 +227,7 @@ const Booking = function Booking() {
                     <p className="body-sm">{product.description}</p>
                   </div>
                   <div className="flex-1 flex justify-end">
-                    <span className="text-red-500 font-semi-bold text-xl">
-                      {price}$
-                    </span>
+                    <span className="text-red-500 font-semi-bold text-xl">{price}$</span>
                   </div>
                 </div>
               ))}

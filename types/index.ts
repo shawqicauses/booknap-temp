@@ -145,7 +145,7 @@ export interface Hotel {
   about: string
   features: Feature[]
   logo: string
-  banner: string | null
+  banner: {id: number; image: string}[]
   lat: string
   lng: string
   address: string

@@ -31,9 +31,7 @@ const BookingsList = function BookingsList({
   const router = useRouter()
   const {page} = router.query
   const {data} = useFetch<IListBookingHotelRes>(
-    router.isReady
-      ? `hotels/bookings?status=1&is_active=0&page=${page || 1}`
-      : ""
+    router.isReady ? `hotels/bookings?status=1&is_active=0&page=${page || 1}` : ""
   )
   const [bookings, setBookings] = useState<IBooking[]>([])
 
@@ -55,11 +53,7 @@ const BookingsList = function BookingsList({
       ) : bookings.filter((booking) => booking.hotel).length ? (
         <div className="mx-4 md:my-container grid grid-cols-1 lg:grid-cols-2 gap-2 my-5">
           {bookings
-            .sort(
-              (a, b) =>
-                new Date(b.date_from).getTime() -
-                new Date(a.date_from).getTime()
-            )
+            .sort((a, b) => new Date(b.date_from).getTime() - new Date(a.date_from).getTime())
             .map((booking) => (
               <BookingBox
                 key={booking.id}
@@ -72,11 +66,7 @@ const BookingsList = function BookingsList({
             ))}
         </div>
       ) : (
-        <State
-          image="/no-booking.svg"
-          title="No Bookings"
-          description="You have no Booking"
-        />
+        <State image="/no-booking.svg" title="No Bookings" description="You have no Booking" />
       )}
       <span />
     </>
@@ -90,9 +80,7 @@ const BookingsContent = function BookingsContent() {
   const [numberOfPages, setNumberOfPages] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const {data} = useFetch<IListBookingHotelRes>(
-    `hotels/bookings?status=1&is_active=0`
-  )
+  const {data} = useFetch<IListBookingHotelRes>(`hotels/bookings?status=1&is_active=0`)
   const [selectedBooking, setSelectedBooking] = useState<IBooking | null>(null)
   useEffect(() => {
     if (data) {
@@ -105,7 +93,7 @@ const BookingsContent = function BookingsContent() {
       <>
         <div className="my-container my-5">
           <div className="text-center bg-gray-100 dark:bg-mirage p-4 pt-8 bg-[url('/mask.png')] mb-6">
-            <h1 className="heading-1 text-blue-600 mb-4">My Bookings</h1>
+            <h1 className="heading-1 text-my-primary mb-4">My Bookings</h1>
           </div>
         </div>
         <BookingsList
@@ -130,11 +118,7 @@ const BookingsContent = function BookingsContent() {
           </div>
         ) : null}
         {selectedBooking ? (
-          <BookingDetailsModal
-            isOpen={isOpen}
-            onClose={onClose}
-            Booking={selectedBooking}
-          />
+          <BookingDetailsModal isOpen={isOpen} onClose={onClose} Booking={selectedBooking} />
         ) : null}
       </>
     )

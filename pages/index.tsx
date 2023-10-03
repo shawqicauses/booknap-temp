@@ -51,6 +51,7 @@ const MyHome: NextPage = function MyHome() {
       setHotels(respond.result)
     }
   }, [respond])
+
   useEffect(() => {
     if (ready && tokenReady && hotelRating) {
       ratingModal.onOpen()
@@ -59,18 +60,16 @@ const MyHome: NextPage = function MyHome() {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          setUserPos({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
-          setPos({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
-        }
-      )
+      navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+        setUserPos({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+        setPos({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        })
+      })
     }
   }, [])
 

@@ -81,10 +81,7 @@ const ItemTable = function ItemTable() {
                 {(quantity * Number(product?.price)).toFixed(2)}
               </td>
               <td className="text-center border-2 border-r-transparent ">
-                <MyButton
-                  isIconOnly
-                  onClick={() => deleteItem(id)}
-                  className="bg-transparent">
+                <MyButton isIconOnly onClick={() => deleteItem(id)} className="bg-transparent">
                   <TbTrashXFilled className="h-8 w-8 text-[#B9B9B9]" />
                 </MyButton>
               </td>

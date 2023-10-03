@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import {Modal, ModalBody, ModalContent} from "@nextui-org/react"
 import {Swiper, SwiperSlide} from "swiper/react"
-import {Autoplay} from "swiper/modules"
+import {Pagination, Autoplay} from "swiper/modules"
 import {Rating} from "@mui/material"
 import {AiFillStar} from "react-icons/ai"
 import Image from "next/image"
@@ -59,19 +59,27 @@ const HotelPageModal = function HotelPageModal({
                   pauseOnMouseEnter: true,
                   disableOnInteraction: false
                 }}
-                modules={[Autoplay]}>
-                {hotel?.banner ? (
-                  <SwiperSlide>
-                    <div className="relative w-full h-[200px]">
-                      <Image
-                        src={`https://booknap-api.wpgooal.com/${hotel?.banner}`}
-                        alt="Web Application"
-                        fill
-                        className="!relative !inset-auto w-full object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
-                    </div>
-                  </SwiperSlide>
+                pagination={{
+                  clickable: true,
+                  bulletActiveClass: "swiper-pagination-bullet-custom-active",
+                  bulletClass: "swiper-pagination-bullet-custom",
+                  type: "bullets"
+                }}
+                modules={[Autoplay, Pagination]}>
+                {hotel?.banner.length > 0 ? (
+                  hotel.banner.map(({id: imageId, image}) => (
+                    <SwiperSlide key={imageId}>
+                      <div className="relative w-full h-[200px]">
+                        <Image
+                          src={`https://booknap-api.wpgooal.com/${image}`}
+                          alt="Web Application"
+                          fill
+                          className="!relative !inset-auto w-full object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 z-10 bg-gradient-to-t from-black w-full h-full" />
+                      </div>
+                    </SwiperSlide>
+                  ))
                 ) : (
                   <SwiperSlide>
                     <div className="relative w-full h-[200px]">

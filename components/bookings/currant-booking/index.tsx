@@ -18,7 +18,7 @@ export interface Hotel {
   about: string
   features: string
   logo: string
-  banner: null
+  banner: {id: number; image: string}[]
   lat: string
   lng: string
   address: string
@@ -169,14 +169,15 @@ const HotelPageContent = function HotelPageContent({children}: {children?: React
                 disableOnInteraction: false
               }}
               pagination={{
-                clickable: true
-                // bulletActiveClass: "swiper-pagination-bullet-custom-active",
-                // bulletClass: "swiper-pagination-bullet-custom"
+                clickable: true,
+                bulletActiveClass: "swiper-pagination-bullet-custom-active",
+                bulletClass: "swiper-pagination-bullet-custom",
+                type: "bullets"
               }}
               modules={[Autoplay, Pagination]}
               className=" rounded-lg overflow-x-hidden">
-              {result?.banners.length > 0 ? (
-                result?.banners.map(({id: imageId, image}) => (
+              {result?.hotel.banner.length > 0 ? (
+                result?.hotel.banner.map(({id: imageId, image}) => (
                   <SwiperSlide key={imageId}>
                     <div className="relative w-full h-[200px] lg:h-[400px]">
                       <Image

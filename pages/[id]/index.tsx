@@ -12,6 +12,8 @@ import {useAuth} from "../../stores/auth"
 import client from "../../helpers/client"
 import Shop from "../../components/bookings/currant-booking/shop"
 import {useCurrentBookingOrder} from "../../stores/current-booking-order"
+import CartContent from "../../components/cart"
+import {useCart} from "../../stores/cart"
 
 export interface Datum {
   id: number
@@ -34,28 +36,46 @@ const BookingData: NextPage = function BookingData() {
   const router = useRouter()
   const {tab, shopTab} = router.query
   const [categories, setCategories] = useState<Datum[]>()
-  const {token} = useAuth()
+  const {token, ready} = useAuth()
   const {userBookings} = useCurrentBookingOrder()
   const id = Number(router.query.id)
+  const {handleChangeBookingID} = useCart()
 
   const hotelId = useMemo(
-    () => userBookings?.find((booking) => booking.id === id)?.hotel?.id,
-    [id, userBookings]
+    () => userBookings?.find((booking) => booking.id === id && router.isReady)?.hotel?.id,
+    [id, userBookings, router.isReady]
   )
+
   const tabs = useMemo(
-    () => [<Booking />, <RoomsDetails />, <Shop hotelId={hotelId || 0} />, <About />],
+    () => [
+      <Booking />,
+      <RoomsDetails />,
+      <Shop hotelId={hotelId || null} />,
+      <About />,
+      <CartContent />
+    ],
     [hotelId]
   )
+
   useEffect(() => {
-    if (router.isReady && token) {
+    if (router.isReady && ready && token && id) {
       client(`shopping/categories?hotel_id=${hotelId}`)?.then((res: Test) => {
         setCategories(res.data)
       })
     }
-  }, [id, router, token, hotelId])
-  if (!shopTab && router.isReady && categories?.length && tab === "2") {
-    router.push(`${id}/?tab=2&shopTab=${categories[0].id}`)
-  }
+  }, [id, router, token, ready, hotelId, handleChangeBookingID])
+
+  useEffect(() => {
+    if (router.isReady && ready && token && id) {
+      handleChangeBookingID(id)
+    }
+  }, [handleChangeBookingID, token, router, id, ready])
+
+  useEffect(() => {
+    if (ready && !shopTab && router.isReady && categories?.length && tab === "2" && id) {
+      router.push(`${id}/?tab=2&shopTab=${categories[0].id}`)
+    }
+  }, [categories, id, ready, router, shopTab, tab])
 
   return (
     <Protected>

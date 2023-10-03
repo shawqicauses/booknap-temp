@@ -24,13 +24,13 @@ import {useAuth} from "../../../stores/auth"
 import SignInModal from "../../modal/sign-in-modal"
 import DeleteAccountModal from "../../modal/delete-account-modal"
 import Lang from "./lang"
-import {useCart} from "../../../stores/cart"
 import MyButton from "../../uis/button"
 import client from "../../../helpers/client"
 import {useUser} from "../../../stores/user"
 import {useNotifications} from "../../../stores/notifications"
 import {useTheme} from "../../../stores/theme"
 import MySpinner from "../../uis/my-spinner"
+import {useCart} from "../../../stores/cart"
 
 const navLinks = [
   {id: 1, text: "Home", href: "/"},
@@ -80,12 +80,13 @@ const NotificationsDropDown = function NotificationsDropDown({
   isNotificationsOpen: boolean
   handleOpenNotifications: () => void
 }) {
-  const {notifications, unReadMassages, ready} = useNotifications()
+  const {notifications, unReadMassages, handleReadMassage, ready} = useNotifications()
   const {ready: tokenReady, signOut} = useAuth()
   const {theme} = useTheme()
   const handleClick = () => {
     handleOpenNotifications()
     if (ready && tokenReady) {
+      handleReadMassage()
       notifications.forEach((noti: any) => {
         if (!noti.read_at) {
           client(`notifications/read/${noti.id}`, {method: "GET"})?.catch(() => {
@@ -149,76 +150,28 @@ const NotificationsDropDown = function NotificationsDropDown({
     </div>
   )
 }
-const CartDropDown = function CartDropDown({
-  isCartDropDownOpen,
-  setIsCartDropDownOpen,
-  handleOpenCartDropDown
-}: {
-  isCartDropDownOpen: boolean
-  setIsCartDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
-  handleOpenCartDropDown: () => void
-}) {
-  const {cart, cartReady} = useCart()
 
-  return (
-    <div className="relative h-full">
-      <OutsideClickHandler onOutsideClick={() => setIsCartDropDownOpen(false)}>
-        <MyButton size="navIcon" color="navIcon" onClick={handleOpenCartDropDown} isIconOnly>
-          {cart.length > 0 ? (
-            <Badge color="danger" content={cart.length} shape="circle" disableOutline>
-              <AiOutlineShoppingCart className="w-6 h-6" />
-            </Badge>
-          ) : (
-            <AiOutlineShoppingCart className="w-6 h-6" />
-          )}
-        </MyButton>
-        <div
-          className={`${
-            isCartDropDownOpen ? "block" : "hidden"
-          } absolute lg:top-14 bottom-14 right-0 w-72 shadow-md z-50`}>
-          <div className="absolute h-5 w-5 rotate-45 -top-[10px] right-0 -translate-x-[50%] bg-white dark:bg-mirage " />
-          <h2 className="heading-3 bg-white dark:bg-mirage dark:text-white w-full text-start rounded-t-md p-2 z-10">
-            Cart
-          </h2>
-          <ul className="bg-white dark:bg-mirage rounded-b-md divide-gray-100 shadow-base divide-y-1 overflow-y-scroll max-h-64 hide-scrollbar">
-            {cartReady ? (
-              cart.length > 0 ? (
-                <>
-                  {cart.slice(0, 3).map((item) => (
-                    <li className="flex gap-2 items-center p-3 cursor-pointer" key={item.id}>
-                      <div className="relative w-10 h-10 rounded-lg overflow-hidden border-2 border-gray-100">
-                        {item.product?.image ? (
-                          <Image src={item.product?.image} alt="logo" className="relative" fill />
-                        ) : null}
-                      </div>
-                      <div className="flex flex-col flex-1 text-start">
-                        <h3 className="">{item?.product?.name}</h3>
-                        <span className="body-sm line-clamp-1">{item?.product?.description}</span>
-                      </div>
-                    </li>
-                  ))}
-                  <li className="flex justify-center p-2">
-                    <Link href="/cart" className="text-blue-400">
-                      View Cart
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <li className="h-[100px] w-full flex justify-center items-center">
-                  <h3>No Item in Cart</h3>
-                </li>
-              )
-            ) : (
-              <li className="max-h-[150px] flex justify-center items-center">
-                <MySpinner />
-              </li>
-            )}
-          </ul>
-        </div>
-      </OutsideClickHandler>
-    </div>
-  )
+const CartDropDown = function CartDropDown() {
+  const router = useRouter()
+  const id = Number(router.query.id)
+  const {cart} = useCart()
+  return id && cart ? (
+    <li className="relative h-full">
+      <MyButton
+        size="navIcon"
+        color="navIcon"
+        onClick={() => {
+          router.push(`/${id}/?tab=4`)
+        }}
+        isIconOnly>
+        <Badge color="danger" content={cart.length} shape="circle" disableOutline>
+          <AiOutlineShoppingCart className="w-6 h-6" />
+        </Badge>
+      </MyButton>
+    </li>
+  ) : null
 }
+
 const Navbar = function Navbar() {
   const {theme, changeTheme} = useTheme()
   const [isOpened, setIsOpened] = useState(false)
@@ -227,23 +180,19 @@ const Navbar = function Navbar() {
   const deleteAccount = useDisclosure()
   const {user, ready} = useUser()
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
-  const [isCartDropDownOpen, setIsCartDropDownOpen] = useState(false)
   const router = useRouter()
+
   const handleSignOut = async () => {
     await client("logout", {method: "POST"})
     signOut()
   }
+
   const handleOpenNotifications = () => {
     setIsNotificationsOpen((pre) => !pre)
-    setIsCartDropDownOpen(false)
   }
-  const handleOpenCartDropDown = () => {
-    setIsNotificationsOpen(false)
-    setIsCartDropDownOpen((pre) => !pre)
-  }
+
   const closeBoth = () => {
     setIsNotificationsOpen(false)
-    setIsCartDropDownOpen(false)
   }
   return (
     <>
@@ -286,7 +235,7 @@ const Navbar = function Navbar() {
                   </ul>
                 </li>
                 <li>
-                  <ul className="flex flex-row gap-3 items-center">
+                  <ul className="flex flex-row gap-1 items-center">
                     <li>
                       <Lang />
                     </li>
@@ -324,13 +273,7 @@ const Navbar = function Navbar() {
                     ) : null}
                     {token ? (
                       <>
-                        <li>
-                          <CartDropDown
-                            isCartDropDownOpen={isCartDropDownOpen}
-                            setIsCartDropDownOpen={setIsCartDropDownOpen}
-                            handleOpenCartDropDown={handleOpenCartDropDown}
-                          />
-                        </li>
+                        <CartDropDown />
                         <li>
                           <NotificationsDropDown
                             isNotificationsOpen={isNotificationsOpen}
@@ -344,7 +287,7 @@ const Navbar = function Navbar() {
                               {ready ? (
                                 <button
                                   type="button"
-                                  className="my-flex gap-2 cursor-pointer rounded-lg"
+                                  className="my-flex gap-2 cursor-pointer !w-10 !h-10 rounded-lg pl-2"
                                   onClick={closeBoth}>
                                   <div className="relative !w-9 !h-9 rounded-full overflow-hidden">
                                     <Image

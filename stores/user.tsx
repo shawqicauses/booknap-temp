@@ -34,31 +34,32 @@ interface IAuthProvider {
   children: ReactElement
 }
 
-const UserProvider = function UserProvider({
-  children
-}: IAuthProvider): ReactElement {
+const UserProvider = function UserProvider({children}: IAuthProvider): ReactElement {
   const [user, setUser] = useState<IUser | null>(null)
   const [hotelRating, setHotelRating] = useState<any>()
 
   const [ready, setReady] = useState<boolean>(false)
   const {token, signOut} = useAuth()
   const {handleCurrentBookingOrder} = useCurrentBookingOrder()
+
   const getData = useCallback(async () => {
-    await client("profile", {method: "GET"})
-      ?.then((res: IProfileRes) => {
-        if (res.success) {
-          setUser(res.user)
-          if (res.has_booking && res.booking.status === 0) {
-            handleCurrentBookingOrder(res.booking)
+    if (token) {
+      await client("profile", {method: "GET"})
+        ?.then((res: IProfileRes) => {
+          if (res.success) {
+            setUser(res.user)
+            if (res.has_booking && res.booking.status === 0) {
+              handleCurrentBookingOrder(res.booking)
+            }
+            setHotelRating(res.hotel_rating)
           }
-          setHotelRating(res.hotel_rating)
-        }
-        setReady(true)
-      })
-      .catch(() => {
-        signOut()
-      })
-  }, [handleCurrentBookingOrder, signOut])
+          setReady(true)
+        })
+        .catch(() => {
+          signOut()
+        })
+    }
+  }, [handleCurrentBookingOrder, signOut, token])
 
   useEffect(() => {
     if (!token) {
