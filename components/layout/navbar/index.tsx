@@ -258,8 +258,6 @@ const Navbar = function Navbar() {
                     {!token ? (
                       <li>
                         <MyButton
-                          as={Link}
-                          href="/"
                           size="navIcon"
                           color="navIcon"
                           isIconOnly

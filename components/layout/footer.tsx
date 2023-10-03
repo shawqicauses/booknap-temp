@@ -5,6 +5,7 @@ import {GrInstagram} from "react-icons/gr"
 import {TfiYoutube} from "react-icons/tfi"
 import {BsTwitter} from "react-icons/bs"
 import React from "react"
+import {useRouter} from "next/router"
 import {useTheme} from "../../stores/theme"
 
 const companyLinks = [
@@ -38,26 +39,25 @@ const socialMedia = [
 
 const Footer = function Footer() {
   const {theme} = useTheme()
-  return (
+  const router = useRouter()
+
+  return router.asPath !== "/" ? (
     <footer>
       <div className="bg-gray-100 dark:bg-mirage pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-container py-10 gap-6">
           <div className="pt-2">
             <Link href="/" className="relative w-44 h-fit mb-4 inline-block">
               <Image
-                src={`/logo/${
-                  theme === "light" ? "blue-logo" : "white-logo"
-                }.png `}
+                src={`/logo/${theme === "light" ? "blue-logo" : "white-logo"}.png `}
                 alt="Logo"
                 fill
                 className="!relative  object-contain !w-52 !h-fit"
               />
             </Link>
             <p className="body text-sm font-light">
-              lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. at vero eos et accusam et justo duo
-              dolores et ea rebum.
+              lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+              invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. at vero eos et
+              accusam et justo duo dolores et ea rebum.
             </p>
           </div>
           <div>
@@ -112,7 +112,7 @@ const Footer = function Footer() {
         </p>
       </div>
     </footer>
-  )
+  ) : null
 }
 
 export default Footer

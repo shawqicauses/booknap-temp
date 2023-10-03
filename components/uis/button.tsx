@@ -18,7 +18,7 @@ const MyButton = extendVariants(Button, {
       primary: "text-white bg-my-primary hover:bg-[#254478]",
       primary2: "text-my-primary bg-[#E9EDF4] dark:bg-[#5B6C89] dark:text-white",
       secondary: "text-blue-300 bg-gray-200",
-      gray: "",
+      gray: "bg-gray-100 text-black dark:bg-mirage dark:text-white",
       selectedFilter: "bg-[#E9EDF4] text-black",
       reject: "bg-[#E9EDF4] text-my-primary dark:bg-ebony-clay dark:text-white",
       offer: "bg-[#F7F7F7] dark:bg-mirage",

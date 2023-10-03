@@ -2,7 +2,6 @@ import {NextPage} from "next"
 import {useState, useEffect, useMemo} from "react"
 import {useRouter} from "next/router"
 import HotelPageContent from "../../components/bookings/currant-booking"
-import Footer from "../../components/layout/footer"
 import Booking from "../../components/bookings/currant-booking/booking"
 import Protected from "../../components/uis/protected"
 import About from "../../components/bookings/currant-booking/about"
@@ -111,7 +110,6 @@ const BookingData: NextPage = function BookingData() {
         </HotelPageContent>
         {router.isReady ? tabs[Number(tab) || 0] : <LoadingDiv />}
       </div>
-      <Footer />
     </Protected>
   )
 }

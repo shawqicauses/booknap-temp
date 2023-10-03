@@ -2,7 +2,6 @@ import {useState, useEffect} from "react"
 import {NextPage} from "next"
 import {useRouter} from "next/router"
 import HotelPageContent from "../../../components/bookings/currant-booking"
-import Footer from "../../../components/layout/footer"
 import ItemPage from "../../../components/bookings/currant-booking/show-item"
 import Protected from "../../../components/uis/protected"
 import {useAuth} from "../../../stores/auth"
@@ -56,7 +55,6 @@ const Booking: NextPage = function Booking() {
         </HotelPageContent>
         <ItemPage />
       </div>
-      <Footer />
     </Protected>
   )
 }

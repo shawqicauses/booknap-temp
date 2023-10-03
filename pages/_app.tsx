@@ -11,6 +11,7 @@ import {CurrentBookingOrderProvider} from "../stores/current-booking-order"
 import {ThemeProvider} from "../stores/theme"
 import Sidebar from "../components/uis/sidebar"
 import "../styles/globals.css"
+import Footer from "../components/layout/footer"
 
 const MyApp = function MyApp({Component, pageProps}: AppProps) {
   return (
@@ -21,24 +22,25 @@ const MyApp = function MyApp({Component, pageProps}: AppProps) {
             <UserProvider>
               <NotificationProvider>
                 <NextUIProvider>
-                  <div className="min-h-screen">
-                    <Navbar />
-                    <Sidebar />
+                  <Navbar />
+                  <Sidebar />
+                  <div className="w-full">
                     <Component {...pageProps} />
-                    <ToastContainer
-                      position="bottom-left"
-                      autoClose={5000}
-                      limit={8}
-                      hideProgressBar={false}
-                      newestOnTop
-                      closeOnClick
-                      rtl
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover={false}
-                      theme="colored"
-                    />
                   </div>
+                  <ToastContainer
+                    position="bottom-left"
+                    autoClose={5000}
+                    limit={8}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover={false}
+                    theme="colored"
+                  />
+                  <Footer />
                 </NextUIProvider>
               </NotificationProvider>
             </UserProvider>

@@ -33,7 +33,11 @@ interface IConfigCode {
   check5: number | null
   check6: number | null
 }
-
+const inputStyle = {
+  inputWrapper:
+    "input p-3 leading-5 bg-gray-100 rounded-lg resize-none h-full shadow-none dark:bg-mirage dark:border-mirage",
+  input: "dark:text-white"
+}
 const SignIn = function SignIn({
   register,
   errors,
@@ -79,7 +83,7 @@ const SignIn = function SignIn({
 
   return (
     <>
-      <div className="flex gap-3 flex-col md:flex-row">
+      <div className="flex gap-3 flex-col">
         <div>
           <label htmlFor="name" className="label">
             Username
@@ -89,12 +93,8 @@ const SignIn = function SignIn({
             variant="flat"
             value={watch().userName}
             {...register("name", {required: true, min: 10})}
-            placeholder="userName"
-            classNames={{
-              inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none dark:bg-mirage dark:border-mirage",
-              input: "dark:text-white"
-            }}
+            placeholder="Username"
+            classNames={inputStyle}
           />
           {errors.mobile?.types?.required ? (
             <p className="text-red-500">This Filed is Required</p>
@@ -114,18 +114,14 @@ const SignIn = function SignIn({
             value={watch().mobile}
             {...register("mobile", {required: true})}
             placeholder="+000000000000"
-            classNames={{
-              inputWrapper:
-                "input p-3 leading-5 bg-white rounded-lg resize-none h-full shadow-none dark:bg-mirage dark:border-mirage",
-              input: "dark:text-white"
-            }}
+            classNames={inputStyle}
           />
           {errors.name?.types?.required ? (
             <p className="text-red-500">This Filed is Required</p>
           ) : null}
         </div>
       </div>
-      <div className="w-[70%] mx-auto">
+      <div className="w-[50%] mx-auto">
         <MyButton
           color="primary"
           type="button"
@@ -140,9 +136,9 @@ const SignIn = function SignIn({
         </MyButton>
       </div>
       <div className="flex items-center w-[50%] mx-auto">
-        <span className="inline-block h-0.5 w-full bg-gray-200" />
-        <span className="px-2 font-semi-bold label">or</span>
-        <span className="inline-block h-0.5 w-full bg-gray-200" />
+        <span className="inline-block h-0.5 w-full bg-gray-100" />
+        <span className="px-2 label text-gray-100">or</span>
+        <span className="inline-block h-0.5 w-full bg-gray-100" />
       </div>
       <div className="flex gap-4">
         <MyButton color="transparent" variant="bordered" radius="full" fullWidth onClick={google}>
@@ -383,17 +379,15 @@ const SignInModal = function SignInModal({
   }
 
   return (
-    <Modal size="lg" isOpen={isOpen} onClose={onClose} classNames={type3}>
+    <Modal size="md" isOpen={isOpen} onClose={onClose} classNames={type3}>
       <ModalContent>
-        <div className="p-5">
+        <div className="px-5 pt-5 pb-4">
           <div id="recaptcha-container" />
           <ModalHeader>
-            <h1 className="heading-2 dark:text-white">Sign In</h1>
+            <h1 className="heading-main-3 ml-3">Sign In</h1>
           </ModalHeader>
-          <ModalBody>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4 relative justify-center">
+          <ModalBody className="">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 relative">
               {page === 0 ? (
                 <SignIn
                   errors={errors}
@@ -414,8 +408,8 @@ const SignInModal = function SignInModal({
                   isSubmitting={isSubmitting}
                 />
               )}
-              <button id="sign-in-button" type="button" aria-label=" " />
             </form>
+            <button id="sign-in-button" type="button" aria-label=" " />
           </ModalBody>
         </div>
       </ModalContent>

@@ -241,6 +241,7 @@ const Booking = function Booking() {
         bookingId={id}
         toDate={AllDate[0]}
         toTime={AllDate[1]}
+        fromDate={result?.date_from?.split(" ")[0] || ""}
       />
     </>
   )

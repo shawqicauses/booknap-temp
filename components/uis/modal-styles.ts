@@ -8,9 +8,9 @@ const noPadding = {
 }
 
 const type3 = {
-  body: "px-10 bg-gray-100 dark:bg-blue-charcoal",
+  body: "px-10 bg-white dark:bg-blue-charcoal",
   backdrop: "bg-[#292f46]/50 backdrop-opacity-40 ",
-  base: "max-w-lg bg-gray-100 dark:bg-blue-charcoal",
+  base: "bg-white dark:bg-blue-charcoal",
   closeButton: closeButton
 }
 

@@ -15,9 +15,7 @@ const client = function client(url: string, options?: RequestInit) {
 
     if (options?.body) config.body = options?.body
     return fetch(
-      !/^(https?:)?\/\//.test(url)
-        ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`
-        : url,
+      !/^(https?:)?\/\//.test(url) ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}` : url,
       config
     ).then(async (response) => {
       if (response.status === 401) localStorage.removeItem("TOKEN")
