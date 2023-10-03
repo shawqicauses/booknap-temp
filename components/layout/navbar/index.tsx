@@ -221,7 +221,7 @@ const Navbar = function Navbar() {
                       <li key={id}>
                         <Link
                           href={href}
-                          className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-waikawa-gray ${
+                          className={`navbar-link inline-block w-full  p-3 rounded-b-lg text-[#B9B9B9] dark:text-[#5B6C89] ${
                             router.pathname === href ? "!text-my-primary" : ""
                           }`}
                           onClick={() => {
@@ -285,7 +285,7 @@ const Navbar = function Navbar() {
                               {ready ? (
                                 <button
                                   type="button"
-                                  className="my-flex gap-2 cursor-pointer !w-10 !h-10 rounded-lg pl-2"
+                                  className="my-flex gap-2 cursor-pointer !w-10 !h-10 rounded-lg ml-2"
                                   onClick={closeBoth}>
                                   <div className="relative !w-9 !h-9 rounded-full overflow-hidden">
                                     <Image
@@ -300,7 +300,7 @@ const Navbar = function Navbar() {
                                   </div>
                                 </button>
                               ) : (
-                                <div className="min-w-[100px] h-full flex justify-center items-center rounded-lg">
+                                <div className="w-9 h-9 flex justify-center items-center rounded-lg">
                                   <MySpinner />
                                 </div>
                               )}
@@ -309,7 +309,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
                                 startContent={
-                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
+                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -323,7 +323,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
+                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   setIsOpened(false)
@@ -337,7 +337,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
+                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   deleteAccount.onOpen()
@@ -348,7 +348,7 @@ const Navbar = function Navbar() {
                               <DropdownItem
                                 className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
                                 startContent={
-                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-waikawa-gray" />
+                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
                                 }
                                 onClick={() => {
                                   handleSignOut()

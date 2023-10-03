@@ -33,12 +33,14 @@ const HotelPageModal = function HotelPageModal({
           <div>
             <div className="relative w-auto min-h-[200px]">
               <div className="flex gap-3 items-center absolute bottom-3 left-3 z-10">
-                <Image
-                  src={hotel.logo}
-                  alt={hotel.name}
-                  className="!relative !w-16 !h-16 object-cover border-2 border-gray-100 dark:border-waikawa-gray rounded-lg"
-                  fill
-                />
+                <div className="relative !w-16 !h-16 border-2 border-gray-100 dark:border-waikawa-gray rounded-lg overflow-hidden">
+                  <Image
+                    src={hotel.logo}
+                    alt={hotel.name}
+                    className="!relative object-cover"
+                    fill
+                  />
+                </div>
                 <div>
                   <h2 className="heading-2 mb-2 text-white">{hotel.name}</h2>
                   <Rating

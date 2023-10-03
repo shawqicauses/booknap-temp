@@ -142,11 +142,11 @@ const HotelPageContent = function HotelPageContent({children}: {children?: React
         <div className="p-3 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
           <div className="relative mb-2">
             <div className="flex gap-3 absolute bottom-3 left-4 z-10">
-              <div className="relative h-full rounded-sm">
+              <div className="relative h-full border-2 border-gray-100 dark:border-waikawa-gray rounded-lg overflow-hidden">
                 <Image
                   src={result.hotel.logo}
                   alt={result.hotel.name}
-                  className="!relative !w-20 !h-20 object-cover border-2 border-gray-100 dark:border-waikawa-gray rounded-lg"
+                  className="!relative !w-20 !h-20 object-cover"
                   fill
                 />
               </div>
