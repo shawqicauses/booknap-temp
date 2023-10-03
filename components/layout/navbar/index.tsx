@@ -113,7 +113,7 @@ const NotificationsDropDown = function NotificationsDropDown({
           <h2 className="heading-3 bg-white dark:bg-mirage dark:text-white w-full text-start rounded-t-md p-2 z-10">
             Notifications
           </h2>
-          <ul className="bg-white dark:bg-mirage rounded-b-md divide-y-1 divide-gray-100 dark:divide-gray-500 shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
+          <ul className="bg-white dark:bg-mirage rounded-b-md divide-y-1 divide-gray-100 dark:divide-[#232F42] shadow-base overflow-y-scroll max-h-64 hide-scrollbar overflow-hidden z-10">
             {ready ? (
               notifications.length > 0 ? (
                 notifications.map((notification: any) => (

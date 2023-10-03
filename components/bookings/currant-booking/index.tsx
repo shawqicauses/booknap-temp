@@ -157,7 +157,9 @@ const HotelPageContent = function HotelPageContent({children}: {children?: React
                   readOnly
                   style={{color: "#FBC831"}}
                   icon={<AiFillStar className="text-inherit" />}
-                  emptyIcon={<AiFillStar className="text-inherit text-[#DDDDDD]" />}
+                  emptyIcon={
+                    <AiFillStar className="text-inherit text-[#DDDDDD] dark:text-ebony-clay" />
+                  }
                 />
               </div>
             </div>

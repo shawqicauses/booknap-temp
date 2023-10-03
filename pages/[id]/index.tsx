@@ -86,7 +86,7 @@ const BookingData: NextPage = function BookingData() {
                 {categories?.map(({name, id: tabId}) => (
                   <div
                     key={tabId}
-                    className={`cursor-pointer px-5 py-1 ${
+                    className={`relative top-0.5 cursor-pointer px-5 py-1 ${
                       Number(shopTab) === tabId ? "border-b-2 border-b-blue-700" : ""
                     }`}
                     onClick={() => router.push(`${id}/?tab=2&shopTab=${tabId}`)}
@@ -95,7 +95,7 @@ const BookingData: NextPage = function BookingData() {
                   </div>
                 ))}
                 <div
-                  className={`cursor-pointer px-5 py-1 ${
+                  className={`relative top-0.5 cursor-pointer px-5 py-1 ${
                     Number(shopTab) === -1 ? "border-b-2 border-b-blue-700" : ""
                   }`}
                   onClick={() => {
