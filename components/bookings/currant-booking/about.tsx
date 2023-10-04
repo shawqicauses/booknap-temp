@@ -8,6 +8,7 @@ import {LuMail} from "react-icons/lu"
 import client from "../../../helpers/client"
 import {Result, res} from "./index"
 import FancyBox from "../../uis/fancy-box"
+import LoadingDiv from "../../uis/loading"
 
 const About = function About() {
   const router = useRouter()
@@ -77,31 +78,37 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Gallery</span>
         </div>
         <FancyBox>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-row-4 h-full gap-4">
-            {result?.hotel?.media?.map(({id: imgId, file, type}) => (
-              <div className="relative h-full w-full rounded-lg overflow-hidden" key={imgId}>
-                {type !== "mp4" ? (
-                  <Image
-                    data-fancybox="gallery"
-                    src={`https://booknap-api.wpgooal.com/${file}`}
-                    alt="image"
-                    fill
-                    className="!relative object-cover"
-                  />
-                ) : (
-                  <Link data-fancybox="gallery" href={`https://booknap-api.wpgooal.com${file}`}>
-                    <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10 flex justify-center items-center">
-                      <FaPlay className="relative h-5 w-5 text-white z-20" />
-                    </div>
-                    {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                    <video
-                      src={`https://booknap-api.wpgooal.com${file}`}
-                      className="!relative object-cover w-full h-full"
+          <div className="grid grid-col-1 md:grid-col-2 xl:grid-3 gap-2 h-full w-fit mx-auto">
+            {result ? (
+              result.hotel.media.map(({id: imgId, file, type}) => (
+                <div
+                  className="relative  rounded-lg overflow-hidden lg:w-[400px] xs:h-[250px] w-full h-full"
+                  key={imgId}>
+                  {type !== "mp4" ? (
+                    <Image
+                      data-fancybox="gallery"
+                      src={`https://booknap-api.wpgooal.com/${file}`}
+                      alt="image"
+                      fill
+                      className="!relative object-cover"
                     />
-                  </Link>
-                )}
-              </div>
-            ))}
+                  ) : (
+                    <Link data-fancybox="gallery" href={`https://booknap-api.wpgooal.com${file}`}>
+                      <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10 flex justify-center items-center">
+                        <FaPlay className="relative h-5 w-5 text-white z-20" />
+                      </div>
+                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                      <video
+                        src={`https://booknap-api.wpgooal.com${file}`}
+                        className="!relative object-cover w-full h-full"
+                      />
+                    </Link>
+                  )}
+                </div>
+              ))
+            ) : (
+              <LoadingDiv />
+            )}
           </div>
         </FancyBox>
       </div>

@@ -30,7 +30,7 @@ const AboutUsContent = function AboutUsContent() {
               diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam{" "}
             </p>
           </div>
-          <div className="relative lg:w-2/5 h-full rounded-lg overflow-hidden">
+          <div className="relative lg:w-2/5 h-full rounded-xl-2 overflow-hidden">
             <Image src="/about-img-1.png" alt="img" fill className="!relative object-contain" />
           </div>
         </div>
@@ -55,19 +55,19 @@ const AboutUsContent = function AboutUsContent() {
               </p>
               <ul className="flex flex-col gap-2">
                 <li className="flex gap-1">
-                  <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
+                  <AiFillCheckCircle className="h-6 w-6 text-my-primary" />
                   <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
                 </li>
                 <li className="flex gap-1">
-                  <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
+                  <AiFillCheckCircle className="h-6 w-6 text-my-primary" />
                   <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
                 </li>
                 <li className="flex gap-1">
-                  <AiFillCheckCircle className="h-6 w-6 text-blue-600" />
+                  <AiFillCheckCircle className="h-6 w-6 text-my-primary" />
                   <span className="inline-block body-sm text-black dark:text-white">
                     lorem ipsum dolor sit amet, consetetur
                   </span>
@@ -75,7 +75,7 @@ const AboutUsContent = function AboutUsContent() {
               </ul>
             </div>
           </div>
-          <div className="relative lg:w-2/5 h-full rounded-lg overflow-hidden">
+          <div className="relative lg:w-2/5 h-full rounded-xl-2 overflow-hidden">
             <Image src="/about-img-2.png" alt="img" fill className="!relative object-contain" />
           </div>
         </div>

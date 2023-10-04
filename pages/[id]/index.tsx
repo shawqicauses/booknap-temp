@@ -87,7 +87,7 @@ const BookingData: NextPage = function BookingData() {
                   <div
                     key={tabId}
                     className={`relative top-0.5 cursor-pointer px-5 py-1 ${
-                      Number(shopTab) === tabId ? "border-b-2 border-b-blue-700" : ""
+                      Number(shopTab) === tabId ? "border-b-2 border-b-my-primary" : ""
                     }`}
                     onClick={() => router.push(`${id}/?tab=2&shopTab=${tabId}`)}
                     aria-hidden="true">
@@ -96,7 +96,7 @@ const BookingData: NextPage = function BookingData() {
                 ))}
                 <div
                   className={`relative top-0.5 cursor-pointer px-5 py-1 ${
-                    Number(shopTab) === -1 ? "border-b-2 border-b-blue-700" : ""
+                    Number(shopTab) === -1 ? "border-b-2 border-b-my-primary" : ""
                   }`}
                   onClick={() => {
                     router.push(`${id}/?tab=2&shopTab=${-1}`)
@@ -108,7 +108,7 @@ const BookingData: NextPage = function BookingData() {
             </div>
           ) : null}
         </HotelPageContent>
-        {router.isReady ? tabs[Number(tab) || 0] : <LoadingDiv />}
+        {router.isReady && hotelId ? tabs[Number(tab) || 0] : <LoadingDiv />}
       </div>
     </Protected>
   )

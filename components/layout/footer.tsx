@@ -4,7 +4,7 @@ import {ImFacebook} from "react-icons/im"
 import {GrInstagram} from "react-icons/gr"
 import {TfiYoutube} from "react-icons/tfi"
 import {BsTwitter} from "react-icons/bs"
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {useRouter} from "next/router"
 import {useTheme} from "../../stores/theme"
 
@@ -40,8 +40,14 @@ const socialMedia = [
 const Footer = function Footer() {
   const {theme} = useTheme()
   const router = useRouter()
+  const [showFooter, setShowFooter] = useState(false)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShowFooter(true)
+    }
+  }, [setShowFooter])
 
-  return router.asPath !== "/" ? (
+  return showFooter && router.isReady && router.asPath !== "/" ? (
     <footer className="mt-auto">
       <div className="bg-gray-100 dark:bg-mirage pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-container py-10 gap-6">
@@ -112,7 +118,9 @@ const Footer = function Footer() {
         </p>
       </div>
     </footer>
-  ) : null
+  ) : (
+    <span />
+  )
 }
 
 export default Footer

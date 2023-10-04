@@ -1,17 +1,17 @@
 /* eslint-disable camelcase */
 import Image from "next/image"
-import React, {useState} from "react"
+import React, {useCallback, useEffect, useState} from "react"
 import {useRouter} from "next/router"
 import {HiOutlineShoppingCart} from "react-icons/hi2"
 import {MdFavorite, MdFavoriteBorder} from "react-icons/md"
 import {useDisclosure} from "@nextui-org/react"
 import MyButton from "../../uis/button"
-import useFetch from "../../../hooks/use-fetch"
 import LoadingDiv from "../../uis/loading"
 import client from "../../../helpers/client"
 import ItemModal from "../../modal/item-modal"
 import {Product} from "../../../types"
 import {useCart} from "../../../stores/cart"
+import {useAuth} from "../../../stores/auth"
 
 const CardItem = function CardItem({
   id,
@@ -31,6 +31,7 @@ const CardItem = function CardItem({
   showDetails: () => void
 }) {
   const [favorite, setFavorite] = useState(!!isFavorite)
+
   const handleClickHere = () => {
     setFavorite((pre) => !pre)
     client("shopping/products/add-favorite", {
@@ -78,12 +79,28 @@ const Shop = function Shop({hotelId}: {hotelId: number | null}) {
   const shopTab = Number(router.query.shopTab)
   const [currentProductId, setCurrentProductId] = useState<number | null>()
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const token = useAuth()
+  const [products, setProducts] = useState<{data: {data: Product[]}} | null>(null)
 
-  const {data: products} = useFetch<{data: {data: Product[]}}>(
-    shopTab === -1 && hotelId
-      ? `shopping/products/get-favorite?hotel_id=${hotelId}`
-      : "shopping/products"
-  )
+  const fetchProducts = useCallback(async () => {
+    if (router.isReady && token.ready && token.token && hotelId) {
+      const response: {data: {data: Product[]}} = await client(
+        shopTab === -1 ? `shopping/products/get-favorite?hotel_id=${hotelId}` : "shopping/products"
+      )
+      setProducts(response)
+    }
+  }, [hotelId, router.isReady, shopTab, token.ready, token.token])
+
+  useEffect(() => {
+    fetchProducts()
+  }, [fetchProducts])
+
+  useEffect(() => {
+    if (shopTab) {
+      setProducts(null)
+    }
+  }, [shopTab])
+
   const {addItemToCart} = useCart()
   return products && router.isReady ? (
     <>

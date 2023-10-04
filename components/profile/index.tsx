@@ -1,4 +1,5 @@
 import {Rating} from "@mui/material"
+import Link from "next/link"
 import {Input} from "@nextui-org/react"
 import {toast} from "react-toastify"
 import Image from "next/image"
@@ -143,7 +144,10 @@ const ProfileContent = function ProfileContent() {
   if (!isLoading && user) {
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="my-container">
-        <div className="flex flex-col lg:flex-row  gap-5 my-14">
+        <span className="label-gray mt-4 inline-block cursor-pointer font-light">
+          <Link href="/">Home</Link> / Profile
+        </span>
+        <div className="flex flex-col lg:flex-row  gap-5 my-10">
           <div className="px-10 py-10 bg-gray-100 dark:bg-mirage  rounded-lg flex flex-col justify-center gap-3">
             <div className="relative w-fit mx-auto">
               <div className="w-40 h-40 overflow-hidden rounded-full mx-auto relative">

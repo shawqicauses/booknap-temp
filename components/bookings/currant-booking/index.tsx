@@ -139,7 +139,7 @@ const HotelPageContent = function HotelPageContent({children}: {children?: React
   if (result && router.isReady) {
     return (
       <div className="mb-10">
-        <div className="p-3 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
+        <div className="p-5 bg-gray-100 dark:bg-mirage rounded-lg my-container my-6">
           <div className="relative mb-2">
             <div className="flex gap-3 absolute bottom-3 left-4 z-10">
               <div className="relative h-full border-2 border-gray-100 dark:border-waikawa-gray rounded-lg overflow-hidden">

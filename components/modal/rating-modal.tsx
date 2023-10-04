@@ -9,27 +9,25 @@ import {useUser} from "../../stores/user"
 import {type3} from "../uis/modal-styles"
 
 const RatingModal = function RatingModal({
-  hotelId,
   isOpen,
-  onClose,
-  hotelName
+  onClose
 }: {
-  hotelId: number
   isOpen: boolean
   onClose: () => void
-  hotelName: string
 }) {
   const [rating, setRating] = useState<number>(5)
   const [massage, setMassage] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const {setHotelRating} = useUser()
+  const {hotelRating} = useUser()
+
   const handleClick = async () => {
     setIsLoading(true)
     const respond: any = await client("front/reviews/create", {
       method: "POST",
       body: JSON.stringify({
         type: "hotel",
-        ref_id: hotelId,
+        ref_id: hotelRating?.hotel_id,
         stars: rating,
         comment: massage
       })
@@ -77,7 +75,8 @@ const RatingModal = function RatingModal({
         <ModalBody className="px-5 py-0 pb-2">
           <div className="flex flex-col gap-2 items-center">
             <p className="text-center">
-              The <span className="font-semi-bold">{hotelName}</span> Reservation Period has Expired
+              The <span className="font-semi-bold">{hotelRating?.hotel.name}</span> Reservation
+              Period has Expired
             </p>
             <Rating
               value={rating}

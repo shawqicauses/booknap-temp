@@ -73,6 +73,12 @@ const MyHome: NextPage = function MyHome() {
     }
   }, [])
 
+  useEffect(() => {
+    if (token && hotelRating) {
+      ratingModal.onOpen()
+    }
+  }, [token, hotelRating, ratingModal])
+
   return (
     <main className="main-hight">
       {!isLoaded || !userPos ? (
@@ -101,14 +107,8 @@ const MyHome: NextPage = function MyHome() {
             myZoom={myZoom}
             checkSittings={checkSittings}
           />
-          {token && hotelRating ? (
-            <RatingModal
-              hotelId={hotelRating.hotel_id}
-              hotelName={hotelRating.hotel.name}
-              isOpen={ratingModal.isOpen}
-              onClose={ratingModal.onClose}
-            />
-          ) : null}
+
+          <RatingModal isOpen={ratingModal.isOpen} onClose={ratingModal.onClose} />
         </>
       )}
     </main>

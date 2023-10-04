@@ -148,11 +148,13 @@ const OrderBox = function OrderBox({
       <div className="divide-y-2 dark:divide-waikawa-gray">
         {order_itmes.map(({id: itemId, price, product}) => (
           <div key={itemId} className="flex p-1 py-3 gap-3">
-            <div className="relative h-20 w-20 rounded-lg overflow-hidden object-cover border-2 border-[#dddddd] dark:border-waikawa-gray">
+            <div className="relative !h-20 !w-20 shrink-0 rounded-lg overflow-hidden object-cover border-2 border-[#dddddd] dark:border-waikawa-gray">
               <Image src={product.image} alt={`item ${itemId}`} fill />
             </div>
             <div>
-              <p className="body-sm text-black dark:text-white">{product.description}</p>
+              <p className="body-sm text-black dark:text-white line-clamp-2">
+                {product.description}
+              </p>
             </div>
             <div className="flex-1 flex justify-end">
               <span className="text-red-500 font-semi-bold text-xl">{price}$</span>
@@ -247,14 +249,24 @@ const Booking = function Booking() {
         <div className="flex flex-col items-center gap-3 flex-1">
           {orders.map(({id: orderId, created_at, order_itmes}, index) =>
             index % 2 === 0 ? (
-              <OrderBox created_at={created_at} orderId={orderId} order_itmes={order_itmes} />
+              <OrderBox
+                key={orderId}
+                created_at={created_at}
+                orderId={orderId}
+                order_itmes={order_itmes}
+              />
             ) : null
           )}
         </div>
         <div className="flex flex-col items-center gap-3 flex-1">
           {orders.map(({id: orderId, created_at, order_itmes}, index) =>
             index % 2 !== 0 ? (
-              <OrderBox created_at={created_at} orderId={orderId} order_itmes={order_itmes} />
+              <OrderBox
+                key={orderId}
+                created_at={created_at}
+                orderId={orderId}
+                order_itmes={order_itmes}
+              />
             ) : null
           )}
         </div>

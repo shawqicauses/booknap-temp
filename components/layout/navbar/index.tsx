@@ -280,9 +280,9 @@ const Navbar = function Navbar() {
                           />
                         </li>
                         <li>
-                          <Dropdown className="px-0 dark:bg-mirage" radius="sm">
-                            <DropdownTrigger>
-                              {ready ? (
+                          {ready ? (
+                            <Dropdown size="sm" className="px-0 py-2 dark:bg-mirage">
+                              <DropdownTrigger>
                                 <button
                                   type="button"
                                   className="my-flex gap-2 cursor-pointer !w-10 !h-10 rounded-lg ml-2"
@@ -299,65 +299,65 @@ const Navbar = function Navbar() {
                                     />
                                   </div>
                                 </button>
-                              ) : (
-                                <div className="w-7 h-7 flex justify-center items-center rounded-lg">
-                                  <MySpinner />
-                                </div>
-                              )}
-                            </DropdownTrigger>
-                            <DropdownMenu className="p-0">
-                              <DropdownItem
-                                className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
-                                startContent={
-                                  <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
-                                }
-                                onClick={() => {
-                                  setIsOpened(false)
-                                }}>
-                                <Link
-                                  href="/profile"
-                                  className="inline-block w-full h-full dark:text-white ">
-                                  Profile
-                                </Link>
-                              </DropdownItem>
-                              <DropdownItem
-                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
-                                startContent={
-                                  <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
-                                }
-                                onClick={() => {
-                                  setIsOpened(false)
-                                }}>
-                                <Link
-                                  href="/bookings"
-                                  className="inline-block w-full h-full dark:text-white">
-                                  Bookings
-                                </Link>
-                              </DropdownItem>
-                              <DropdownItem
-                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
-                                startContent={
-                                  <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
-                                }
-                                onClick={() => {
-                                  deleteAccount.onOpen()
-                                  setIsOpened(false)
-                                }}>
-                                <span className="dark:text-white">Delete Account</span>
-                              </DropdownItem>
-                              <DropdownItem
-                                className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
-                                startContent={
-                                  <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
-                                }
-                                onClick={() => {
-                                  handleSignOut()
-                                  setIsOpened(false)
-                                }}>
-                                <span className="dark:text-white">Logout</span>
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
+                              </DropdownTrigger>
+                              <DropdownMenu className="p-0 py-1" variant="flat">
+                                <DropdownItem
+                                  className="hover:bg-gray-100 dark:hover:bg-slate-800 !rounded-none"
+                                  startContent={
+                                    <BiUser className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  }
+                                  onClick={() => {
+                                    setIsOpened(false)
+                                  }}>
+                                  <Link
+                                    href="/profile"
+                                    className="inline-block w-full h-full dark:text-white ">
+                                    Profile
+                                  </Link>
+                                </DropdownItem>
+                                <DropdownItem
+                                  className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
+                                  startContent={
+                                    <GoChecklist className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  }
+                                  onClick={() => {
+                                    setIsOpened(false)
+                                  }}>
+                                  <Link
+                                    href="/bookings"
+                                    className="inline-block w-full h-full dark:text-white">
+                                    Bookings
+                                  </Link>
+                                </DropdownItem>
+                                <DropdownItem
+                                  className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
+                                  startContent={
+                                    <BiTrash className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  }
+                                  onClick={() => {
+                                    deleteAccount.onOpen()
+                                    setIsOpened(false)
+                                  }}>
+                                  <span className="dark:text-white">Delete Account</span>
+                                </DropdownItem>
+                                <DropdownItem
+                                  className="hover:bg-gray-100 dark:hover:bg-slate-800  !rounded-none"
+                                  startContent={
+                                    <HiOutlineLogout className="w-6 h-6 m-auto text-[#B9B9B9] dark:text-[#5B6C89]" />
+                                  }
+                                  onClick={() => {
+                                    handleSignOut()
+                                    setIsOpened(false)
+                                  }}>
+                                  <span className="dark:text-white">Logout</span>
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          ) : (
+                            <div className="w-7 h-7 flex justify-center items-center rounded-lg">
+                              <MySpinner />
+                            </div>
+                          )}
                         </li>
                       </>
                     ) : null}
