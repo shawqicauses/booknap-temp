@@ -245,7 +245,7 @@ const Booking = function Booking() {
           </div>
         </div>
       </div>
-      <div className="flex gap-3 w-full">
+      <div className="flex flex-col md:flex-row gap-3 w-full">
         <div className="flex flex-col items-center gap-3 flex-1">
           {orders.map(({id: orderId, created_at, order_itmes}, index) =>
             index % 2 === 0 ? (
