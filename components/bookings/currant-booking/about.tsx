@@ -78,11 +78,11 @@ const About = function About() {
           <span className="heading-3 text-xl-2 dark:text-white">Gallery</span>
         </div>
         <FancyBox>
-          <div className="grid grid-col-1 md:grid-col-2 xl:grid-3 gap-2 h-full w-fit mx-auto">
+          <div className="grid grid-cols md:grid-cols-2 xl:grid-cols-3 gap-3 h-full w-fit mx-auto">
             {result ? (
               result.hotel.media.map(({id: imgId, file, type}) => (
                 <div
-                  className="relative  rounded-lg overflow-hidden lg:w-[400px] xs:h-[250px] w-full h-full"
+                  className="relative  rounded-lg overflow-hidden lg:w-[370px] xs:h-[250px] w-full h-full"
                   key={imgId}>
                   {type !== "mp4" ? (
                     <Image
