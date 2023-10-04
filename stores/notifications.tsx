@@ -42,21 +42,17 @@ const NotificationProvider = function NotificationProvider({
   const [notifications, setNotifications] = useState<Array<INotification>>([])
   const [unReadMassages, setUnReadMassages] = useState<number>(0)
   const [ready, setReady] = useState<boolean>(false)
-  const {token, ready: tokenReady, signOut} = useAuth()
+  const {token, ready: tokenReady} = useAuth()
   const reFetch = useCallback(async () => {
     setReady(false)
     if (tokenReady && token) {
-      await client("notifications")
-        ?.then((res) => {
-          setNotifications(res.result.data)
-          setUnReadMassages(res.unread)
-          setReady(true)
-        })
-        .catch(() => {
-          signOut()
-        })
+      await client("notifications")?.then((res) => {
+        setNotifications(res.result.data)
+        setUnReadMassages(res.unread)
+        setReady(true)
+      })
     }
-  }, [signOut, tokenReady, token])
+  }, [tokenReady, token])
 
   const clearNotifications = useCallback(() => {
     setNotifications([])

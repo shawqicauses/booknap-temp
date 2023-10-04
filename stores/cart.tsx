@@ -61,6 +61,7 @@ const CartProvider = function CartProvider({children}: {children: React.ReactEle
   const [total, setTotal] = useState<string>("0.00")
   const [cart, setCart] = useState<CardProduct[]>([])
   const [bookingId, setBookingId] = useState<number | null>()
+
   const getTotal = useCallback(() => {
     setTotal(
       cart
