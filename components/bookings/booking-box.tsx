@@ -50,14 +50,18 @@ const BookingBox = function BookingBox({
   return (
     <div
       key={id}
-      className="flex bg-gray-100 p-3 gap-3 rounded-lg items-center dark:bg-mirage sm:min-w-[400px]">
-      <div className="relative !h-20 !w-20 rounded-lg overflow-hidden ">
-        <Image
-          src={hotel?.logo || ""}
-          alt={hotel?.name || "Hotel"}
-          className="!relative"
-          fill
-        />
+      className="flex bg-gray-100 p-3 gap-3 rounded-lg items-center dark:bg-mirage sm:min-w-[400px] cursor-pointer"
+      onClick={() => {
+        if (status !== "inProgress") {
+          onOpen()
+        } else {
+          rout.push(`/${id}`)
+          if (closeSideBar) closeSideBar()
+        }
+      }}
+      aria-hidden="true">
+      <div className="relative !h-20 !w-20 border-2 border-gray-200 dark:border-waikawa-gray rounded-lg overflow-hidden">
+        <Image src={hotel?.logo || ""} alt={hotel?.name || "Hotel"} className="!relative" fill />
       </div>
       <div>
         <h3 className="heading-3 dark:text-white mb-2">{hotel?.name}</h3>
@@ -79,18 +83,7 @@ const BookingBox = function BookingBox({
         ) : null}
       </div>
       <div className="flex-1 flex justify-end">
-        <MyButton
-          color={states[status]}
-          onClick={() => {
-            if (status !== "inProgress") {
-              onOpen()
-            } else {
-              rout.push(`/${id}`)
-              if (closeSideBar) closeSideBar()
-            }
-          }}>
-          #{id}
-        </MyButton>
+        <MyButton color={states[status]}>#{id}</MyButton>
       </div>
     </div>
   )

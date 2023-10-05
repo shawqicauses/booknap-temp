@@ -23,11 +23,9 @@ const RoomsDetails = function RoomsDetails() {
     return (
       <div className=" flex gap-5  flex-col">
         {rooms.map(({id: roomId, name_en, number, details_en, features}) => (
-          <div
-            className="rounded-lg p-4 bg-gray-100 dark:bg-mirage"
-            key={roomId}>
+          <div className="rounded-lg p-4 bg-gray-100 dark:bg-mirage" key={roomId}>
             <div className="flex gap-5 mb-4">
-              <div className="bg-gray-200 dark:bg-[#242E3F] p-3 rounded-lg text-my-primary">
+              <div className="bg-gray-200 dark:bg-ebony-clay p-3 rounded-lg text-my-primary">
                 <BiDoorOpen className="h-7 w-7" />
               </div>
               <div>

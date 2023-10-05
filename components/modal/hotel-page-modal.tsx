@@ -26,8 +26,10 @@ const HotelPageModal = function HotelPageModal({
       backdrop="transparent"
       isOpen={isOpen}
       onClose={onClose}
-      radius="lg"
-      classNames={noPadding}>
+      radius="md"
+      size="sm"
+      classNames={noPadding}
+      scrollBehavior="outside">
       <ModalContent>
         <ModalBody>
           <div>

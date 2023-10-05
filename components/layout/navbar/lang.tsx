@@ -4,7 +4,7 @@ import "flag-icons/css/flag-icons.min.css"
 
 const languages = [
   {id: 0, shortname: "en", name: "EN", flag: "us"},
-  {id: 1, shortname: "ar", name: "AR", flag: "eg"}
+  {id: 1, shortname: "ar", name: "AR", flag: "sa"}
 ]
 
 const Lang = function Lang() {

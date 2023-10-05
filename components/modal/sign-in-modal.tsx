@@ -86,7 +86,7 @@ const SignIn = function SignIn({
       <div className="flex gap-3 flex-col">
         <div>
           <label htmlFor="name" className="label">
-            Username
+            Name
           </label>
           <Input
             type="text"

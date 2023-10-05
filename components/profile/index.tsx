@@ -27,8 +27,11 @@ interface IProfile {
 
 const inputStyle = {
   label: "text-black dark:text-white/90 text-lg",
-  inputWrapper: ["h-[50px]", "bg-white dark:bg-blue-charcoal dark:border-blue-charcoal  border"],
-  input: "pl-2 text-black dark:text-white"
+  inputWrapper: [
+    "h-[50px]",
+    "bg-white dark:bg-blue-charcoal dark:border-blue-charcoal border shadow-none"
+  ],
+  input: "pl-2 text-black dark:text-white !shadow-[0]"
 }
 
 const ProfileContent = function ProfileContent() {
@@ -173,7 +176,7 @@ const ProfileContent = function ProfileContent() {
                   size="large"
                   readOnly
                   icon={<AiFillStar className="text-inherit" />}
-                  emptyIcon={<AiFillStar className="text-gray-600" />}
+                  emptyIcon={<AiFillStar className="text-[#DDDDDD] dark:text-ebony-clay" />}
                 />
               </div>
             </div>
@@ -187,7 +190,7 @@ const ProfileContent = function ProfileContent() {
                 />
               </MyButton>
             </div>
-            <div className="bg-[#E9EDF4] dark:bg-blue-charcoal rounded-md">
+            <div className="bg-[#E9EDF4] dark:bg-ebony-clay rounded-md">
               <div className="p-5 text-center max-w-xs mx-auto">
                 <p className="mb-3 text-sm text-black/70 dark:text-white/70">
                   Upload A New Avatar. Larger Image Will Be Resized Automatically

@@ -30,11 +30,11 @@ const AboutUsContent = function AboutUsContent() {
               diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam{" "}
             </p>
           </div>
-          <div className="relative lg:w-2/5 h-full rounded-xl-2 overflow-hidden">
-            <Image src="/about-img-1.png" alt="img" fill className="!relative object-contain" />
+          <div className="relative w-full lg:w-[450px] h-[320px] rounded-xl-2 overflow-hidden">
+            <Image src="/about-img-1.png" alt="img" fill className="!relative object-cover" />
           </div>
         </div>
-        <div className="flex flex-col-reverse gap-4 lg:flex-row justify-between items-center">
+        <div className="flex flex-col-reverse gap-4 lg:flex-row justify-between">
           <div className="lg:w-2/5">
             <div className="mb-3">
               <h2 className="heading-2 mb-4 dark:text-white">Our goals</h2>
@@ -75,8 +75,14 @@ const AboutUsContent = function AboutUsContent() {
               </ul>
             </div>
           </div>
-          <div className="relative lg:w-2/5 h-full rounded-xl-2 overflow-hidden">
-            <Image src="/about-img-2.png" alt="img" fill className="!relative object-contain" />
+          <div className="relative h-full rounded-xl-2 overflow-hidden">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/4K6Sh1tsAW4?si=yYaNGuDvaiLh7Qgi"
+              title="YouTube video player"
+              className="w-full lg:w-[450px] h-[320px] inline-block"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
         </div>
       </div>

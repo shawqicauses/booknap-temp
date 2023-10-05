@@ -114,6 +114,7 @@ const BookingsContent = function BookingsContent() {
               }}
               color="primary"
               aria-label="Pagination"
+              classNames={{cursor: "bg-my-primary"}}
             />
           </div>
         ) : null}
