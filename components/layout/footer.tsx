@@ -47,7 +47,7 @@ const Footer = function Footer() {
     }
   }, [setShowFooter])
 
-  return showFooter && router.isReady && router.asPath !== "/" ? (
+  return showFooter && router.isReady && router.pathname !== "/" ? (
     <footer className="mt-auto">
       <div className="bg-gray-100 dark:bg-mirage pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 my-container py-10 gap-6">
@@ -99,7 +99,7 @@ const Footer = function Footer() {
                 <li key={id}>
                   <a
                     href={link}
-                    className="inline-block p-2 bg-white dark:bg-blue-charcoal hover:bg-my-primary hover:text-white rounded-lg">
+                    className="inline-block p-2 bg-white dark:bg-blue-charcoal hover:bg-my-primary hover:text-white dark:hover:bg-my-primary dark:hover:text-white rounded-lg">
                     {icon}
                   </a>
                 </li>
@@ -110,7 +110,7 @@ const Footer = function Footer() {
       </div>
 
       <div className="bg-white dark:bg-blue-charcoal py-5">
-        <p className="sm:whitespace-nowrap flex-1 text-center font-light uppercase body text-[#909090]">
+        <p className="sm:whitespace-nowrap flex-1 text-center font-light uppercase body text-[#909090] dark:text-gray-400">
           © COPYRIGHTED & DESIGNED BY{" "}
           <Link href="/" className="text-blue-500 hover:text-my-primary">
             BOOKNAP
